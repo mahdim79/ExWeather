@@ -1,7 +1,8 @@
-package com.dust.exweather
+package com.dust.exweather.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.dust.exweather.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
