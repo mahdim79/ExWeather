@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/weatherGroup" android:title="آب و هوا">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@id/currentWeatherFragment" android:checkable="true" android:title="آب و هوای فعلی" android:icon="@drawable/bottom_navigation_current_weather"/>
+                <item android:id="@id/weatherPredictionFragment" android:checkable="true" android:title="پیش بینی" android:icon="@drawable/bottom_navigation_perdiction_weather"/>
+                <item android:id="@id/weatherHistoryFragment" android:checkable="true" android:title="تاریخچه آب و هوا" android:icon="@drawable/bottom_navigation_history_weather"/>
+            </group>
+        </menu>
+    </item>
+    <item android:id="@+id/settingsGroup" android:title="تنظیمات">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@id/generalSettingsFragment" android:checkable="true" android:title="تنظیمات عمومی" android:icon="@drawable/navigation_drawer_general_settings"/>
+                <item android:id="@id/weatherSettingsFragment" android:checkable="true" android:title="تنظیمات آب و هوا" android:icon="@drawable/navigation_drawer_weather_settings"/>
+            </group>
+        </menu>
+    </item>
+    <item android:id="@+id/aboutUsGroup" android:title="درباره">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@id/aboutUsFragment" android:title="درباره ما" android:checkable="true" android:icon="@drawable/navigation_drawer_about_us"/>
+            </group>
+        </menu>
+    </item>
+</menu>

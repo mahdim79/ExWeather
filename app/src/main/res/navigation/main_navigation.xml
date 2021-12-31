@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/currentWeatherFragment">
+
+    <fragment
+        android:id="@+id/currentWeatherFragment"
+        android:name="com.dust.exweather.ui.fragments.weatherfragments.CurrentWeatherFragment"
+         />
+    <fragment
+        android:id="@+id/weatherHistoryFragment"
+        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment"
+        />
+    <fragment
+        android:id="@+id/weatherPredictionFragment"
+        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherPredictionFragment"
+        />
+    <fragment
+        android:id="@+id/generalSettingsFragment"
+        android:name="com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment"
+        />
+    <fragment
+        android:id="@+id/weatherSettingsFragment"
+        android:name="com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment"
+        />
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment"
+        />
+</navigation>

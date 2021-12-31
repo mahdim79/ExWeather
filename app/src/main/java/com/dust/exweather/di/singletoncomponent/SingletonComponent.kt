@@ -2,12 +2,15 @@ package com.dust.exweather.di.singletoncomponent
 
 import android.app.Application
 import com.dust.exweather.MyApplication
+import com.dust.exweather.di.contributeactivities.ContributeActivitiesModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
-@Component(modules = [AndroidSupportInjectionModule::class])
+@Singleton
+@Component(modules = [AndroidSupportInjectionModule::class , ContributeActivitiesModule::class])
 interface SingletonComponent : AndroidInjector<MyApplication> {
 
     @Component.Builder

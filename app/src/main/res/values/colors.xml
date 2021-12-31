@@ -30,4 +30,8 @@
     <color name="full_transparent">#00FFFFFF</color>
     <color name="whiteBackground">#EFEFEF</color>
     <color name="gold">#EAD418</color>
+    <color name="bottomNavigationActiveItemColor">#23c4ed</color>
+    <color name="bottomNavigationInActiveItemColor">#cad5e2</color>
+    <color name="toolbarBackgroundStartColorGradient">#51e1ed</color>
+    <color name="toolbarBackgroundEndColorGradient">#1b98f5</color>
 </resources>
