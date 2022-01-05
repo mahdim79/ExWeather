@@ -1,42 +1,43 @@
 package com.dust.exweather.ui.activities
 
-import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.utils.customviews.CTextView
 import com.koushikdutta.ion.Ion
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
-import java.io.File
-
 
 class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
-    private lateinit var titleText:CTextView
+    private lateinit var titleText: CTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
+        setUpPrimaryUiStuff()
+
+
+
+    }
+
+    private fun setUpPrimaryUiStuff() {
         setUpViews()
         setUpNaVController()
         setUpActionBar()
         setUpStatusBar()
         setUpNavigationComponent()
         setUpNavigationView()
-
 
     }
 
@@ -96,11 +97,13 @@ class MainActivity : DaggerAppCompatActivity() {
         val headerLayout = mainNavView.getHeaderView(0)
         headerLayout.apply {
             val headerImageView = findViewById<ImageView>(R.id.navigationViewHeaderImage)
-            Ion.with(context).load("http://www.montgomeryruritanclub.com/Site/images/annimated/lg.rainy-preloader.gif").intoImageView(headerImageView)
+            Ion.with(context)
+                .load("http://www.montgomeryruritanclub.com/Site/images/annimated/lg.rainy-preloader.gif")
+                .intoImageView(headerImageView)
         }
     }
 
-    private fun setBottomNavigationVisibility(b:Boolean){
+    private fun setBottomNavigationVisibility(b: Boolean) {
         mainBottomNavigation.visibility = if (b) View.VISIBLE else View.GONE
     }
 

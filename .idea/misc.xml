@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/green_to_blue_gradient.xml" value="0.209375" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/red_to_pink_gradient.xml" value="0.209375" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/toolbar_background_gradient.xml" value="0.209375" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/yellow_to_gray_gradient.xml" value="0.209375" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_current_weather.xml" value="0.1" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_current_weather.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/navigation_view_header.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/toolbar.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />

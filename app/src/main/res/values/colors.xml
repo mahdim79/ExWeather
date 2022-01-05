@@ -34,4 +34,10 @@
     <color name="bottomNavigationInActiveItemColor">#cad5e2</color>
     <color name="toolbarBackgroundStartColorGradient">#51e1ed</color>
     <color name="toolbarBackgroundEndColorGradient">#1b98f5</color>
+    <color name="standardUiGreen">#4dd637</color>
+    <color name="standardUiBlue">#35bdd0</color>
+    <color name="standardUiYellow">#f7cd2e</color>
+    <color name="standardUiRed">#b4161b</color>
+    <color name="standardUiPink">#e03b8b</color>
+    <color name="standardUiGray">#af9d5a</color>
 </resources>

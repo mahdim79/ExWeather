@@ -30,12 +30,10 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/green"
                 app:elevation="0dp">
 
                 <include layout="@layout/toolbar" />
             </com.google.android.material.appbar.AppBarLayout>
-
 
             <fragment
                 android:id="@+id/mainFragmentContainerView"
