@@ -40,4 +40,7 @@
     <color name="standardUiRed">#b4161b</color>
     <color name="standardUiPink">#e03b8b</color>
     <color name="standardUiGray">#af9d5a</color>
+    <color name="standardUiWhite">#f5f6fa</color>
+    <color name="standardUiDark">#2f3640</color>
+    <color name="mainTextColor">#F2F4F7</color>
 </resources>

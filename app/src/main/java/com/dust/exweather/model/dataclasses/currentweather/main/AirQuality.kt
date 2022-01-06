@@ -1,4 +1,4 @@
-package com.dust.exweather.model.dataclasses.currentweather.other
+package com.dust.exweather.model.dataclasses.currentweather.main
 
 data class AirQuality(
     val co: Double,

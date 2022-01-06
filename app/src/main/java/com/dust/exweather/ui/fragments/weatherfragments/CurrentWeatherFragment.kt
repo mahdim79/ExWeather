@@ -52,7 +52,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     lateinit var cityDao: CityDao
 
     @Inject
-    lateinit var locationManager:LocationManager
+    lateinit var locationManager: LocationManager
 
 
     override fun onCreateView(
@@ -83,7 +83,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun observeCurrentWeatherLiveData() {
         viewModel.getCurrentWeatherLiveData().observe(viewLifecycleOwner) { data ->
             prepareAndSetUpUi(dataFromApi = data, dataFromCache = null)
-            Log.i("LOCATION_WEATHER_INFO" , "location weather info fetched successfully!")
+            Log.i("LOCATION_WEATHER_INFO", data.data!!.toString())
         }
     }
 
@@ -118,7 +118,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                     }
 
                     override fun onNext(t: Boolean) {
-                        if (t){
+                        if (t) {
                             swipeRefreshLayout.isRefreshing = true
                             getCurrentWeatherData()
                         }
@@ -221,16 +221,27 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun setUpWeatherDetailsTexts(current: CurrentData) {
         requireView().apply {
-            weatherTempText.text = "دما: C° ${current.current!!.temp_c}"
+            weatherTempText.text = current.current!!.temp_c.toString()
             weatherCityNameText.text = current.location!!.name
-            lastUpdateText.text = "آپدیت شده در: ${current.current.last_updated}"
+            lastUpdateText.text = current.current.last_updated
+            airPressureText.text = current.current.pressure_mb.toString()
+            weatherHumidityText.text = current.current.humidity.toString()
+            weatherIsDayText.text = current.current.is_day.toString()
+            precipText.text = current.current.precip_mm.toString()
+            windSpeedText.text = current.current.wind_kph.toString()
+
         }
     }
 
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(
             this,
-            CurrentFragmentViewModelFactory(requireActivity().application, repository, cityDao, locationManager)
+            CurrentFragmentViewModelFactory(
+                requireActivity().application,
+                repository,
+                cityDao,
+                locationManager
+            )
         )[CurrentFragmentViewModel::class.java]
     }
 
@@ -259,7 +270,7 @@ class CurrentWeatherFragment : DaggerFragment() {
 
         requireView().weatherStateText.text = weatherState
         Glide.with(requireActivity().applicationContext).load(imageUrl)
-            .into(requireView().weatherImage)
+            .into(requireView().weatherStateImage)
     }
 
     override fun onDestroyView() {

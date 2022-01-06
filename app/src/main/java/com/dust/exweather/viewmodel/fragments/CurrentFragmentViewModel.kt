@@ -30,8 +30,6 @@ class CurrentFragmentViewModel(
         currentWeatherDataMutableLiveData.value = it
     }
 
-
-
     private var currentWeatherLiveData: LiveData<DataWrapper<CurrentData>>? = null
 
     fun getCurrentWeatherByCityName() {

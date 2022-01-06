@@ -16,5 +16,7 @@
     <dimen name="standardMargin6x">60dp</dimen>
     <dimen name="standardMargin8x">80dp</dimen>
     <dimen name="standardMargin10x">100dp</dimen>
+    <dimen name="mainIconSize">25dp</dimen>
+    <dimen name="mainTextSize">15dp</dimen>
 
 </resources>
