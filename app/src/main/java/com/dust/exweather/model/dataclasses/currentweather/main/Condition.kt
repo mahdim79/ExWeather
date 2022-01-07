@@ -4,5 +4,5 @@ data class Condition(
     val code: Int,
     val icon: String,
     val text: String,
-    val weatherPersianText:String
+    var weatherPersianText:String
 )

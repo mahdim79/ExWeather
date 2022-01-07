@@ -83,7 +83,6 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun observeCurrentWeatherLiveData() {
         viewModel.getCurrentWeatherLiveData().observe(viewLifecycleOwner) { data ->
             prepareAndSetUpUi(dataFromApi = data, dataFromCache = null)
-            Log.i("LOCATION_WEATHER_INFO", data.data!!.toString())
         }
     }
 
@@ -154,10 +153,10 @@ class CurrentWeatherFragment : DaggerFragment() {
 
             // get Data From Server
             // * By Location
-            viewModel.getCurrentWeatherDataByUserLocation()
+            viewModel.getCurrentWeatherDataByUserLocation(requireContext())
 
             // * By City Name
-            //   viewModel.getCurrentWeatherByCityName()
+            //   viewModel.getCurrentWeatherByCityName(requireContext())
 
 
         }
