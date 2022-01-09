@@ -1,20 +1,15 @@
 package com.dust.exweather.model.repositories
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
+import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
+import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
+import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasses.translatedataclass.TranslationDataClass
-import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.retrofit.TranslationApiRequests
-import com.dust.exweather.model.room.CurrentWeatherDao
-import com.dust.exweather.model.room.CurrentWeatherEntity
+import com.dust.exweather.model.room.WeatherDao
+import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toEntity
-import com.dust.exweather.utils.DataStatus
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 class CurrentWeatherRepository @Inject constructor() {
@@ -25,19 +20,21 @@ class CurrentWeatherRepository @Inject constructor() {
     lateinit var translationApiRequests: TranslationApiRequests
 
     @Inject
-    lateinit var currentWeatherDao: CurrentWeatherDao
+    lateinit var weatherDao: WeatherDao
 
     suspend fun getCurrentWeatherData(query: String): Response<CurrentData> = mainApiRequests.getCurrentWeatherData(query)
+    suspend fun getHistoryWeatherData(query: String, date:String): Response<WeatherHistory> = mainApiRequests.getHistoryWeatherData(query , date)
+    suspend fun getForecastWeatherData(query: String): Response<WeatherForecast> = mainApiRequests.getForecastWeatherData(query)
 
-    suspend fun insertCurrentWeatherDataToRoom(currentData: CurrentData) {
-        currentWeatherDao.insertCurrentWeather(currentWeatherEntity = currentData.toEntity())
+    suspend fun insertWeatherDataToRoom(mainWeatherData: MainWeatherData) {
+        weatherDao.insertWeatherData(weatherEntity = mainWeatherData.toEntity())
     }
 
     suspend fun translateWord(text: String): Response<TranslationDataClass> =
         translationApiRequests.translate(text = text)
 
-    fun getCurrentWeatherDataFromRoom(): LiveData<List<CurrentWeatherEntity>> =
-        currentWeatherDao.getCurrentWeatherData()
+    suspend fun getWeatherDataFromRoom(): List<WeatherEntity> =
+        weatherDao.getWeatherData()
 
 
 }

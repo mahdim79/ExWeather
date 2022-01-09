@@ -14,16 +14,22 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
+import com.dust.exweather.model.dataclasses.currentweather.main.Condition
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
+import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
+import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.model.room.CityDao
-import com.dust.exweather.model.room.CurrentWeatherEntity
+import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
-import com.dust.exweather.utils.Constants
+import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
+import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
 import dagger.android.support.DaggerFragment
@@ -34,7 +40,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_current_weather.*
 import kotlinx.android.synthetic.main.fragment_current_weather.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -54,6 +64,11 @@ class CurrentWeatherFragment : DaggerFragment() {
     @Inject
     lateinit var locationManager: LocationManager
 
+    @Inject
+    lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
+
+    private lateinit var weatherStatesDetails: WeatherStatesDetails
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,22 +81,43 @@ class CurrentWeatherFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // instantiate Weather State Details Object
+      //  instantiateWeatherStateDetailsObject()
+
         // initialize View Model
-        setUpViewModel()
+           setUpViewModel()
 
         // set Up SwipeRefreshLayout
-        setUpSwipeRefreshLayout()
+           setUpSwipeRefreshLayout()
 
-        // observe Current Weather Livedata
-        observeCurrentWeatherLiveData()
+        // observe Weather Livedata
+             observeWeatherLiveData()
 
-        // get current weather data
-        getCurrentWeatherData()
+        // get weather data
+           getWeatherData()
+
+        // setup Main RecyclerView
+          setUpMainRecyclerView()
 
     }
 
-    private fun observeCurrentWeatherLiveData() {
-        viewModel.getCurrentWeatherLiveData().observe(viewLifecycleOwner) { data ->
+    private fun instantiateWeatherStateDetailsObject() {
+        weatherStatesDetails = UtilityFunctions.getWeatherStatesDetailsObject(requireContext())
+    }
+
+    private fun setUpMainRecyclerView() {
+        mainWeatherRecyclerView.layoutManager = LinearLayoutManager(requireContext() , LinearLayoutManager.VERTICAL , false)
+        mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
+        lifecycleScope.launch(Dispatchers.IO){
+            val listItems = viewModel.getWeatherDataFromCache()
+            withContext(Dispatchers.Main){
+               // mainRecyclerViewAdapter.setNewList(listItems)
+            }
+        }
+    }
+
+    private fun observeWeatherLiveData() {
+        viewModel.getWeatherLiveData().observe(viewLifecycleOwner) { data ->
             prepareAndSetUpUi(dataFromApi = data, dataFromCache = null)
         }
     }
@@ -108,7 +144,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                     emitter.onNext(true)
                 }
             })
-                .throttleFirst(10000L, TimeUnit.MILLISECONDS)
+                .throttleFirst(5000L, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
@@ -119,7 +155,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                     override fun onNext(t: Boolean) {
                         if (t) {
                             swipeRefreshLayout.isRefreshing = true
-                            getCurrentWeatherData()
+                            getWeatherData()
                         }
                     }
 
@@ -132,7 +168,7 @@ class CurrentWeatherFragment : DaggerFragment() {
         }
     }
 
-    private fun getCurrentWeatherData() {
+    private fun getWeatherData() {
 
         // check permissions
         if (!checkPermissionsGranted()) {
@@ -146,20 +182,21 @@ class CurrentWeatherFragment : DaggerFragment() {
         }
 
         // get Cached Data From Room
-        val roomLiveData = viewModel.getCurrentWeatherDataFromCache()
-        roomLiveData.observe(viewLifecycleOwner) {
-            roomLiveData.removeObservers(viewLifecycleOwner)
-            prepareAndSetUpUi(dataFromApi = null, dataFromCache = it)
+        lifecycleScope.launch(Dispatchers.IO){
+            val roomData = viewModel.getWeatherDataFromCache()
+            withContext(Dispatchers.Main){
+                prepareAndSetUpUi(dataFromApi = null, dataFromCache = roomData)
 
-            // get Data From Server
-            // * By Location
-            viewModel.getCurrentWeatherDataByUserLocation(requireContext())
+                // get Data From Server
+                // * By Location
+                viewModel.getWeatherDataByUserLocation(requireContext())
 
-            // * By City Name
-            //   viewModel.getCurrentWeatherByCityName(requireContext())
+                // * By City Name
+                 //  viewModel.getWeatherByCityName(requireContext())
 
-
+            }
         }
+
     }
 
     private fun checkPermissionsGranted(): Boolean {
@@ -173,8 +210,8 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun prepareAndSetUpUi(
-        dataFromCache: List<CurrentWeatherEntity>?,
-        dataFromApi: DataWrapper<CurrentData>?
+        dataFromCache: List<WeatherEntity>?,
+        dataFromApi: DataWrapper<MainWeatherData>?
     ) {
         // check if both are null
         if (dataFromApi == null && dataFromCache == null) {
@@ -187,13 +224,13 @@ class CurrentWeatherFragment : DaggerFragment() {
             // fun if data is from api
             when (dataFromApi.status) {
                 DataStatus.DATA_RECEIVE_SUCCESS -> {
-                    setUpCurrentWeatherUi(dataFromApi.data!!)
+                    setUpCurrentWeatherUi(dataFromApi.data!!.current!!)
                     resetSwipeRefreshLayout()
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
                     Toast.makeText(
                         requireContext(),
-                        "مشکلی پیش آمده است اشکال: ${dataFromApi.data?.error ?: "unknown!"}",
+                        "مشکلی پیش آمده است اشکال: ${dataFromApi.data!!.current!!.error ?: "unknown!"}",
                         Toast.LENGTH_SHORT
                     ).show()
                     resetSwipeRefreshLayout()
@@ -204,13 +241,13 @@ class CurrentWeatherFragment : DaggerFragment() {
         } else {
             // run if data is from cache
             if (!dataFromCache!!.isNullOrEmpty()) {
-                setUpCurrentWeatherUi(dataFromCache[0].toDataClass())
+                setUpCurrentWeatherUi(dataFromCache[0].toDataClass().current!!)
             }
         }
     }
 
     private fun setUpCurrentWeatherUi(data: CurrentData) {
-        setUpWeatherImageAndText(data.current!!.condition.code)
+        setUpWeatherImageAndText(data.current!!.condition)
         setUpWeatherDetailsTexts(data)
     }
 
@@ -253,23 +290,14 @@ class CurrentWeatherFragment : DaggerFragment() {
         if (requestCode == 101) {
             if (grantResults.contains(-1))
                 return
-            getCurrentWeatherData()
+            getWeatherData()
         }
     }
 
-    private fun setUpWeatherImageAndText(weatherCode: Int) {
-        var imageUrl = Constants.DEFAULT_WALLPAPER_URL
-        var weatherState = "مشخص نشده!"
-
-        when (weatherCode) {
-            0 -> {
-                imageUrl = Constants.RAINY_WEATHER_WALLPAPER_URL
-            }
-        }
-
-        requireView().weatherStateText.text = weatherState
-        Glide.with(requireActivity().applicationContext).load(imageUrl)
-            .into(requireView().weatherStateImage)
+    private fun setUpWeatherImageAndText(condition: Condition) {
+        requireView().weatherStateText.text = condition.weatherPersianText
+        /*Glide.with(requireActivity().applicationContext).load(UtilityFunctions.getWeatherStateGifUrl(weatherStatesDetails , condition.code))
+            .into(requireView().weatherStateImage)*/
     }
 
     override fun onDestroyView() {

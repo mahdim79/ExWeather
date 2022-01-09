@@ -9,6 +9,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:overScrollMode="never"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
@@ -253,10 +254,13 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mainWeatherRecyclerView"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/item_main_recyclerview"
+                    tools:itemCount="5"
                     android:layout_below="@+id/detailsContainer"
                     android:layoutDirection="rtl"
-                    android:padding="@dimen/standardMargin1.5x"
-                    android:layout_height="wrap_content"/>
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin1.5x" />
 
             </RelativeLayout>
 
@@ -304,11 +308,12 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/red_to_pink_gradient"
                         android:layout_alignParentStart="true"/>
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/standardMargin"
-                        android:layout_toEndOf="@+id/gradient2">
+                        android:layout_toEndOf="@+id/gradient2"
+                        android:padding="@dimen/standardMargin">
 
                     </FrameLayout>
                 </RelativeLayout>

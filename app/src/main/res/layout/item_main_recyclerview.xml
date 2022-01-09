@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/full_transparent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:layout_height="50dp">
+
+    <ImageView
+        android:id="@+id/itemStateImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/standardMargin0.5x"
+        tools:src="@drawable/ic_launcher_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/item_dayOfWeekText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="دوشنبه"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/TextSize4x"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/itemStateImage"
+        android:layout_marginHorizontal="@dimen/standardMargin1.5x"/>
+
+    <TextView
+        android:id="@+id/item_minTempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="20°C"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
+        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
+        app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"/>
+
+    <ImageView
+        android:id="@+id/item_maxTempImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_max_temp"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempText"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_minTempText"/>
+
+    <TextView
+        android:id="@+id/item_maxTempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="20°C"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
+        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
+        app:layout_constraintTop_toBottomOf="@+id/item_maxTempImage"/>
+
+    <ImageView
+        android:id="@+id/item_minTempImage"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_min_temp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempText"
+        app:layout_constraintStart_toStartOf="@+id/item_maxTempText"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="بارانی"
+        android:textSize="@dimen/TextSize4x"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/item_minTempText"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:id="@+id/item_windIcon"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin"
+        android:src="@drawable/ic_wind_speed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/item_windSpeedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="25kmps"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/TextSize2x"
+        app:layout_constraintEnd_toStartOf="@+id/item_windIcon"
+        android:layout_marginHorizontal="@dimen/standardMargin0.5x"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
