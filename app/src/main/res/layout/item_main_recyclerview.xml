@@ -8,26 +8,49 @@
     android:layoutDirection="rtl"
     android:layout_height="50dp">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <ImageView
         android:id="@+id/itemStateImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="@dimen/standardMargin0.5x"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/standardMargin"
         tools:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/item_dayOfWeekText"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/standardMargin6x"
         android:layout_height="wrap_content"
         tools:text="دوشنبه"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="@dimen/TextSize4x"
+        android:textSize="@dimen/mainRecyclerViewItemMainTextSize"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/itemStateImage"
-        android:layout_marginHorizontal="@dimen/standardMargin1.5x"/>
+        android:layout_marginHorizontal="@dimen/standardMargin0.5x"/>
+
+    <TextView
+        android:id="@+id/item_TempText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="20°C"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
+        app:layout_constraintTop_toBottomOf="@+id/item_maxTempImage"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"
+        app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
+        app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"
+        android:textColor="@color/dark_blue"
+        />
 
     <TextView
         android:id="@+id/item_minTempText"
@@ -36,17 +59,18 @@
         tools:text="20°C"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
-        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
-        app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"/>
+        app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"
+        app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"/>
 
     <ImageView
         android:id="@+id/item_maxTempImage"
-        android:layout_width="15dp"
+        android:layout_width="45dp"
         android:layout_height="15dp"
         android:src="@drawable/ic_max_temp"
-        app:layout_constraintEnd_toEndOf="@+id/item_minTempText"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/item_minTempText"/>
+        app:layout_constraintStart_toStartOf="@+id/item_minTempImage"/>
 
     <TextView
         android:id="@+id/item_maxTempText"
@@ -55,32 +79,33 @@
         tools:text="20°C"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
-        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
-        app:layout_constraintTop_toBottomOf="@+id/item_maxTempImage"/>
+        app:layout_constraintTop_toBottomOf="@+id/item_maxTempImage"
+        app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
+        app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"/>
 
     <ImageView
         android:id="@+id/item_minTempImage"
-        android:layout_width="15dp"
+        android:layout_width="45dp"
         android:layout_height="15dp"
         android:src="@drawable/ic_min_temp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/item_minTempText"
-        app:layout_constraintStart_toStartOf="@+id/item_maxTempText"/>
+        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"/>
 
     <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/item_weatherStateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="بارانی"
-        android:textSize="@dimen/TextSize4x"
+        android:textSize="@dimen/mainRecyclerViewItemMainTextSize"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/item_minTempText"
+        app:layout_constraintStart_toEndOf="@+id/item_minTempImage"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_marginHorizontal="@dimen/standardMargin"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:id="@+id/item_windIcon"
-        android:layout_width="30dp"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin"

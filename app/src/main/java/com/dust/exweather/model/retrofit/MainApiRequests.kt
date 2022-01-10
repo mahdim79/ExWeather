@@ -24,8 +24,8 @@ interface MainApiRequests {
     @GET("forecast.json?key=${Constants.API_KEY}")
     suspend fun getForecastWeatherData(
         @Query("q") cityName: String,
-        @Query("dt") days: Int = 10,
-        @Query("q") aqi: String = "yes",
-        @Query("dt") alerts: String = "no"
+        @Query("days") days: Int = 10,
+        @Query("aqi") aqi: String = "yes",
+        @Query("alerts") alerts: String = "no"
     ): Response<WeatherForecast>
 }

@@ -17,5 +17,6 @@ data class Day(
     val mintemp_f: Double,
     val totalprecip_in: Double,
     val totalprecip_mm: Double,
-    val uv: Double
+    val uv: Double,
+    var dayOfWeek:String
 )

@@ -1,6 +1,5 @@
 package com.dust.exweather.utils
 
-import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -14,13 +13,14 @@ import java.util.*
 class UtilityFunctions {
     companion object {
         fun isNetworkConnectionEnabled(context: Context): Boolean {
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val capabilities =
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
             return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         }
 
-        fun getWeatherStateGifUrl(weatherStatesDetails: WeatherStatesDetails , code:Int):String{
+        fun getWeatherStateGifUrl(weatherStatesDetails: WeatherStatesDetails, code: Int): String {
             for (i in weatherStatesDetails)
                 if (i.code == code)
                     return i.gifUrl
@@ -34,14 +34,43 @@ class UtilityFunctions {
             val stringBuilder = StringBuilder()
             while (bufferedInputStream.available() != -1)
                 stringBuilder.append(bufferedInputStream.read().toChar())
-            return Gson().fromJson(stringBuilder.toString() , WeatherStatesDetails::class.java)
+            return Gson().fromJson(stringBuilder.toString(), WeatherStatesDetails::class.java)
         }
 
-        fun getFiveDaysLeft(currentData: Int, timeZone:String): String {
-            val date = Date((currentData - 432000).toLong() * 1000)
+        fun getDaysLeft(currentTime: Int, timeZone: String, days:Int): String {
+            val date = Date((currentTime - (days * 86400)).toLong() * 1000)
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             sdf.timeZone = TimeZone.getTimeZone(timeZone)
             return sdf.format(date)
+        }
+
+        fun getDayOfWeekByUnixTimeStamp(unix: Int): String {
+            val date = Date(unix.toLong() * 1000)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                Calendar.SATURDAY -> {
+                    "شنبه"
+                }
+                Calendar.SUNDAY -> {
+                    "یک شنبه"
+                }
+                Calendar.MONDAY -> {
+                    "دوشنبه"
+                }
+                Calendar.TUESDAY -> {
+                    "سه شنبه"
+                }
+                Calendar.WEDNESDAY -> {
+                    "چهارشنبه"
+                }
+                Calendar.THURSDAY -> {
+                    "پنج شنبه"
+                }
+                else -> {
+                    "جمعه"
+                }
+            }
         }
     }
 

@@ -1,49 +1,85 @@
 package com.dust.exweather.ui.adapters
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
+import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
+import com.dust.exweather.model.dataclasses.historyweather.Day
+import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
+import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
+import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 
-class MainRecyclerViewAdapter : ListAdapter<CurrentData ,MainRecyclerViewAdapter.MainViewHolder>(diffCallBack) {
+class MainRecyclerViewAdapter(private val context: Context) :
+    RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
-    val mainData = arrayListOf<CurrentData>()
+    private var listData = arrayListOf<DataWrapper<Any>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_main_recyclerview , parent , false))
+        return MainViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_main_recyclerview, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-    }
-
-    override fun getItemCount(): Int = mainData.size
-
-    fun setNewList(newList:List<CurrentData>){
-        mainData.clear()
-        mainData.addAll(newList)
-        submitList(mainData)
-    }
-
-    inner class MainViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        val windSpeedText = itemView.item_windSpeedText
-    }
-
-    companion object{
-        val diffCallBack = object :DiffUtil.ItemCallback<CurrentData>(){
-            override fun areItemsTheSame(oldItem: CurrentData, newItem: CurrentData): Boolean {
-                // TODO: 1/7/2022 calculate are items the same when you create dataclass
-                return true
+        when(listData[position].data){
+            is CurrentData -> {
+                val data = listData[position].data as CurrentData
+                Glide.with(context).load(data.current!!.condition.icon)
+                    .into(holder.itemStateImage)
+                holder.dayOfWeekText.text = "امروز"
+                holder.item_TempText.text = data.current.temp_c.toString()
+                holder.minTempText.visibility = View.INVISIBLE
+                holder.maxTempText.visibility = View.INVISIBLE
+                holder.weatherStateText.text =
+                    data.current.condition.text
+                holder.windSpeedText.text = data.current.wind_kph.toString()
             }
-
-            override fun areContentsTheSame(oldItem: CurrentData, newItem: CurrentData): Boolean {
-                // TODO: 1/7/2022 calculate are items the same when you create dataclass
-                return true
+            is Day -> {
+                val data = listData[position].data as Day
+                Glide.with(context).load(data.condition.icon).into(holder.itemStateImage)
+                holder.dayOfWeekText.text = data.dayOfWeek
+                holder.minTempText.text = data.mintemp_c.toString()
+                holder.maxTempText.text = data.maxtemp_c.toString()
+                holder.weatherStateText.text = data.condition.text
+                holder.windSpeedText.text = data.maxwind_kph.toString()
+            }
+            is com.dust.exweather.model.dataclasses.forecastweather.Day -> {
+                val data = listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Day
+                Glide.with(context).load(data.condition.icon).into(holder.itemStateImage)
+                holder.dayOfWeekText.text = data.dayOfWeek
+                holder.minTempText.text = data.mintemp_c.toString()
+                holder.maxTempText.text = data.maxtemp_c.toString()
+                holder.weatherStateText.text = data.condition.text
+                holder.windSpeedText.text = data.maxwind_kph.toString()
             }
         }
     }
+
+    override fun getItemCount(): Int = listData.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setNewData(newData: List<DataWrapper<Any>>) {
+        listData.clear()
+        listData.addAll(newData)
+        notifyDataSetChanged()
+    }
+
+    inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val windSpeedText = itemView.item_windSpeedText
+        val weatherStateText = itemView.item_weatherStateText
+        val maxTempText = itemView.item_maxTempText
+        val minTempText = itemView.item_minTempText
+        val dayOfWeekText = itemView.item_dayOfWeekText
+        val itemStateImage = itemView.itemStateImage
+        val item_TempText = itemView.item_TempText
+    }
+
 }

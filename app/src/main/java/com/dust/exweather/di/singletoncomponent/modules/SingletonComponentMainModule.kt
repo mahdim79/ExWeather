@@ -93,7 +93,7 @@ class SingletonComponentMainModule {
     }
 
     @Provides
-    fun provideMainRecyclerViewAdapter():MainRecyclerViewAdapter{
-        return MainRecyclerViewAdapter()
+    fun provideMainRecyclerViewAdapter(application:Application):MainRecyclerViewAdapter{
+        return MainRecyclerViewAdapter(application.applicationContext)
     }
 }

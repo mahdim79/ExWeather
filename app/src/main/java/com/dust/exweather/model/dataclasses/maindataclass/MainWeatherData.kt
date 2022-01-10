@@ -6,6 +6,6 @@ import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 
 data class MainWeatherData(
     var current: CurrentData?,
-    var forecastData: WeatherForecast?,
-    var historyData: WeatherHistory?
+    var forecastDetailsData: WeatherForecast?,
+    var historyDetailsData: WeatherHistory?
 )

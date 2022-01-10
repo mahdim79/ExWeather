@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.Condition
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
@@ -108,12 +106,6 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun setUpMainRecyclerView() {
         mainWeatherRecyclerView.layoutManager = LinearLayoutManager(requireContext() , LinearLayoutManager.VERTICAL , false)
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-        lifecycleScope.launch(Dispatchers.IO){
-            val listItems = viewModel.getWeatherDataFromCache()
-            withContext(Dispatchers.Main){
-               // mainRecyclerViewAdapter.setNewList(listItems)
-            }
-        }
     }
 
     private fun observeWeatherLiveData() {
@@ -196,7 +188,6 @@ class CurrentWeatherFragment : DaggerFragment() {
 
             }
         }
-
     }
 
     private fun checkPermissionsGranted(): Boolean {
@@ -224,7 +215,7 @@ class CurrentWeatherFragment : DaggerFragment() {
             // fun if data is from api
             when (dataFromApi.status) {
                 DataStatus.DATA_RECEIVE_SUCCESS -> {
-                    setUpCurrentWeatherUi(dataFromApi.data!!.current!!)
+                    setUpUi(dataFromApi.data!!)
                     resetSwipeRefreshLayout()
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
@@ -241,9 +232,19 @@ class CurrentWeatherFragment : DaggerFragment() {
         } else {
             // run if data is from cache
             if (!dataFromCache!!.isNullOrEmpty()) {
-                setUpCurrentWeatherUi(dataFromCache[0].toDataClass().current!!)
+                setUpUi(dataFromCache[0].toDataClass())
             }
         }
+    }
+
+    private fun setUpUi(data:MainWeatherData){
+        setUpCurrentWeatherUi(data.current!!)
+        setRecyclerViewList(data)
+    }
+
+    private fun setRecyclerViewList(data: MainWeatherData) {
+        val newData = viewModel.calculateMainRecyclerViewDataList(data)
+        mainRecyclerViewAdapter.setNewData(newData)
     }
 
     private fun setUpCurrentWeatherUi(data: CurrentData) {
@@ -295,7 +296,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun setUpWeatherImageAndText(condition: Condition) {
-        requireView().weatherStateText.text = condition.weatherPersianText
+        requireView().weatherStateText.text = condition.text
         /*Glide.with(requireActivity().applicationContext).load(UtilityFunctions.getWeatherStateGifUrl(weatherStatesDetails , condition.code))
             .into(requireView().weatherStateImage)*/
     }
