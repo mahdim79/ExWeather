@@ -25,5 +25,6 @@ data class Current(
     val wind_dir: String,
     val wind_kph: Double,
     val wind_mph: Double,
-    var dayOfWeek:String
+    var day_of_week:String,
+    var system_last_update_epoch:Long
 )

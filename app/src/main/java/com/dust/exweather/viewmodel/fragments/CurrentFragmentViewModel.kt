@@ -22,6 +22,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.util.*
+import kotlin.math.floor
 
 class CurrentFragmentViewModel(
     private val currentWeatherRepository: CurrentWeatherRepository,
@@ -93,7 +95,7 @@ class CurrentFragmentViewModel(
                 if (persianTextResponse.isSuccessful && persianTextResponse.body() != null && persianTextResponse.body()!!.ok)
                     data.current.condition.weatherPersianText = persianTextResponse.body()!!.result*/
 
-                data.current!!.dayOfWeek =
+                data.current!!.day_of_week =
                     UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.location!!.localtime_epoch)
 
                 val mainWeatherData = MainWeatherData(data, null, null)
@@ -110,9 +112,11 @@ class CurrentFragmentViewModel(
                     mainWeatherData.forecastDetailsData!!.forecast.forecastday =
                         optimizeForecastData(
                             mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                            mainWeatherData.current!!.current!!.dayOfWeek
+                            mainWeatherData.current!!.current!!.day_of_week
                         )
                 }
+
+                mainWeatherData.current!!.current!!.system_last_update_epoch = System.currentTimeMillis()
 
                 currentWeatherRepository.insertWeatherDataToRoom(mainWeatherData)
 
@@ -233,5 +237,15 @@ class CurrentFragmentViewModel(
                 MainWeatherData(CurrentData(null, null, e), null, null),
                 DataStatus.DATA_RECEIVE_FAILURE
             )
+    }
+
+    fun calculateLastUpdateText(systemLastUpdateEpoch: Long): String {
+        val diff = System.currentTimeMillis() - systemLastUpdateEpoch
+        return when{
+            diff <= 60000 -> "به تازگی"
+            diff in 60000..3600000 -> "${String.format(Locale.ENGLISH, "%.0f", floor((diff/60000).toDouble()))} دقیقه پیش"
+            diff in 3600000..86400000 -> "${String.format(Locale.ENGLISH, "%.0f", floor((diff/3600000).toDouble()))} ساعت پیش"
+            else -> "${String.format(Locale.ENGLISH, "%.0f", floor((diff/86400000).toDouble()))} روز پیش"
+        }
     }
 }

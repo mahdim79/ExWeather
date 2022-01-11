@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,7 @@ import kotlinx.android.synthetic.main.fragment_current_weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -215,10 +217,12 @@ class CurrentWeatherFragment : DaggerFragment() {
             // fun if data is from api
             when (dataFromApi.status) {
                 DataStatus.DATA_RECEIVE_SUCCESS -> {
+                    setProgressMode(false)
                     setUpUi(dataFromApi.data!!)
                     resetSwipeRefreshLayout()
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
+                    setProgressMode(false)
                     Toast.makeText(
                         requireContext(),
                         "مشکلی پیش آمده است اشکال: ${dataFromApi.data!!.current!!.error ?: "unknown!"}",
@@ -227,6 +231,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                     resetSwipeRefreshLayout()
                 }
                 DataStatus.DATA_RECEIVE_LOADING -> {
+                    setProgressMode(true)
                 }
             }
         } else {
@@ -234,6 +239,33 @@ class CurrentWeatherFragment : DaggerFragment() {
             if (!dataFromCache!!.isNullOrEmpty()) {
                 setUpUi(dataFromCache[0].toDataClass())
             }
+        }
+    }
+
+    private fun setProgressMode(progressMode:Boolean) {
+        val progressBarMode = if (progressMode) View.VISIBLE else View.INVISIBLE
+        val viewMode = if (!progressMode) View.VISIBLE else View.INVISIBLE
+        requireView().apply {
+            progressBarNum1.visibility = progressBarMode
+            progressBarNum2.visibility = progressBarMode
+            progressBarNum3.visibility = progressBarMode
+            progressBarNum4.visibility = progressBarMode
+            progressBarNum5.visibility = progressBarMode
+            progressBarNum6.visibility = progressBarMode
+            progressBarNum7.visibility = progressBarMode
+            progressBarNum8.visibility = progressBarMode
+            progressBarNum9.visibility = progressBarMode
+            mainRecyclerViewAdapter.setProgressMode(progressMode)
+
+            weatherTempText.visibility = viewMode
+            weatherCityNameText.visibility = viewMode
+            lastUpdateText.visibility = viewMode
+            airPressureText.visibility = viewMode
+            weatherHumidityText.visibility = viewMode
+            weatherIsDayText.visibility = viewMode
+            precipText.visibility = viewMode
+            windSpeedText.visibility = viewMode
+            weatherStateText.visibility = viewMode
         }
     }
 
@@ -260,7 +292,7 @@ class CurrentWeatherFragment : DaggerFragment() {
         requireView().apply {
             weatherTempText.text = current.current!!.temp_c.toString()
             weatherCityNameText.text = current.location!!.name
-            lastUpdateText.text = current.current.last_updated
+            lastUpdateText.text = viewModel.calculateLastUpdateText(current.current.system_last_update_epoch)
             airPressureText.text = current.current.pressure_mb.toString()
             weatherHumidityText.text = current.current.humidity.toString()
             weatherIsDayText.text = current.current.is_day.toString()

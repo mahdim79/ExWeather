@@ -8,12 +8,17 @@
     android:layoutDirection="rtl"
     android:layout_height="50dp">
 
-    <View
+    <ProgressBar
+        android:id="@+id/item_progressBar_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/light_black"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="@dimen/standardMargin4x"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginHorizontal="@dimen/standardMargin3x"
+        android:max="100"
+        android:progressTint="@color/light_black"
+        android:indeterminateTint="@color/black"
+        android:indeterminate="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

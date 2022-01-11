@@ -20,6 +20,7 @@ class MainRecyclerViewAdapter(private val context: Context) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
     private var listData = arrayListOf<DataWrapper<Any>>()
+    private var progressMode = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
@@ -29,7 +30,7 @@ class MainRecyclerViewAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        when(listData[position].data){
+        when (listData[position].data) {
             is CurrentData -> {
                 val data = listData[position].data as CurrentData
                 Glide.with(context).load(data.current!!.condition.icon)
@@ -52,7 +53,8 @@ class MainRecyclerViewAdapter(private val context: Context) :
                 holder.windSpeedText.text = data.maxwind_kph.toString()
             }
             is com.dust.exweather.model.dataclasses.forecastweather.Day -> {
-                val data = listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Day
+                val data =
+                    listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Day
                 Glide.with(context).load(data.condition.icon).into(holder.itemStateImage)
                 holder.dayOfWeekText.text = data.dayOfWeek
                 holder.minTempText.text = data.mintemp_c.toString()
@@ -61,6 +63,7 @@ class MainRecyclerViewAdapter(private val context: Context) :
                 holder.windSpeedText.text = data.maxwind_kph.toString()
             }
         }
+        holder.item_progressBar_divider.isIndeterminate = progressMode
     }
 
     override fun getItemCount(): Int = listData.size
@@ -72,6 +75,12 @@ class MainRecyclerViewAdapter(private val context: Context) :
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setProgressMode(pm: Boolean) {
+        progressMode = pm
+        notifyDataSetChanged()
+    }
+
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val windSpeedText = itemView.item_windSpeedText
         val weatherStateText = itemView.item_weatherStateText
@@ -80,6 +89,7 @@ class MainRecyclerViewAdapter(private val context: Context) :
         val dayOfWeekText = itemView.item_dayOfWeekText
         val itemStateImage = itemView.itemStateImage
         val item_TempText = itemView.item_TempText
+        val item_progressBar_divider = itemView.item_progressBar_divider
     }
 
 }
