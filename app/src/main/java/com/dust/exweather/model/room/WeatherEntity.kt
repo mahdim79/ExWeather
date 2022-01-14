@@ -4,4 +4,4 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "weather_table")
-data class WeatherEntity(@PrimaryKey(autoGenerate = false) var id:Int = 0, var data:String?)
+data class WeatherEntity(@PrimaryKey(autoGenerate = true) var id:Int? = null, var data:String?)

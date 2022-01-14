@@ -1,5 +1,6 @@
 package com.dust.exweather.model.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,5 +12,8 @@ interface WeatherDao {
     suspend fun insertWeatherData(weatherEntity: WeatherEntity):Long
 
     @Query("SELECT * FROM weather_table")
-    suspend fun getWeatherData():List<WeatherEntity>
+    suspend fun getDirectWeatherData():List<WeatherEntity>
+
+    @Query("SELECT * FROM weather_table")
+    fun getLiveWeatherData():LiveData<List<WeatherEntity>>
 }

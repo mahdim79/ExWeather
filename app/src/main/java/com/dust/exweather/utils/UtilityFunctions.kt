@@ -9,6 +9,7 @@ import java.io.BufferedInputStream
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.floor
 
 class UtilityFunctions {
     companion object {
@@ -72,6 +73,35 @@ class UtilityFunctions {
                 }
             }
         }
+
+        fun calculateLastUpdateText(systemLastUpdateEpoch: Long): String {
+            val diff = System.currentTimeMillis() - systemLastUpdateEpoch
+            return when {
+                diff <= 60000 -> "به تازگی"
+                diff in 60000..3600000 -> "${
+                    String.format(
+                        Locale.ENGLISH,
+                        "%.0f",
+                        floor((diff / 60000).toDouble())
+                    )
+                } دقیقه پیش"
+                diff in 3600000..86400000 -> "${
+                    String.format(
+                        Locale.ENGLISH,
+                        "%.0f",
+                        floor((diff / 3600000).toDouble())
+                    )
+                } ساعت پیش"
+                else -> "${
+                    String.format(
+                        Locale.ENGLISH,
+                        "%.0f",
+                        floor((diff / 86400000).toDouble())
+                    )
+                } روز پیش"
+            }
+        }
+
     }
 
 }

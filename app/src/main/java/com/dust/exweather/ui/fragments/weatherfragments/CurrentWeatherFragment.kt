@@ -5,27 +5,23 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.dust.exweather.R
-import com.dust.exweather.model.dataclasses.currentweather.main.Condition
-import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
-import com.dust.exweather.model.room.CityDao
-import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.ui.adapters.DetailsViewPagerAdapter
 import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
@@ -44,7 +40,6 @@ import kotlinx.android.synthetic.main.fragment_current_weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -52,23 +47,20 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private lateinit var viewModel: CurrentFragmentViewModel
 
-    private val swipeRefreshLayoutDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
 
     // viewModel Factory Dependencies
     @Inject
     lateinit var repository: CurrentWeatherRepository
 
     @Inject
-    lateinit var cityDao: CityDao
-
-    @Inject
     lateinit var locationManager: LocationManager
 
-    @Inject
-    lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
+    private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
     private lateinit var weatherStatesDetails: WeatherStatesDetails
 
+    private var viewPagerPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,38 +74,143 @@ class CurrentWeatherFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // instantiate Weather State Details Object
-      //  instantiateWeatherStateDetailsObject()
+        //  instantiateWeatherStateDetailsObject()
 
         // initialize View Model
-           setUpViewModel()
+        setUpViewModel()
 
         // set Up SwipeRefreshLayout
-           setUpSwipeRefreshLayout()
+        setUpSwipeRefreshLayout()
 
-        // observe Weather Livedata
-             observeWeatherLiveData()
+        addSomeLocations()
 
-        // get weather data
-           getWeatherData()
+    }
 
-        // setup Main RecyclerView
-          setUpMainRecyclerView()
+    private fun addSomeLocations() {
+        lifecycleScope.launch(Dispatchers.IO) {
 
+            /*viewModel.insertLocationToCache("London")
+            viewModel.insertLocationToCache("Tehran")*/
+
+            withContext(Dispatchers.Main) {
+                startAction()
+            }
+        }
+    }
+
+    private fun startAction() {
+        observeForApiCallState()
+
+        setUpUiView()
+
+    }
+
+    private fun observeForApiCallState() {
+        viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner) {
+            when (it.status) {
+                DataStatus.DATA_RECEIVE_LOADING -> {
+                    setProgressMode(true)
+                }
+
+                DataStatus.DATA_RECEIVE_FAILURE -> {
+                    setProgressMode(false)
+                    resetSwipeRefreshLayout()
+                }
+
+                DataStatus.DATA_RECEIVE_SUCCESS -> {
+                    setProgressMode(false)
+                    resetSwipeRefreshLayout()
+                }
+            }
+        }
+    }
+
+    private fun observeRecyclerViewLiveData() {
+        viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
+            updateRecyclerViewContent(it[viewPagerPosition].toDataClass())
+        }
+    }
+
+    private fun setUpUiView() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val listData = viewModel.getDirectWeatherDataFromCache()
+            if (!listData.isNullOrEmpty())
+                withContext(Dispatchers.Main) {
+                    setUpPrimaryViewPager(listData.size)
+                    setUpPrimaryRecyclerView(listData[0].toDataClass())
+                    viewModel.getWeatherDataFromApi(requireContext())
+                }
+        }
+    }
+
+    private fun updateRecyclerViewContent(data: MainWeatherData) {
+        if (data.current != null)
+            mainRecyclerViewAdapter.setNewData(viewModel.calculateMainRecyclerViewDataList(data))
+    }
+
+    private fun setUpPrimaryRecyclerView(data: MainWeatherData) {
+        mainWeatherRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val listData = arrayListOf<DataWrapper<Any>>()
+        if (data.current != null)
+            listData.addAll(viewModel.calculateMainRecyclerViewDataList(data))
+        mainRecyclerViewAdapter = MainRecyclerViewAdapter(requireContext(), listData)
+        mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
+        observeRecyclerViewLiveData()
+
+    }
+
+    @SuppressLint("CheckResult")
+    private fun setUpPrimaryViewPager(fragmentCount: Int) {
+        detailsViewPager.adapter = DetailsViewPagerAdapter(
+            childFragmentManager,
+            viewModel.getLiveWeatherDataFromCache(),
+            fragmentCount
+        )
+        detailsViewPager.offscreenPageLimit = fragmentCount - 1
+        Observable.create(ObservableOnSubscribe<Int> { emitter ->
+            detailsViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    emitter.onNext(position)
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+
+            })
+        }).debounce(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<Int> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
+
+                override fun onNext(position: Int) {
+                    viewPagerPosition = position
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val data = viewModel.getDirectWeatherDataFromCache()
+                        withContext(Dispatchers.Main) {
+                            updateRecyclerViewContent(data[position].toDataClass())
+                        }
+                    }
+                }
+
+                override fun onError(e: Throwable) {}
+
+                override fun onComplete() {}
+
+            })
     }
 
     private fun instantiateWeatherStateDetailsObject() {
         weatherStatesDetails = UtilityFunctions.getWeatherStatesDetailsObject(requireContext())
-    }
-
-    private fun setUpMainRecyclerView() {
-        mainWeatherRecyclerView.layoutManager = LinearLayoutManager(requireContext() , LinearLayoutManager.VERTICAL , false)
-        mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-    }
-
-    private fun observeWeatherLiveData() {
-        viewModel.getWeatherLiveData().observe(viewLifecycleOwner) { data ->
-            prepareAndSetUpUi(dataFromApi = data, dataFromCache = null)
-        }
     }
 
     @SuppressLint("CheckResult")
@@ -143,13 +240,13 @@ class CurrentWeatherFragment : DaggerFragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
                     override fun onSubscribe(d: Disposable) {
-                        swipeRefreshLayoutDisposable.add(d)
+                        compositeDisposable.add(d)
                     }
 
                     override fun onNext(t: Boolean) {
                         if (t) {
                             swipeRefreshLayout.isRefreshing = true
-                            getWeatherData()
+                            viewModel.getWeatherDataFromApi(requireContext())
                         }
                     }
 
@@ -159,36 +256,6 @@ class CurrentWeatherFragment : DaggerFragment() {
 
                 })
 
-        }
-    }
-
-    private fun getWeatherData() {
-
-        // check permissions
-        if (!checkPermissionsGranted()) {
-            requestPermissions(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ), 101
-            )
-            return
-        }
-
-        // get Cached Data From Room
-        lifecycleScope.launch(Dispatchers.IO){
-            val roomData = viewModel.getWeatherDataFromCache()
-            withContext(Dispatchers.Main){
-                prepareAndSetUpUi(dataFromApi = null, dataFromCache = roomData)
-
-                // get Data From Server
-                // * By Location
-                viewModel.getWeatherDataByUserLocation(requireContext())
-
-                // * By City Name
-                 //  viewModel.getWeatherByCityName(requireContext())
-
-            }
         }
     }
 
@@ -202,51 +269,11 @@ class CurrentWeatherFragment : DaggerFragment() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun prepareAndSetUpUi(
-        dataFromCache: List<WeatherEntity>?,
-        dataFromApi: DataWrapper<MainWeatherData>?
-    ) {
-        // check if both are null
-        if (dataFromApi == null && dataFromCache == null) {
-            resetSwipeRefreshLayout()
-            return
-        }
-
-        // check if data fetched from server
-        if (dataFromApi != null) {
-            // fun if data is from api
-            when (dataFromApi.status) {
-                DataStatus.DATA_RECEIVE_SUCCESS -> {
-                    setProgressMode(false)
-                    setUpUi(dataFromApi.data!!)
-                    resetSwipeRefreshLayout()
-                }
-                DataStatus.DATA_RECEIVE_FAILURE -> {
-                    setProgressMode(false)
-                    Toast.makeText(
-                        requireContext(),
-                        "مشکلی پیش آمده است اشکال: ${dataFromApi.data!!.current!!.error ?: "unknown!"}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    resetSwipeRefreshLayout()
-                }
-                DataStatus.DATA_RECEIVE_LOADING -> {
-                    setProgressMode(true)
-                }
-            }
-        } else {
-            // run if data is from cache
-            if (!dataFromCache!!.isNullOrEmpty()) {
-                setUpUi(dataFromCache[0].toDataClass())
-            }
-        }
-    }
-
-    private fun setProgressMode(progressMode:Boolean) {
+    private fun setProgressMode(progressMode: Boolean) {
         val progressBarMode = if (progressMode) View.VISIBLE else View.INVISIBLE
         val viewMode = if (!progressMode) View.VISIBLE else View.INVISIBLE
         requireView().apply {
-            progressBarNum1.visibility = progressBarMode
+            /*progressBarNum1.visibility = progressBarMode
             progressBarNum2.visibility = progressBarMode
             progressBarNum3.visibility = progressBarMode
             progressBarNum4.visibility = progressBarMode
@@ -254,10 +281,10 @@ class CurrentWeatherFragment : DaggerFragment() {
             progressBarNum6.visibility = progressBarMode
             progressBarNum7.visibility = progressBarMode
             progressBarNum8.visibility = progressBarMode
-            progressBarNum9.visibility = progressBarMode
+            progressBarNum9.visibility = progressBarMode*/
             mainRecyclerViewAdapter.setProgressMode(progressMode)
 
-            weatherTempText.visibility = viewMode
+            /*weatherTempText.visibility = viewMode
             weatherCityNameText.visibility = viewMode
             lastUpdateText.visibility = viewMode
             airPressureText.visibility = viewMode
@@ -265,41 +292,12 @@ class CurrentWeatherFragment : DaggerFragment() {
             weatherIsDayText.visibility = viewMode
             precipText.visibility = viewMode
             windSpeedText.visibility = viewMode
-            weatherStateText.visibility = viewMode
+            weatherStateText.visibility = viewMode*/
         }
-    }
-
-    private fun setUpUi(data:MainWeatherData){
-        setUpCurrentWeatherUi(data.current!!)
-        setRecyclerViewList(data)
-    }
-
-    private fun setRecyclerViewList(data: MainWeatherData) {
-        val newData = viewModel.calculateMainRecyclerViewDataList(data)
-        mainRecyclerViewAdapter.setNewData(newData)
-    }
-
-    private fun setUpCurrentWeatherUi(data: CurrentData) {
-        setUpWeatherImageAndText(data.current!!.condition)
-        setUpWeatherDetailsTexts(data)
     }
 
     private fun resetSwipeRefreshLayout() {
         requireView().swipeRefreshLayout.isRefreshing = false
-    }
-
-    private fun setUpWeatherDetailsTexts(current: CurrentData) {
-        requireView().apply {
-            weatherTempText.text = current.current!!.temp_c.toString()
-            weatherCityNameText.text = current.location!!.name
-            lastUpdateText.text = viewModel.calculateLastUpdateText(current.current.system_last_update_epoch)
-            airPressureText.text = current.current.pressure_mb.toString()
-            weatherHumidityText.text = current.current.humidity.toString()
-            weatherIsDayText.text = current.current.is_day.toString()
-            precipText.text = current.current.precip_mm.toString()
-            windSpeedText.text = current.current.wind_kph.toString()
-
-        }
     }
 
     private fun setUpViewModel() {
@@ -308,7 +306,6 @@ class CurrentWeatherFragment : DaggerFragment() {
             CurrentFragmentViewModelFactory(
                 requireActivity().application,
                 repository,
-                cityDao,
                 locationManager
             )
         )[CurrentFragmentViewModel::class.java]
@@ -323,18 +320,12 @@ class CurrentWeatherFragment : DaggerFragment() {
         if (requestCode == 101) {
             if (grantResults.contains(-1))
                 return
-            getWeatherData()
+            viewModel.getWeatherDataFromApi(requireContext())
         }
     }
 
-    private fun setUpWeatherImageAndText(condition: Condition) {
-        requireView().weatherStateText.text = condition.text
-        /*Glide.with(requireActivity().applicationContext).load(UtilityFunctions.getWeatherStateGifUrl(weatherStatesDetails , condition.code))
-            .into(requireView().weatherStateImage)*/
-    }
-
     override fun onDestroyView() {
-        swipeRefreshLayoutDisposable.clear()
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 }

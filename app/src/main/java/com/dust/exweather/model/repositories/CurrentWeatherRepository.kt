@@ -1,5 +1,6 @@
 package com.dust.exweather.model.repositories
 
+import androidx.lifecycle.LiveData
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
@@ -33,8 +34,10 @@ class CurrentWeatherRepository @Inject constructor() {
     suspend fun translateWord(text: String): Response<TranslationDataClass> =
         translationApiRequests.translate(text = text)
 
-    suspend fun getWeatherDataFromRoom(): List<WeatherEntity> =
-        weatherDao.getWeatherData()
+    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
+        weatherDao.getDirectWeatherData()
+
+    fun getLiveWeatherDataFromCache():LiveData<List<WeatherEntity>> = weatherDao.getLiveWeatherData()
 
 
 }

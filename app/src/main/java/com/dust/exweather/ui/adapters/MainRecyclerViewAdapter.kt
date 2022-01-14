@@ -15,11 +15,11 @@ import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
+import java.util.ArrayList
 
-class MainRecyclerViewAdapter(private val context: Context) :
+class MainRecyclerViewAdapter(private val context: Context,private var listData:ArrayList<DataWrapper<Any>>) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
-    private var listData = arrayListOf<DataWrapper<Any>>()
     private var progressMode = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
