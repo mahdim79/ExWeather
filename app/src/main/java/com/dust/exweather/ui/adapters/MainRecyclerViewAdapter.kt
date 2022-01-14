@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
@@ -17,7 +18,7 @@ import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 import java.util.ArrayList
 
-class MainRecyclerViewAdapter(private val context: Context,private var listData:ArrayList<DataWrapper<Any>>) :
+class MainRecyclerViewAdapter(private val context: Context,private var listData:ArrayList<DataWrapper<Any>>, private val alphaAnimation: AlphaAnimation) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
     private var progressMode = false
@@ -64,6 +65,9 @@ class MainRecyclerViewAdapter(private val context: Context,private var listData:
             }
         }
         holder.item_progressBar_divider.isIndeterminate = progressMode
+
+        // setup Animation
+        holder.itemView.startAnimation(alphaAnimation)
     }
 
     override fun getItemCount(): Int = listData.size

@@ -30,6 +30,8 @@ class CurrentFragmentViewModel(
 
     private val weatherApiCallStateLiveData = MutableLiveData<DataWrapper<String>>()
 
+    private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
+
     suspend fun insertLocationToCache(location: String) {
         currentWeatherRepository.insertWeatherDataToRoom(
             MainWeatherData(
@@ -263,5 +265,11 @@ class CurrentFragmentViewModel(
 
     fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
         weatherApiCallStateLiveData
+
+    fun getDetailsViewPagerProgressStateLiveData():LiveData<Boolean> = detailsViewPagerProgressStateLiveData
+
+    fun setDetailsViewPagerProgressState(b:Boolean){
+        detailsViewPagerProgressStateLiveData.value = b
+    }
 
 }

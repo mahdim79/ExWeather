@@ -10,12 +10,13 @@ import com.dust.exweather.ui.fragments.DetailsViewPagerFragment
 class DetailsViewPagerAdapter(
     fragmentManager: FragmentManager,
     val dataList: LiveData<List<WeatherEntity>>,
-    val dataCount: Int
+    val dataCount: Int,
+    val progressLiveData:LiveData<Boolean>
 ) : FragmentPagerAdapter(
     fragmentManager
 ) {
     override fun getCount(): Int = dataCount
 
-    override fun getItem(position: Int): Fragment = DetailsViewPagerFragment(dataList, position)
+    override fun getItem(position: Int): Fragment = DetailsViewPagerFragment(dataList, position, progressLiveData)
 
 }

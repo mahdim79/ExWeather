@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.fragment_viewpager_details.view.*
 
 class DetailsViewPagerFragment(
     private val dataList: LiveData<List<WeatherEntity>>,
-    private val position: Int
+    private val position: Int,
+    private val progressLiveData: LiveData<Boolean>
 ) : Fragment() {
 
     override fun onCreateView(
@@ -42,10 +43,37 @@ class DetailsViewPagerFragment(
                     windSpeedText.text = data.current.wind_kph.toString()
                     weatherCityNameText.text = data.location!!.name
                     weatherTempText.text = "${data.current.temp_c}°C"
-                    lastUpdateText.text = UtilityFunctions.calculateLastUpdateText(data.current.system_last_update_epoch)
+                    lastUpdateText.text =
+                        UtilityFunctions.calculateLastUpdateText(data.current.system_last_update_epoch)
                     airPressureText.text = data.current.pressure_mb.toString()
                 }
             } catch (e: Exception) {
+            }
+        }
+
+        progressLiveData.observe(viewLifecycleOwner) {
+            requireView().apply {
+                val progressBarMode = if (it) View.VISIBLE else View.INVISIBLE
+                val viewMode = if (!it) View.VISIBLE else View.INVISIBLE
+                progressBarNum1.visibility = progressBarMode
+                progressBarNum2.visibility = progressBarMode
+                progressBarNum3.visibility = progressBarMode
+                progressBarNum4.visibility = progressBarMode
+                progressBarNum5.visibility = progressBarMode
+                progressBarNum6.visibility = progressBarMode
+                progressBarNum7.visibility = progressBarMode
+                progressBarNum8.visibility = progressBarMode
+                progressBarNum9.visibility = progressBarMode
+
+                weatherTempText.visibility = viewMode
+                weatherCityNameText.visibility = viewMode
+                lastUpdateText.visibility = viewMode
+                airPressureText.visibility = viewMode
+                weatherHumidityText.visibility = viewMode
+                weatherIsDayText.visibility = viewMode
+                precipText.visibility = viewMode
+                windSpeedText.visibility = viewMode
+                weatherStateText.visibility = viewMode
             }
         }
     }

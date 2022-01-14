@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
@@ -55,6 +56,9 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     @Inject
     lateinit var locationManager: LocationManager
+
+    @Inject
+    lateinit var alphaAnimation: AlphaAnimation
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
@@ -154,7 +158,8 @@ class CurrentWeatherFragment : DaggerFragment() {
         val listData = arrayListOf<DataWrapper<Any>>()
         if (data.current != null)
             listData.addAll(viewModel.calculateMainRecyclerViewDataList(data))
-        mainRecyclerViewAdapter = MainRecyclerViewAdapter(requireContext(), listData)
+        mainRecyclerViewAdapter =
+            MainRecyclerViewAdapter(requireContext(), listData, alphaAnimation)
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
         observeRecyclerViewLiveData()
 
@@ -165,9 +170,12 @@ class CurrentWeatherFragment : DaggerFragment() {
         detailsViewPager.adapter = DetailsViewPagerAdapter(
             childFragmentManager,
             viewModel.getLiveWeatherDataFromCache(),
-            fragmentCount
+            fragmentCount,
+            viewModel.getDetailsViewPagerProgressStateLiveData()
         )
         detailsViewPager.offscreenPageLimit = fragmentCount - 1
+        detailsViewPagerDotsIndicator.setViewPager(detailsViewPager)
+
         Observable.create(ObservableOnSubscribe<Int> { emitter ->
             detailsViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(
@@ -270,30 +278,8 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun setProgressMode(progressMode: Boolean) {
-        val progressBarMode = if (progressMode) View.VISIBLE else View.INVISIBLE
-        val viewMode = if (!progressMode) View.VISIBLE else View.INVISIBLE
-        requireView().apply {
-            /*progressBarNum1.visibility = progressBarMode
-            progressBarNum2.visibility = progressBarMode
-            progressBarNum3.visibility = progressBarMode
-            progressBarNum4.visibility = progressBarMode
-            progressBarNum5.visibility = progressBarMode
-            progressBarNum6.visibility = progressBarMode
-            progressBarNum7.visibility = progressBarMode
-            progressBarNum8.visibility = progressBarMode
-            progressBarNum9.visibility = progressBarMode*/
-            mainRecyclerViewAdapter.setProgressMode(progressMode)
-
-            /*weatherTempText.visibility = viewMode
-            weatherCityNameText.visibility = viewMode
-            lastUpdateText.visibility = viewMode
-            airPressureText.visibility = viewMode
-            weatherHumidityText.visibility = viewMode
-            weatherIsDayText.visibility = viewMode
-            precipText.visibility = viewMode
-            windSpeedText.visibility = viewMode
-            weatherStateText.visibility = viewMode*/
-        }
+        mainRecyclerViewAdapter.setProgressMode(progressMode)
+        viewModel.setDetailsViewPagerProgressState(progressMode)
     }
 
     private fun resetSwipeRefreshLayout() {

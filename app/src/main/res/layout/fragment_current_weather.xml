@@ -23,7 +23,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/current_weather_details_background_gradient"
+                android:background="@drawable/current_weather_details_background_gradient_day"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -33,10 +33,21 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"/>
 
+                <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                    android:id="@+id/detailsViewPagerDotsIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    app:dotsSize="@dimen/standardMargin0.5x"
+                    app:dotsColor="@color/light_black"
+                    app:dotsStrokeWidth="1dp"
+                    android:layout_marginTop="@dimen/standardMargin"
+                    android:layout_height="wrap_content"/>
+
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/detailsViewPager"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:layout_below="@+id/detailsViewPagerDotsIndicator"
+                    android:layout_marginTop="@dimen/standardMargin"
                     android:paddingBottom="@dimen/standardMargin2x"
                     android:layout_height="240dp" />
 
