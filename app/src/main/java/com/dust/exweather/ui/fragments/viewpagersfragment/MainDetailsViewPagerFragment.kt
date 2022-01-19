@@ -1,4 +1,4 @@
-package com.dust.exweather.ui.fragments
+package com.dust.exweather.ui.fragments.viewpagersfragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import com.dust.exweather.R
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.fragment_viewpager_details.view.*
 
-class DetailsViewPagerFragment(
+class MainDetailsViewPagerFragment(
     private val dataList: LiveData<List<WeatherEntity>>,
     private val position: Int,
-    private val progressLiveData: LiveData<Boolean>
+    private val progressLiveData: LiveData<Boolean>,
+    private val navController: NavController
 ) : Fragment() {
 
     override fun onCreateView(
@@ -46,6 +48,13 @@ class DetailsViewPagerFragment(
                     lastUpdateText.text =
                         UtilityFunctions.calculateLastUpdateText(data.current.system_last_update_epoch)
                     airPressureText.text = data.current.pressure_mb.toString()
+
+                    detailsContainer.setOnClickListener { _ ->
+                        val bundle = Bundle()
+                        bundle.putString("location", it[position].toDataClass().location)
+                        navController.navigate(R.id.action_currentWeatherFragment_to_weatherDetailsFragment, bundle)
+                    }
+
                 }
             } catch (e: Exception) {
             }

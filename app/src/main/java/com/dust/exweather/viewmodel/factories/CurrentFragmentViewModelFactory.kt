@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
+import javax.inject.Inject
 
-class CurrentFragmentViewModelFactory(
+class CurrentFragmentViewModelFactory @Inject constructor(
     application: Application,
     val currentWeatherRepository: CurrentWeatherRepository,
     val locationManager: LocationManager

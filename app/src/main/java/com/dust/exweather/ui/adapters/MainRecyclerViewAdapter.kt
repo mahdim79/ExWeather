@@ -2,23 +2,28 @@ package com.dust.exweather.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
-import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
+import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.historyweather.Day
-import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
-import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
+import com.dust.exweather.utils.Constants
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
-import java.util.ArrayList
+import java.util.*
 
-class MainRecyclerViewAdapter(private val context: Context,private var listData:ArrayList<DataWrapper<Any>>, private val alphaAnimation: AlphaAnimation) :
+class MainRecyclerViewAdapter(
+    private val context: Context,
+    private var listData: ArrayList<DataWrapper<Any>>,
+    private val alphaAnimation: AlphaAnimation
+) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
     private var progressMode = false
@@ -43,6 +48,7 @@ class MainRecyclerViewAdapter(private val context: Context,private var listData:
                 holder.weatherStateText.text =
                     data.current.condition.text
                 holder.windSpeedText.text = data.current.wind_kph.toString()
+
             }
             is Day -> {
                 val data = listData[position].data as Day
@@ -52,6 +58,8 @@ class MainRecyclerViewAdapter(private val context: Context,private var listData:
                 holder.maxTempText.text = data.maxtemp_c.toString()
                 holder.weatherStateText.text = data.condition.text
                 holder.windSpeedText.text = data.maxwind_kph.toString()
+
+
             }
             is com.dust.exweather.model.dataclasses.forecastweather.Day -> {
                 val data =

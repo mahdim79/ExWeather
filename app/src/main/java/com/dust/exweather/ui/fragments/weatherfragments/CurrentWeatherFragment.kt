@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.dust.exweather.R
@@ -60,6 +62,9 @@ class CurrentWeatherFragment : DaggerFragment() {
     @Inject
     lateinit var alphaAnimation: AlphaAnimation
 
+    @Inject
+    lateinit var viewModelFactory:CurrentFragmentViewModelFactory
+
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
     private lateinit var weatherStatesDetails: WeatherStatesDetails
@@ -93,7 +98,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun addSomeLocations() {
         lifecycleScope.launch(Dispatchers.IO) {
 
-            /*viewModel.insertLocationToCache("London")
+           /* viewModel.insertLocationToCache("London")
             viewModel.insertLocationToCache("Tehran")*/
 
             withContext(Dispatchers.Main) {
@@ -149,7 +154,9 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun updateRecyclerViewContent(data: MainWeatherData) {
         if (data.current != null)
-            mainRecyclerViewAdapter.setNewData(viewModel.calculateMainRecyclerViewDataList(data))
+            mainRecyclerViewAdapter.setNewData(
+                viewModel.calculateMainRecyclerViewDataList(data)
+            )
     }
 
     private fun setUpPrimaryRecyclerView(data: MainWeatherData) {
@@ -159,7 +166,11 @@ class CurrentWeatherFragment : DaggerFragment() {
         if (data.current != null)
             listData.addAll(viewModel.calculateMainRecyclerViewDataList(data))
         mainRecyclerViewAdapter =
-            MainRecyclerViewAdapter(requireContext(), listData, alphaAnimation)
+            MainRecyclerViewAdapter(
+                requireContext(),
+                listData,
+                alphaAnimation
+            )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
         observeRecyclerViewLiveData()
 
@@ -171,7 +182,8 @@ class CurrentWeatherFragment : DaggerFragment() {
             childFragmentManager,
             viewModel.getLiveWeatherDataFromCache(),
             fragmentCount,
-            viewModel.getDetailsViewPagerProgressStateLiveData()
+            viewModel.getDetailsViewPagerProgressStateLiveData(),
+            Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView)
         )
         detailsViewPager.offscreenPageLimit = fragmentCount - 1
         detailsViewPagerDotsIndicator.setViewPager(detailsViewPager)
@@ -289,11 +301,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun setUpViewModel() {
         viewModel = ViewModelProvider(
             this,
-            CurrentFragmentViewModelFactory(
-                requireActivity().application,
-                repository,
-                locationManager
-            )
+            viewModelFactory
         )[CurrentFragmentViewModel::class.java]
     }
 

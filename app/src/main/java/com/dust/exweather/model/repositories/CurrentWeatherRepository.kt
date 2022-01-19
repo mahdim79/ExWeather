@@ -27,8 +27,10 @@ class CurrentWeatherRepository @Inject constructor() {
     suspend fun getHistoryWeatherData(query: String, date:String): Response<WeatherHistory> = mainApiRequests.getHistoryWeatherData(query , date)
     suspend fun getForecastWeatherData(query: String): Response<WeatherForecast> = mainApiRequests.getForecastWeatherData(query)
 
-    suspend fun insertWeatherDataToRoom(mainWeatherData: MainWeatherData) {
-        weatherDao.insertWeatherData(weatherEntity = mainWeatherData.toEntity())
+    suspend fun insertWeatherDataToRoom(mainWeatherData: List<MainWeatherData>) {
+        weatherDao.insertWeatherData(mainWeatherData.map {
+            it.toEntity()
+        })
     }
 
     suspend fun translateWord(text: String): Response<TranslationDataClass> =

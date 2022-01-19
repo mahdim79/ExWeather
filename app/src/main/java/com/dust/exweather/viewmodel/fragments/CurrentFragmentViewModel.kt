@@ -33,15 +33,13 @@ class CurrentFragmentViewModel(
     private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
 
     suspend fun insertLocationToCache(location: String) {
-        currentWeatherRepository.insertWeatherDataToRoom(
-            MainWeatherData(
-                current = null,
-                forecastDetailsData = null,
-                historyDetailsData = null,
-                location = location,
-                id = null
-            )
-        )
+        currentWeatherRepository.insertWeatherDataToRoom(arrayListOf(MainWeatherData(
+            current = null,
+            forecastDetailsData = null,
+            historyDetailsData = null,
+            location = location,
+            id = null
+        )))
     }
     /* @SuppressLint("MissingPermission")
      fun getWeatherDataByUserLocation(context: Context) {
@@ -145,11 +143,10 @@ class CurrentFragmentViewModel(
 
             }.await()
 
-            if (!listNewData.isNullOrEmpty()){
-                listNewData.forEach {
-                    currentWeatherRepository.insertWeatherDataToRoom(it)
-                }
-                withContext(Dispatchers.Main){
+            if (!listNewData.isNullOrEmpty()) {
+                currentWeatherRepository.insertWeatherDataToRoom(listNewData)
+
+                withContext(Dispatchers.Main) {
                     emitSuccessfulState()
                 }
             }
@@ -252,7 +249,7 @@ class CurrentFragmentViewModel(
     }
 
     private fun emitSuccessfulState() {
-        weatherApiCallStateLiveData.value = DataWrapper(null , DataStatus.DATA_RECEIVE_SUCCESS)
+        weatherApiCallStateLiveData.value = DataWrapper(null, DataStatus.DATA_RECEIVE_SUCCESS)
     }
 
     private fun emitFailureState(e: String) {
@@ -266,9 +263,10 @@ class CurrentFragmentViewModel(
     fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
         weatherApiCallStateLiveData
 
-    fun getDetailsViewPagerProgressStateLiveData():LiveData<Boolean> = detailsViewPagerProgressStateLiveData
+    fun getDetailsViewPagerProgressStateLiveData(): LiveData<Boolean> =
+        detailsViewPagerProgressStateLiveData
 
-    fun setDetailsViewPagerProgressState(b:Boolean){
+    fun setDetailsViewPagerProgressState(b: Boolean) {
         detailsViewPagerProgressStateLiveData.value = b
     }
 

@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="com.dust.exweather.ui.fragments.weatherfragments.CurrentWeatherFragment"
-         />
+         >
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_weatherDetailsFragment"
+            app:destination="@id/weatherDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/weatherHistoryFragment"
         android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment"
@@ -28,4 +32,16 @@
         android:id="@+id/aboutUsFragment"
         android:name="com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment"
         />
+    <fragment
+        android:id="@+id/weatherDetailsFragment"
+        android:name="com.dust.exweather.ui.fragments.others.WeatherDetailsFragment">
+        <argument
+            android:name="location"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_weatherDetailsFragment_to_currentWeatherFragment"
+            app:destination="@id/currentWeatherFragment"
+            app:enterAnim="@android:anim/accelerate_decelerate_interpolator"
+            app:popUpTo="@id/currentWeatherFragment" />
+    </fragment>
 </navigation>

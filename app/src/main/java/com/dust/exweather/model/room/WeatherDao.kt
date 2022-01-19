@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWeatherData(weatherEntity: WeatherEntity):Long
+    suspend fun insertWeatherData(weatherEntities: List<WeatherEntity>)
 
     @Query("SELECT * FROM weather_table")
     suspend fun getDirectWeatherData():List<WeatherEntity>

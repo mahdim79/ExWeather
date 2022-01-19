@@ -84,6 +84,10 @@ class MainActivity : DaggerAppCompatActivity() {
                     setBottomNavigationVisibility(false)
                     titleText.text = "درباره ما"
                 }
+                R.id.weatherDetailsFragment -> {
+                    setBottomNavigationVisibility(false)
+                    titleText.text = "جزییات آب و هوا"
+                }
             }
         }
     }

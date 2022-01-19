@@ -1,5 +1,6 @@
 package com.dust.exweather.di.contributefragments
 
+import com.dust.exweather.ui.fragments.others.WeatherDetailsFragment
 import com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment
 import com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment
 import com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment
@@ -28,5 +29,8 @@ abstract class ContributeMainFragments {
 
     @ContributesAndroidInjector
     abstract fun contributeAboutUsFragment():AboutUsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeWeatherDetailsFragment(): WeatherDetailsFragment
 
 }

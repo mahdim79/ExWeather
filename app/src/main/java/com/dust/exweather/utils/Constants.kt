@@ -6,5 +6,8 @@ object Constants {
     const val API_KEY = "f0ee8b23f3ae4cd6bc1130518212512"
     const val RAINY_WEATHER_WALLPAPER_URL = "https://wallpapercave.com/wp/wp2733241.png"
     const val DEFAULT_WALLPAPER_URL = "https://wallpapercave.com/wp/wp2733241.png"
+    const val CURRENT_TYPE = 0
+    const val FORECAST_TYPE = 1
+    const val HISTORY_TYPE = 2
 
 }
