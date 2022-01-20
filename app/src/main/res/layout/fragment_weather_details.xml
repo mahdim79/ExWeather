@@ -1,52 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@+id/weatherDetailsSwipeRefreshLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weatherDetailsSwipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layoutDirection="ltr"
+    android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerContainerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardMargin1.5x"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/cityIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_city"
+                app:layout_constraintStart_toEndOf="@+id/locationTextView"
+                app:layout_constraintTop_toTopOf="@+id/locationTextView"
+                app:layout_constraintBottom_toBottomOf="@+id/locationTextView"/>
+
+
             <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/locationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black_normal"
+                android:textSize="@dimen/TextSize6x"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="بیرجند" />
+
+            <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/weatherConditionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="طوفانی"
+                android:layout_marginTop="@dimen/standardMargin"
                 android:gravity="center"
-                android:textSize="@dimen/TextSize7x"
-                />
+                android:textColor="@color/black_normal"
+                android:textSize="@dimen/TextSize5x"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationTextView"
+                tools:text="طوفانی" />
 
-        </LinearLayout>
+            <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardMargin"
+                android:gravity="center"
+                android:textColor="@color/standardUiGray"
+                android:textSize="@dimen/TextSize3x"
+                android:layout_marginHorizontal="@dimen/standardMargin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1400/2/10" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/weatherDetailsTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/headerContainerView"
             app:tabIndicatorColor="@color/standardUiBlue"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layoutDirection="ltr"
+            app:tabIndicatorHeight="5dp" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/weatherDetailsViewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layoutDirection="rtl"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weatherDetailsTabLayout"
+            android:layoutDirection="ltr"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherDetailsTabLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

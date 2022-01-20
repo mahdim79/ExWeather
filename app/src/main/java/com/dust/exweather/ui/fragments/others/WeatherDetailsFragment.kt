@@ -1,10 +1,13 @@
 package com.dust.exweather.ui.fragments.others
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dust.exweather.R
@@ -12,6 +15,8 @@ import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.ui.adapters.DayDetailsViewPagerAdapter
+import com.dust.exweather.utils.DataStatus
+import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
 import dagger.android.support.DaggerFragment
@@ -56,10 +61,45 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     private fun setUpPrimaryUi() {
         setUpPrimaryViewPager()
+        observeForApiCallState()
         setUpSwipeRefreshLayout()
+        observeRoomData()
+        viewModel.getWeatherDataFromApi(requireContext())
+    }
+
+    private fun observeRoomData() {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
             calculateAndSetUpUi(it)
         }
+    }
+
+    private fun observeForApiCallState() {
+        viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner){
+            when (it.status) {
+                DataStatus.DATA_RECEIVE_LOADING -> {
+                    setProgressMode(true)
+                }
+
+                DataStatus.DATA_RECEIVE_FAILURE -> {
+                    setProgressMode(false)
+                    resetSwipeRefreshLayout()
+                    Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                }
+
+                DataStatus.DATA_RECEIVE_SUCCESS -> {
+                    setProgressMode(false)
+                    resetSwipeRefreshLayout()
+                }
+            }
+        }
+    }
+
+    private fun setProgressMode(b: Boolean) {
+
+    }
+
+    private fun resetSwipeRefreshLayout() {
+        requireView().weatherDetailsSwipeRefreshLayout.isRefreshing = false
     }
 
     @SuppressLint("CheckResult")
@@ -80,8 +120,8 @@ class WeatherDetailsFragment : DaggerFragment() {
                     emitter.onNext(true)
                 }
             }).throttleFirst(5000, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(object : Observer<Boolean> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -109,6 +149,24 @@ class WeatherDetailsFragment : DaggerFragment() {
             )
             weatherDetailsViewPager.offscreenPageLimit = 2
             weatherDetailsTabLayout.setupWithViewPager(weatherDetailsViewPager)
+
+            // apply font on tabLayout's tab textViews
+            for (i in 0 until weatherDetailsTabLayout.childCount) {
+                val viewGroup1 = weatherDetailsTabLayout.getChildAt(i) as ViewGroup
+                for (j in 0 until viewGroup1.childCount) {
+                    val viewGroup2 = viewGroup1.getChildAt(j) as ViewGroup
+                    for (k in 0 until viewGroup2.childCount) {
+                        if (viewGroup2.getChildAt(k) is TextView) {
+                            (viewGroup2.getChildAt(k) as TextView).typeface =
+                                Typeface.createFromAsset(
+                                    requireContext().resources.assets,
+                                    "fonts/iraniansans.ttf"
+                                )
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -120,13 +178,19 @@ class WeatherDetailsFragment : DaggerFragment() {
                 locationData = it.toDataClass()
         }
 
-        if (locationData != null)
-            setUpUi(locationData)
+        locationData?.let { setUpUi(it) }
 
     }
 
-    private fun setUpUi(data: MainWeatherData?) {
-        // TODO: 1/18/2022 implement header ui
+    private fun setUpUi(data: MainWeatherData) {
+        requireView().apply {
+            locationTextView.text = data.current!!.location!!.name
+            weatherConditionTextView.text = data.current!!.current!!.condition.text
+            timeTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(
+                data.current!!.location!!.localtime_epoch,
+                data.current!!.location!!.tz_id
+            )
+        }
     }
 
     override fun onDestroyView() {
