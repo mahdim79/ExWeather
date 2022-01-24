@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="80dp"
+    android:layout_height="180dp"
+    android:padding="@dimen/standardMargin0.5x">
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/standardUiWhite"
+        android:textSize="@dimen/TextSize2x"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="12:00" />
+
+    <ImageView
+        android:id="@+id/weatherStateImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="@dimen/standardMargin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/ic_cloud" />
+
+    <FrameLayout
+        android:id="@+id/tempPoleContainer"
+        android:layout_width="@dimen/standardMargin"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/standardMargin0.5x"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
+        android:background="@drawable/temperature_pole_shape"
+        app:layout_constraintBottom_toTopOf="@+id/weatherStateImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView">
+
+        <TextView
+            android:id="@+id/temperatureTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/standardMargin0.5x"
+            android:gravity="center"
+            android:textColor="@color/standardUiWhite"
+            android:textSize="6dp"
+            tools:text="3°C" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/chanceOfRainImageView"
+        android:layout_width="@dimen/standardMargin1.5x"
+        android:layout_height="@dimen/standardMargin1.5x"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_cloud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/tempPoleContainer"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+    <ImageView
+        android:id="@+id/chanceOfSnowImageView"
+        android:layout_width="@dimen/standardMargin1.5x"
+        android:layout_height="@dimen/standardMargin1.5x"
+        android:layout_marginStart="@dimen/standardMargin0.5x"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_cloud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/chanceOfRainImageView"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/precipText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
+        android:textColor="@color/standardUiWhite"
+        android:textSize="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tempPoleContainer"
+        app:layout_constraintTop_toBottomOf="@+id/chanceOfSnowImageView"
+        tools:text="بارندگی: 22mm" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

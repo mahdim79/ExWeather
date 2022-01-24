@@ -102,9 +102,16 @@ class UtilityFunctions {
             }
         }
 
-        fun calculateCurrentTimeByTimeEpoch(timeEpoch:Int, tz:String):String{
+        fun calculateCurrentDateByTimeEpoch(timeEpoch:Int, tz:String = "Asia/tehran"):String{
             val date = Date((timeEpoch).toLong() * 1000)
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            sdf.timeZone = TimeZone.getTimeZone(tz)
+            return sdf.format(date)
+        }
+
+        fun calculateCurrentTimeByTimeEpoch(timeEpoch:Int, tz:String = "Asia/tehran"):String{
+            val date = Date((timeEpoch).toLong() * 1000)
+            val sdf = SimpleDateFormat("HH:mm", Locale.ENGLISH)
             sdf.timeZone = TimeZone.getTimeZone(tz)
             return sdf.format(date)
         }

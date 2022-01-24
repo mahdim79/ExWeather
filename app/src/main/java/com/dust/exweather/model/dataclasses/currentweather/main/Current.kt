@@ -1,7 +1,7 @@
 package com.dust.exweather.model.dataclasses.currentweather.main
 
 data class Current(
-    val air_quality: AirQuality,
+    val air_quality: AirQuality?,
     val cloud: Int,
     val condition: Condition,
     val feelslike_c: Double,

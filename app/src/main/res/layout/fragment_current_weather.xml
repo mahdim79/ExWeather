@@ -1,115 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/swipeRefreshLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:descendantFocusability="blocksDescendants"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:descendantFocusability="blocksDescendants">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/currentFragmentNestedScrollView"
         android:layout_width="match_parent"
-        android:overScrollMode="never"
+        android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
-        android:layout_height="match_parent">
+        android:overScrollMode="never">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/standardUiWhite"
-            android:layoutDirection="ltr"
+            android:background="@color/full_transparent"
             android:descendantFocusability="blocksDescendants"
+            android:layoutDirection="ltr"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/current_weather_details_background_gradient_day"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/full_transparent">
 
                 <ImageView
                     android:id="@+id/weatherStateImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/addLocationImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/standardMargin"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_baseline_add_location_alt_24" />
 
                 <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
                     android:id="@+id/detailsViewPagerDotsIndicator"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/addLocationImageView"
                     android:layout_centerHorizontal="true"
-                    app:dotsSize="@dimen/standardMargin0.5x"
-                    app:dotsColor="@color/light_black"
-                    app:dotsStrokeWidth="1dp"
                     android:layout_marginTop="@dimen/standardMargin"
-                    android:layout_height="wrap_content"/>
+                    app:dotsColor="@color/standardUiWhite"
+                    app:dotsSize="@dimen/standardMargin0.5x"
+                    app:dotsStrokeWidth="1dp" />
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/detailsViewPager"
                     android:layout_width="match_parent"
+                    android:layout_height="260dp"
                     android:layout_below="@+id/detailsViewPagerDotsIndicator"
-                    android:layout_marginTop="@dimen/standardMargin"
-                    android:paddingBottom="@dimen/standardMargin2x"
-                    android:layout_height="240dp" />
+                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="@dimen/standardMargin"
+                    android:paddingBottom="@dimen/standardMargin2x" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mainWeatherRecyclerView"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/detailsViewPager"
-                    android:layoutDirection="rtl"
-                    android:overScrollMode="never"
-                    android:padding="@dimen/standardMargin1.5x"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_main_recyclerview" />
+                    android:layout_margin="@dimen/standardMargin"
+                    android:backgroundTint="@color/mainContainerTransparentBackground"
+                    app:cardCornerRadius="@dimen/standardMargin0.5x"
+                    app:cardElevation="0dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mainWeatherRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layoutDirection="rtl"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
+                        android:padding="@dimen/standardMargin1.5x"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/item_main_recyclerview" />
+                </androidx.cardview.widget.CardView>
 
             </RelativeLayout>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/standardMargin"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                app:cardCornerRadius="@dimen/standardMargin">
+                android:backgroundTint="@color/mainContainerTransparentBackground"
+                android:layoutDirection="ltr"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="0dp">
 
-                <RelativeLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todaysHourlyForecastRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp">
-                    <View
-                        android:id="@+id/gradient"
-                        android:layout_width="@dimen/standardMargin1.5x"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/green_to_blue_gradient"
-                        android:layout_alignParentStart="true"/>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toEndOf="@+id/gradient"
-                        android:padding="@dimen/standardMargin">
-
-                    </FrameLayout>
-                </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin"
+                    android:nestedScrollingEnabled="false"
+                    />
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/standardMargin"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                app:cardCornerRadius="@dimen/standardMargin">
+                android:backgroundTint="@color/mainContainerTransparentBackground"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="0dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
+
                     <View
                         android:id="@+id/gradient2"
                         android:layout_width="@dimen/standardMargin1.5x"
                         android:layout_height="match_parent"
-                        android:background="@drawable/red_to_pink_gradient"
-                        android:layout_alignParentStart="true"/>
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/red_to_pink_gradient" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -121,28 +138,32 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/standardMargin"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                app:cardCornerRadius="@dimen/standardMargin">
+                android:backgroundTint="@color/mainContainerTransparentBackground"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="0dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
+
                     <View
                         android:id="@+id/gradient3"
                         android:layout_width="@dimen/standardMargin1.5x"
                         android:layout_height="match_parent"
-                        android:background="@drawable/yellow_to_gray_gradient"
-                        android:layout_alignParentStart="true"/>
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/yellow_to_gray_gradient" />
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="@dimen/standardMargin"
-                        android:layout_toEndOf="@+id/gradient3">
+                        android:layout_toEndOf="@+id/gradient3"
+                        android:padding="@dimen/standardMargin">
 
                     </FrameLayout>
                 </RelativeLayout>

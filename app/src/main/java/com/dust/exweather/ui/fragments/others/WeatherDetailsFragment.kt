@@ -1,16 +1,16 @@
 package com.dust.exweather.ui.fragments.others
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dust.exweather.R
+import com.dust.exweather.interfaces.DayDetailsViewPagerOnClickListener
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
@@ -35,6 +35,9 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+
+    @Inject
+    lateinit var alphaAnimation: AlphaAnimation
 
     private lateinit var viewModel: CurrentFragmentViewModel
 
@@ -117,6 +120,7 @@ class WeatherDetailsFragment : DaggerFragment() {
             // setup onRefresh Listener with anti spam system using rx android
             Observable.create(ObservableOnSubscribe<Boolean> { emitter ->
                 setOnRefreshListener {
+                    weatherDetailsSwipeRefreshLayout.isRefreshing = false
                     emitter.onNext(true)
                 }
             }).throttleFirst(5000, TimeUnit.MILLISECONDS)
@@ -128,6 +132,7 @@ class WeatherDetailsFragment : DaggerFragment() {
                     }
 
                     override fun onNext(t: Boolean) {
+                        weatherDetailsSwipeRefreshLayout.isRefreshing = true
                         viewModel.getWeatherDataFromApi(requireContext())
                     }
 
@@ -145,28 +150,26 @@ class WeatherDetailsFragment : DaggerFragment() {
         requireView().apply {
             weatherDetailsViewPager.adapter = DayDetailsViewPagerAdapter(
                 childFragmentManager,
-                viewModel.getLiveWeatherDataFromCache()
+                viewModel.getLiveWeatherDataFromCache(),
+                alphaAnimation,
+                requireArguments().getString("location")!!,
+                object :DayDetailsViewPagerOnClickListener{
+                    override fun goToCurrentWeatherPage() {
+                        weatherDetailsViewPager.currentItem = 1
+                    }
+
+                    override fun goToHistoryWeatherPage() {
+                        weatherDetailsViewPager.currentItem = 0
+                    }
+
+                    override fun goToForecastWeatherPage() {
+                        weatherDetailsViewPager.currentItem = 2
+                    }
+
+                }
             )
             weatherDetailsViewPager.offscreenPageLimit = 2
-            weatherDetailsTabLayout.setupWithViewPager(weatherDetailsViewPager)
-
-            // apply font on tabLayout's tab textViews
-            for (i in 0 until weatherDetailsTabLayout.childCount) {
-                val viewGroup1 = weatherDetailsTabLayout.getChildAt(i) as ViewGroup
-                for (j in 0 until viewGroup1.childCount) {
-                    val viewGroup2 = viewGroup1.getChildAt(j) as ViewGroup
-                    for (k in 0 until viewGroup2.childCount) {
-                        if (viewGroup2.getChildAt(k) is TextView) {
-                            (viewGroup2.getChildAt(k) as TextView).typeface =
-                                Typeface.createFromAsset(
-                                    requireContext().resources.assets,
-                                    "fonts/iraniansans.ttf"
-                                )
-                        }
-                    }
-                }
-
-            }
+            weatherDetailsViewPager.currentItem = 1
         }
     }
 
@@ -186,7 +189,7 @@ class WeatherDetailsFragment : DaggerFragment() {
         requireView().apply {
             locationTextView.text = data.current!!.location!!.name
             weatherConditionTextView.text = data.current!!.current!!.condition.text
-            timeTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(
+            timeTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
                 data.current!!.location!!.localtime_epoch,
                 data.current!!.location!!.tz_id
             )

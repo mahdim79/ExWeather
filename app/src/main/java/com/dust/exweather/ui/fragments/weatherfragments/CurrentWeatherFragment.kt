@@ -5,27 +5,32 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
+import com.dust.exweather.model.dataclasses.forecastweather.Hour
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.ui.adapters.DetailsViewPagerAdapter
 import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
+import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
+import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
@@ -41,10 +46,12 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_current_weather.*
 import kotlinx.android.synthetic.main.fragment_current_weather.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.abs
 
 class CurrentWeatherFragment : DaggerFragment() {
 
@@ -63,13 +70,24 @@ class CurrentWeatherFragment : DaggerFragment() {
     lateinit var alphaAnimation: AlphaAnimation
 
     @Inject
-    lateinit var viewModelFactory:CurrentFragmentViewModelFactory
+    lateinit var backgroundAlphaAnimation: AlphaAnimation
+
+    @Inject
+    lateinit var viewModelFactory: CurrentFragmentViewModelFactory
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
+    private lateinit var todaysForecastRecyclerViewAdapter: TodaysForecastRecyclerViewAdapter
+
     private lateinit var weatherStatesDetails: WeatherStatesDetails
 
+    private lateinit var backgroundImage: ImageView
+
     private var viewPagerPosition = 0
+
+    private var firstData = true
+
+    private var hourlyForecastRecyclerViewScrolled = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,20 +116,13 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun addSomeLocations() {
         lifecycleScope.launch(Dispatchers.IO) {
 
-           /* viewModel.insertLocationToCache("London")
-            viewModel.insertLocationToCache("Tehran")*/
+            /* viewModel.insertLocationToCache("London")
+             viewModel.insertLocationToCache("Tehran")*/
 
             withContext(Dispatchers.Main) {
-                startAction()
+                setUpUiView()
             }
         }
-    }
-
-    private fun startAction() {
-        observeForApiCallState()
-
-        setUpUiView()
-
     }
 
     private fun observeForApiCallState() {
@@ -134,22 +145,59 @@ class CurrentWeatherFragment : DaggerFragment() {
         }
     }
 
-    private fun observeRecyclerViewLiveData() {
+    private fun observeCacheLiveData() {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
-            updateRecyclerViewContent(it[viewPagerPosition].toDataClass())
+            if (!it.isNullOrEmpty()) {
+                val dataList = it.map { data -> data.toDataClass() }
+
+                if (firstData)
+                    managePrimaryUi(dataList)
+                else
+                    updateCurrentUi(dataList)
+
+                firstData = false
+            }
         }
     }
 
+    private fun updateCurrentUi(dataList: List<MainWeatherData>) {
+        val data = dataList[viewPagerPosition]
+        updateRecyclerViewContent(data)
+        setBackground(if (data.current!!.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL)
+    }
+
     private fun setUpUiView() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val listData = viewModel.getDirectWeatherDataFromCache()
-            if (!listData.isNullOrEmpty())
-                withContext(Dispatchers.Main) {
-                    setUpPrimaryViewPager(listData.size)
-                    setUpPrimaryRecyclerView(listData[0].toDataClass())
-                    viewModel.getWeatherDataFromApi(requireContext())
-                }
+        instantiateBackgroundImageView()
+        setUpAddLocationButton()
+        observeForApiCallState()
+        observeCacheLiveData()
+    }
+
+    private fun setUpAddLocationButton() {
+        requireView().addLocationImageView.setOnClickListener {
+            // requireActivity().findNavController(R.id.mainFragmentContainerView).navigate()
         }
+    }
+
+    private fun instantiateBackgroundImageView() {
+        backgroundImage = requireActivity().findViewById(R.id.mainBackgroundImageView)
+    }
+
+    private fun managePrimaryUi(listData: List<MainWeatherData>) {
+        setUpPrimaryViewPager(listData.size)
+        setUpPrimaryRecyclerView(listData[0])
+        setBackground(if (listData[0].current!!.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL)
+        doApiCall()
+    }
+
+    private fun doApiCall() {
+        viewModel.getWeatherDataFromApi(requireContext())
+    }
+
+    private fun setBackground(backgroundUrl: String) {
+        Glide.with(requireContext()).load(backgroundUrl)
+            .into(backgroundImage)
+        backgroundImage.startAnimation(backgroundAlphaAnimation)
     }
 
     private fun updateRecyclerViewContent(data: MainWeatherData) {
@@ -157,9 +205,17 @@ class CurrentWeatherFragment : DaggerFragment() {
             mainRecyclerViewAdapter.setNewData(
                 viewModel.calculateMainRecyclerViewDataList(data)
             )
+
+        if (!data.forecastDetailsData!!.forecast.forecastday.isNullOrEmpty())
+            todaysForecastRecyclerViewAdapter.setNewData(data.forecastDetailsData!!.forecast.forecastday[0].hour)
     }
 
     private fun setUpPrimaryRecyclerView(data: MainWeatherData) {
+        setUpPrimaryTodayHourlyForecastRecyclerView(data)
+        setUpPrimaryMainRecyclerView(data)
+    }
+
+    private fun setUpPrimaryMainRecyclerView(data: MainWeatherData) {
         mainWeatherRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val listData = arrayListOf<DataWrapper<Any>>()
@@ -172,8 +228,40 @@ class CurrentWeatherFragment : DaggerFragment() {
                 alphaAnimation
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-        observeRecyclerViewLiveData()
+    }
 
+    private fun configureTodayHourlyForecastRecyclerViewSmoothScrollAnimation() {
+        hourlyForecastRecyclerViewScrolled = true
+        todaysHourlyForecastRecyclerView.smoothScrollBy(todaysHourlyForecastRecyclerView.width, 0)
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(500)
+            withContext(Dispatchers.Main) {
+                todaysHourlyForecastRecyclerView.smoothScrollBy(
+                    -todaysHourlyForecastRecyclerView.width,
+                    0
+                )
+            }
+        }
+        Log.i("scrollDone", "Well Done!")
+    }
+
+    private fun setUpPrimaryTodayHourlyForecastRecyclerView(data: MainWeatherData) {
+        todaysHourlyForecastRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val primaryList = arrayListOf<Hour>()
+        primaryList.addAll(data.forecastDetailsData!!.forecast.forecastday[0].hour)
+
+        todaysForecastRecyclerViewAdapter =
+            TodaysForecastRecyclerViewAdapter(
+                primaryList,
+                requireContext()
+            )
+
+        todaysHourlyForecastRecyclerView.adapter = todaysForecastRecyclerViewAdapter
+        currentFragmentNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (abs(scrollY) > 1300 && !hourlyForecastRecyclerViewScrolled)
+                configureTodayHourlyForecastRecyclerViewSmoothScrollAnimation()
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -216,8 +304,9 @@ class CurrentWeatherFragment : DaggerFragment() {
                     viewPagerPosition = position
                     lifecycleScope.launch(Dispatchers.IO) {
                         val data = viewModel.getDirectWeatherDataFromCache()
+                            .map { data -> data.toDataClass() }
                         withContext(Dispatchers.Main) {
-                            updateRecyclerViewContent(data[position].toDataClass())
+                            updateCurrentUi(data)
                         }
                     }
                 }
@@ -266,7 +355,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                     override fun onNext(t: Boolean) {
                         if (t) {
                             swipeRefreshLayout.isRefreshing = true
-                            viewModel.getWeatherDataFromApi(requireContext())
+                            doApiCall()
                         }
                     }
 
@@ -314,7 +403,7 @@ class CurrentWeatherFragment : DaggerFragment() {
         if (requestCode == 101) {
             if (grantResults.contains(-1))
                 return
-            viewModel.getWeatherDataFromApi(requireContext())
+            doApiCall()
         }
     }
 

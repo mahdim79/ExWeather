@@ -20,6 +20,6 @@
     <dimen name="mainIconSize">25dp</dimen>
     <dimen name="mainTextSize">15dp</dimen>
     <dimen name="mainRecyclerViewItemMinMaxTempTextSize">8dp</dimen>
-    <dimen name="mainRecyclerViewItemMainTextSize">12dp</dimen>
+    <dimen name="mainRecyclerViewItemMainTextSize">14dp</dimen>
 
 </resources>

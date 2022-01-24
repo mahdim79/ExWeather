@@ -2,20 +2,18 @@ package com.dust.exweather.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
-import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.historyweather.Day
+import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
-import com.dust.exweather.utils.Constants
+import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 import java.util.*
 
@@ -39,7 +37,7 @@ class MainRecyclerViewAdapter(
         when (listData[position].data) {
             is CurrentData -> {
                 val data = listData[position].data as CurrentData
-                Glide.with(context).load(data.current!!.condition.icon)
+                Glide.with(context).load(data.current!!.condition.icon.replace("//", ""))
                     .into(holder.itemStateImage)
                 holder.dayOfWeekText.text = "امروز"
                 holder.item_TempText.text = data.current.temp_c.toString()
@@ -47,35 +45,41 @@ class MainRecyclerViewAdapter(
                 holder.maxTempText.visibility = View.INVISIBLE
                 holder.weatherStateText.text =
                     data.current.condition.text
-                holder.windSpeedText.text = data.current.wind_kph.toString()
-
+                holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
+                    data.location!!.localtime_epoch,
+                    data.location.tz_id
+                )
             }
-            is Day -> {
-                val data = listData[position].data as Day
-                Glide.with(context).load(data.condition.icon).into(holder.itemStateImage)
-                holder.dayOfWeekText.text = data.dayOfWeek
-                holder.minTempText.text = data.mintemp_c.toString()
-                holder.maxTempText.text = data.maxtemp_c.toString()
-                holder.weatherStateText.text = data.condition.text
-                holder.windSpeedText.text = data.maxwind_kph.toString()
-
-
+            is Forecastday -> {
+                val data = listData[position].data as Forecastday
+                Glide.with(context).load(data.day.condition.icon.replace("//", ""))
+                    .into(holder.itemStateImage)
+                holder.dayOfWeekText.text = data.day.dayOfWeek
+                holder.minTempText.text = data.day.mintemp_c.toString()
+                holder.maxTempText.text = data.day.maxtemp_c.toString()
+                holder.weatherStateText.text = data.day.condition.text
+                holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
             }
-            is com.dust.exweather.model.dataclasses.forecastweather.Day -> {
+            is com.dust.exweather.model.dataclasses.forecastweather.Forecastday -> {
                 val data =
-                    listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Day
-                Glide.with(context).load(data.condition.icon).into(holder.itemStateImage)
-                holder.dayOfWeekText.text = data.dayOfWeek
-                holder.minTempText.text = data.mintemp_c.toString()
-                holder.maxTempText.text = data.maxtemp_c.toString()
-                holder.weatherStateText.text = data.condition.text
-                holder.windSpeedText.text = data.maxwind_kph.toString()
+                    listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Forecastday
+                Glide.with(context).load(data.day.condition.icon.replace("//", ""))
+                    .into(holder.itemStateImage)
+                holder.dayOfWeekText.text = data.day.dayOfWeek
+                holder.minTempText.text = data.day.mintemp_c.toString()
+                holder.maxTempText.text = data.day.maxtemp_c.toString()
+                holder.weatherStateText.text = data.day.condition.text
+                holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
             }
         }
         holder.item_progressBar_divider.isIndeterminate = progressMode
 
         // setup Animation
         holder.itemView.startAnimation(alphaAnimation)
+
+        if (position == listData.size - 1)
+            holder.item_progressBar_divider.visibility = View.GONE
+
     }
 
     override fun getItemCount(): Int = listData.size
@@ -94,7 +98,7 @@ class MainRecyclerViewAdapter(
     }
 
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val windSpeedText = itemView.item_windSpeedText
+        val dateText = itemView.item_date
         val weatherStateText = itemView.item_weatherStateText
         val maxTempText = itemView.item_maxTempText
         val minTempText = itemView.item_minTempText

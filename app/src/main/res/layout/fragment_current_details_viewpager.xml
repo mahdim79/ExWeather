@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/scrollHelperCardView"
+        android:layout_width="@dimen/standardMargin8x"
+        android:layout_height="@dimen/standardMargin3x"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="@dimen/standardMargin"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp"
+        android:backgroundTint="@color/mainContainerTransparentBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.dust.exweather.utils.customviews.CTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="تاریخچه"
+            android:textColor="@color/standardUiWhite"
+            android:textSize="@dimen/TextSize3x" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/scrollHelperCardView2"
+        android:layout_width="@dimen/standardMargin8x"
+        android:layout_height="@dimen/standardMargin3x"
+        android:layout_marginTop="@dimen/standardMargin"
+        android:layout_marginEnd="-10dp"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp"
+        android:backgroundTint="@color/mainContainerTransparentBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.dust.exweather.utils.customviews.CTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="پیش بینی"
+            android:textColor="@color/standardUiWhite"
+            android:textSize="@dimen/TextSize3x" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/currentWeatherStateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standardMargin"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp"
+        android:layout_marginHorizontal="@dimen/standardMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/mainContainerTransparentBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollHelperCardView">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standardMargin"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingBottom="@dimen/standardMargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollHelperCardView">
+
+            <ImageView
+                android:id="@+id/weatherStateImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:src="@drawable/ic_cloud"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/weatherStateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardMargin"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/weatherStateImage"
+                tools:text="cloudy" />
+
+            <TextView
+                android:id="@+id/localTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/TextSize6x"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/weatherStateImage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                tools:text="21:51" />
+
+            <TextView
+                android:id="@+id/localDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardMargin0.5x"
+                android:textSize="@dimen/TextSize3x"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintStart_toEndOf="@+id/weatherStateImage"
+                app:layout_constraintTop_toBottomOf="@+id/localTimeTextView"
+                tools:text="2022-01-25" />
+
+            <TextView
+                android:id="@+id/temperatureTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/TextSize6x"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/weatherStateImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                tools:text="6°C" />
+
+            <TextView
+                android:id="@+id/windSpeedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standardMargin0.5x"
+                android:textSize="@dimen/TextSize3x"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintEnd_toStartOf="@+id/weatherStateImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/temperatureTextView"
+                tools:text="15Kph East North" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/standardMargin1.5x"
+        android:background="@color/black_transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentWeatherStateContainer" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standardMargin"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp"
+        android:layout_marginHorizontal="@dimen/standardMargin"
+        android:backgroundTint="@color/mainContainerTransparentBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/weatherDetailsHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="جزییات آب و هوا"
+                android:layout_margin="@dimen/standardMargin"
+                android:textSize="@dimen/TextSize4x"
+                android:textColor="@color/standardUiWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <com.dust.exweather.utils.customviews.CTextView
+                android:id="@+id/weatherDetailsTextView"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="details"
+                android:textSize="@dimen/TextSize3x"
+                android:textColor="@color/standardUiWhite"
+                android:layout_marginTop="@dimen/standardMargin1.5x"
+                app:layout_constraintTop_toBottomOf="@+id/weatherDetailsHeaderText"
+                android:layout_marginHorizontal="@dimen/standardMargin2x"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

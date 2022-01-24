@@ -1,7 +1,10 @@
 package com.dust.exweather.di.contributeactivities
 
+import android.app.Application
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Module
 import dagger.Provides
 
@@ -15,4 +18,5 @@ class MainActivityModule {
         alphaAnimation.fillAfter = true
         return alphaAnimation
     }
+
 }

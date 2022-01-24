@@ -33,15 +33,28 @@
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/item_dayOfWeekText"
-        android:layout_width="@dimen/standardMargin6x"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="دوشنبه"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
         android:textSize="@dimen/mainRecyclerViewItemMainTextSize"
-        android:textColor="@color/black"
+        android:textColor="@color/standardUiWhite"
         app:layout_constraintStart_toEndOf="@+id/itemStateImage"
+        app:layout_constraintBottom_toTopOf="@+id/item_date"
         android:layout_marginHorizontal="@dimen/standardMargin0.5x"/>
+
+    <TextView
+        android:id="@+id/item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/item_dayOfWeekText"
+        android:textSize="@dimen/TextSize2x"
+        android:layout_marginBottom="@dimen/standardMargin0.5x"
+        app:layout_constraintTop_toBottomOf="@+id/item_dayOfWeekText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/standardUiWhite"
+        android:text="2022-01-04"/>
 
     <TextView
         android:id="@+id/item_TempText"
@@ -54,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"
         app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
         app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"
-        android:textColor="@color/dark_blue"
+        android:textColor="@color/standardUiWhite"
         />
 
     <TextView
@@ -64,6 +77,7 @@
         tools:text="20°C"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
+        android:textColor="@color/standardUiWhite"
         app:layout_constraintBottom_toTopOf="@+id/item_minTempImage"
         app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
         app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"/>
@@ -84,6 +98,7 @@
         tools:text="20°C"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:textSize="@dimen/mainRecyclerViewItemMinMaxTempTextSize"
+        android:textColor="@color/standardUiWhite"
         app:layout_constraintTop_toBottomOf="@+id/item_maxTempImage"
         app:layout_constraintStart_toStartOf="@+id/item_minTempImage"
         app:layout_constraintEnd_toEndOf="@+id/item_minTempImage"/>
@@ -93,8 +108,9 @@
         android:layout_width="45dp"
         android:layout_height="15dp"
         android:src="@drawable/ic_min_temp"
+        android:layout_marginEnd="@dimen/standardMargin1.5x"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/item_weatherStateText"
@@ -102,31 +118,10 @@
         android:layout_height="wrap_content"
         tools:text="بارانی"
         android:textSize="@dimen/mainRecyclerViewItemMainTextSize"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/item_minTempImage"
+        android:textColor="@color/standardUiWhite"
+        app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <ImageView
-        android:id="@+id/item_windIcon"
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/standardMargin"
-        android:src="@drawable/ic_wind_speed"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <com.dust.exweather.utils.customviews.CTextView
-        android:id="@+id/item_windSpeedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="25kmps"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="@dimen/TextSize2x"
-        app:layout_constraintEnd_toStartOf="@+id/item_windIcon"
-        android:layout_marginHorizontal="@dimen/standardMargin0.5x"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

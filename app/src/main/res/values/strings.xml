@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ExWeather</string>
+    <string name="no2Amount">نیتروژن: %s</string>
+    <string name="o3Amount">اوزون: %s</string>
+    <string name="defraIndex">شاخص Defra :%s </string>
+    <string name="epaIndex">شاخص Epa :%s </string>
+    <string name="coAmount">مونوکسید کربن: %s</string>
+    <string name="so2Amount">گوگرد دی اکسید: %s</string>
+    <string name="visibilityStatus">میزان دید: %s</string>
+    <string name="uvStatus">اشعه فرابنفش: %s</string>
+    <string name="airPressureStatus">فشار هوا: %s</string>
+    <string name="precipStatus">بارندگی: %s</string>
+    <string name="humidityStatus">میزان رطوبت هوا: %s</string>
+    <string name="cloudStatus">وضعیت ابرها: %s</string>
 </resources>
