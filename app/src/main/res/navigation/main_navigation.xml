@@ -16,7 +16,7 @@
         android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment" />
     <fragment
         android:id="@+id/weatherPredictionFragment"
-        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherPredictionFragment" />
+        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherForecastFragment" />
     <fragment
         android:id="@+id/generalSettingsFragment"
         android:name="com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment" />
