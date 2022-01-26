@@ -97,14 +97,6 @@
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/todaysHourlyForecastRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:padding="@dimen/standardMargin"
-                    android:nestedScrollingEnabled="false"
-                    />
 
             </androidx.cardview.widget.CardView>
 

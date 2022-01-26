@@ -77,8 +77,6 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
-    private lateinit var todaysForecastRecyclerViewAdapter: TodaysForecastRecyclerViewAdapter
-
     private lateinit var weatherStatesDetails: WeatherStatesDetails
 
     private lateinit var backgroundImage: ImageView
@@ -205,13 +203,9 @@ class CurrentWeatherFragment : DaggerFragment() {
             mainRecyclerViewAdapter.setNewData(
                 viewModel.calculateMainRecyclerViewDataList(data)
             )
-
-        if (!data.forecastDetailsData!!.forecast.forecastday.isNullOrEmpty())
-            todaysForecastRecyclerViewAdapter.setNewData(data.forecastDetailsData!!.forecast.forecastday[0].hour)
     }
 
     private fun setUpPrimaryRecyclerView(data: MainWeatherData) {
-        setUpPrimaryTodayHourlyForecastRecyclerView(data)
         setUpPrimaryMainRecyclerView(data)
     }
 
@@ -228,40 +222,6 @@ class CurrentWeatherFragment : DaggerFragment() {
                 alphaAnimation
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-    }
-
-    private fun configureTodayHourlyForecastRecyclerViewSmoothScrollAnimation() {
-        hourlyForecastRecyclerViewScrolled = true
-        todaysHourlyForecastRecyclerView.smoothScrollBy(todaysHourlyForecastRecyclerView.width, 0)
-        lifecycleScope.launch(Dispatchers.IO) {
-            delay(500)
-            withContext(Dispatchers.Main) {
-                todaysHourlyForecastRecyclerView.smoothScrollBy(
-                    -todaysHourlyForecastRecyclerView.width,
-                    0
-                )
-            }
-        }
-        Log.i("scrollDone", "Well Done!")
-    }
-
-    private fun setUpPrimaryTodayHourlyForecastRecyclerView(data: MainWeatherData) {
-        todaysHourlyForecastRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val primaryList = arrayListOf<Hour>()
-        primaryList.addAll(data.forecastDetailsData!!.forecast.forecastday[0].hour)
-
-        todaysForecastRecyclerViewAdapter =
-            TodaysForecastRecyclerViewAdapter(
-                primaryList,
-                requireContext()
-            )
-
-        todaysHourlyForecastRecyclerView.adapter = todaysForecastRecyclerViewAdapter
-        currentFragmentNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            if (abs(scrollY) > 1300 && !hourlyForecastRecyclerViewScrolled)
-                configureTodayHourlyForecastRecyclerViewSmoothScrollAnimation()
-        }
     }
 
     @SuppressLint("CheckResult")

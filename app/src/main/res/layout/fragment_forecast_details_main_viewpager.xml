@@ -1,100 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardElevation="0dp"
-    app:cardCornerRadius="@dimen/standardMargin"
-    android:backgroundTint="@color/mainContainerTransparentBackground"
-    android:layout_margin="@dimen/standardMargin"
+    android:layout_width="match_parent"
+    android:padding="@dimen/standardMargin0.5x"
     android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:background="@color/full_transparent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/mainContainerTransparentBackground"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/full_transparent">
 
-            <com.dust.exweather.utils.customviews.CTextView
-                android:id="@+id/location_textView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginVertical="@dimen/standardMargin2x"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/mainTextColor"
-                android:textSize="@dimen/TextSize5x"
-                tools:text="Tehran"/>
+                android:layout_height="match_parent">
 
-            <com.dust.exweather.utils.customviews.CTextView
-                android:id="@+id/forecastTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/location_textView"
-                android:layout_marginTop="@dimen/standardMargin2x"
-                android:textColor="@color/mainTextColor"
-                android:textSize="@dimen/TextSize3x"
-                android:layout_marginHorizontal="@dimen/standardMargin"
-                android:text="پیش بینی آب و هوا"/>
+                <ProgressBar
+                    android:id="@+id/itemProgressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:progress="1"
+                    android:max="1"
+                    android:indeterminate="true"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mainForecastRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@+id/forecastTextView"
-                android:layoutDirection="rtl"
-                android:layout_marginTop="@dimen/standardMargin"
-                android:padding="@dimen/standardMargin0.5x"
-                android:overScrollMode="never"/>
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/location_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/standardMargin2x"
+                    android:gravity="center"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Tehran" />
 
-            <com.dust.exweather.utils.customviews.CTextView
-                android:id="@+id/seeMoreForecastDaysTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="مشاهده روزهای بیشتر..."
-                android:textSize="@dimen/TextSize3x"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mainForecastRecyclerView"
-                android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                android:textColor="@color/standardUiBlue"
-                android:layout_marginTop="@dimen/standardMargin0.5x"/>
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/forecastTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standardMargin"
+                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:text="پیش بینی آب و هوا"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize3x"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/location_textView" />
 
-            <com.dust.exweather.utils.customviews.CTextView
-                android:id="@+id/hourlyForecastTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/seeMoreForecastDaysTextView"
-                android:layout_marginTop="@dimen/standardMargin2x"
-                android:textColor="@color/mainTextColor"
-                android:textSize="@dimen/TextSize3x"
-                android:layout_marginHorizontal="@dimen/standardMargin"
-                android:text="پیش بینی 24 ساعت اخیر"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainForecastRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standardMargin"
+                    android:layoutDirection="rtl"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin0.5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/forecastTextView" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/todaysHourlyForecastRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:padding="@dimen/standardMargin0.5x"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layoutDirection="rtl"
-                app:layout_constraintTop_toBottomOf="@+id/hourlyForecastTextView"
-                android:layout_marginTop="@dimen/standardMargin"
-                />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/hourlyForecastTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standardMargin"
+                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:text="پیش بینی 24 ساعت اخیر"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize3x"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mainForecastRecyclerView" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todaysHourlyForecastRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standardMargin"
+                    android:layoutDirection="rtl"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin0.5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hourlyForecastTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

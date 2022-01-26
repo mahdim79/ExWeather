@@ -15,5 +15,5 @@ class ForecastViewPagerAdapter(
 ) : FragmentPagerAdapter(fragmentManager) {
     override fun getCount(): Int = itemCount
 
-    override fun getItem(position: Int): Fragment = ForecastDetailsViewPagerFragment(data, progressStateLiveData)
+    override fun getItem(position: Int): Fragment = ForecastDetailsViewPagerFragment(data, progressStateLiveData, position)
 }

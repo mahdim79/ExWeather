@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_forecast_weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class WeatherForecastFragment : DaggerFragment() {
@@ -115,7 +116,9 @@ class WeatherForecastFragment : DaggerFragment() {
                     isRefreshing = false
                     emitter.onNext(true)
                 }
-            }).subscribeOn(Schedulers.io())
+            })
+                .throttleFirst(5000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
                     override fun onSubscribe(d: Disposable) {

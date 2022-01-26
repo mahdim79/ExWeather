@@ -12,4 +12,10 @@
     <string name="precipStatus">بارندگی: %s</string>
     <string name="humidityStatus">میزان رطوبت هوا: %s</string>
     <string name="cloudStatus">وضعیت ابرها: %s</string>
+    <string name="temperatureText">%s °C</string>
+    <string name="precipitationText">%s mm</string>
+    <string name="humidityText">%s g/m3</string>
+    <string name="visibilityText">%s km</string>
+    <string name="windSpeedText">%s kph</string>
+    <string name="dateText">%s %s</string>
 </resources>
