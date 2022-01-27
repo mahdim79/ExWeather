@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -32,8 +33,6 @@ class ForecastDetailsViewPagerFragment(
 ) :
     Fragment() {
 
-    private var hourlyForecastRecyclerViewScrolled = false
-
     private lateinit var mainRecyclerViewAdapter: ForecastMainRecyclerViewAdapter
 
     private lateinit var todaysForecastRecyclerViewAdapter: TodaysForecastRecyclerViewAdapter
@@ -56,7 +55,7 @@ class ForecastDetailsViewPagerFragment(
     private fun observeLiveData() {
 
         data.observe(viewLifecycleOwner) { data ->
-            calculateCurrentPositionData(data)?.let { setUpUi(it) }
+            calculateCurrentPositionData(data)?.let { setUpUi(it, data[position].toDataClass().location) }
         }
 
         progressStateLiveData.observe(viewLifecycleOwner) {
@@ -71,9 +70,9 @@ class ForecastDetailsViewPagerFragment(
         }
     }
 
-    private fun setUpUi(currentData: WeatherForecast) {
+    private fun setUpUi(currentData: WeatherForecast, currentLocation:String) {
         if (firstData)
-            setUpPrimaryUi(currentData)
+            setUpPrimaryUi(currentData, currentLocation)
         else
             updateCurrentUi(currentData)
         firstData = false
@@ -200,9 +199,9 @@ class ForecastDetailsViewPagerFragment(
         }
     }
 
-    private fun setUpPrimaryUi(currentData: WeatherForecast) {
+    private fun setUpPrimaryUi(currentData: WeatherForecast, currentLocation: String) {
         requireView().apply {
-            setUpPrimaryMainRecyclerView()
+            setUpPrimaryMainRecyclerView(currentLocation)
             setUpPrimaryTodayHourlyForecastRecyclerView()
             setUpCharts(currentData)
             setUpPrimaryUiStuff()
@@ -628,8 +627,13 @@ class ForecastDetailsViewPagerFragment(
         todaysHourlyForecastRecyclerView.adapter = todaysForecastRecyclerViewAdapter
     }
 
-    private fun setUpPrimaryMainRecyclerView() {
-        mainRecyclerViewAdapter = ForecastMainRecyclerViewAdapter(arrayListOf(), requireContext())
+    private fun setUpPrimaryMainRecyclerView(currentLocation: String) {
+        mainRecyclerViewAdapter = ForecastMainRecyclerViewAdapter(
+            arrayListOf(),
+            requireContext(),
+            requireActivity().findNavController(R.id.mainFragmentContainerView),
+            currentLocation
+        )
         mainForecastRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         mainForecastRecyclerView.adapter = mainRecyclerViewAdapter
