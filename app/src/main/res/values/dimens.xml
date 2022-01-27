@@ -21,5 +21,7 @@
     <dimen name="mainTextSize">15dp</dimen>
     <dimen name="mainRecyclerViewItemMinMaxTempTextSize">8dp</dimen>
     <dimen name="mainRecyclerViewItemMainTextSize">14dp</dimen>
+    <dimen name="forecastRecyclerViewItemTextSize">9dp</dimen>
+    <dimen name="forecastRecyclerViewItemIconSize">18dp</dimen>
 
 </resources>

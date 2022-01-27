@@ -20,6 +20,7 @@
             android:background="@drawable/temperature_circle_shape"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layoutDirection="rtl"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -37,7 +38,7 @@
                 tools:text="دوشنبه 2022-01-04"/>
 
             <TextView
-                android:id="@+id/minTempText"
+                android:id="@+id/maxTempText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
@@ -49,7 +50,7 @@
                 tools:text="22°C"/>
 
             <TextView
-                android:id="@+id/maxTempText"
+                android:id="@+id/minTempText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="bottom"
@@ -97,8 +98,8 @@
 
         <ImageView
             android:id="@+id/rainIcon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dividerView"
@@ -114,13 +115,13 @@
             app:layout_constraintStart_toEndOf="@+id/rainIcon"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
             android:id="@+id/humidityIcon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rainIcon"
@@ -136,13 +137,13 @@
             app:layout_constraintStart_toEndOf="@+id/humidityIcon"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
             android:id="@+id/tempIcon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/humidityIcon"
@@ -158,13 +159,13 @@
             app:layout_constraintStart_toEndOf="@+id/tempIcon"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
             android:id="@+id/visibilityIcon"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tempIcon"
@@ -180,13 +181,13 @@
             app:layout_constraintStart_toEndOf="@+id/visibilityIcon"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
             android:id="@+id/windSpeedImage"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/visibilityIcon"
@@ -202,13 +203,13 @@
             app:layout_constraintStart_toEndOf="@+id/windSpeedImage"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
             android:id="@+id/uvImageView"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="@dimen/forecastRecyclerViewItemIconSize"
+            android:layout_height="@dimen/forecastRecyclerViewItemIconSize"
             android:layout_margin="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/windSpeedImage"
@@ -224,7 +225,7 @@
             app:layout_constraintStart_toEndOf="@+id/uvImageView"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
             android:textColor="@color/standardUiWhite"
-            android:textSize="7dp"
+            android:textSize="@dimen/forecastRecyclerViewItemTextSize"
             tools:text="2.1mm"/>
 
         <ImageView
@@ -234,8 +235,8 @@
             android:src="@drawable/ic_rain"
             android:layout_marginBottom="@dimen/standardMargin0.5x"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/chanceOfSnowImageView"
             android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/chanceOfSnowImageView"
             android:layout_marginStart="@dimen/standardMargin"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -243,11 +244,11 @@
             android:id="@+id/chanceOfSnowImageView"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_rain"
+            android:src="@drawable/ic_snow"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="@dimen/standardMargin"
-            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"
             android:layout_marginBottom="@dimen/standardMargin0.5x"
             app:layout_constraintStart_toEndOf="@+id/chanceOfRainImageView"/>
 
