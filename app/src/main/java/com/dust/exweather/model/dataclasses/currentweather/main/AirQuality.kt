@@ -9,4 +9,6 @@ data class AirQuality(
     val pm2_5: Double?,
     val so2: Double?,
     val `us-epa-index`: Int?
+
+    // TODO: 1/27/2022 create a pie chart from following amounts in currentDetailsFragment
 )

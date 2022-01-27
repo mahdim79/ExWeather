@@ -2,7 +2,6 @@ package com.dust.exweather.ui.fragments.viewpagersfragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.LayoutDirection
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,21 +15,15 @@ import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.ui.adapters.ForecastMainRecyclerViewAdapter
 import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
-import com.dust.exweather.utils.UtilityFunctions
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.DefaultValueFormatter
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.*
-import java.util.*
-import kotlin.math.abs
 
 class ForecastDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
@@ -105,7 +98,7 @@ class ForecastDetailsViewPagerFragment(
 
     private fun updateChartData(currentData: WeatherForecast) {
         requireView().apply {
-            if (precipitationLineChart.data != null && precipitationLineChart.data.dataSetCount > 0){
+            if (precipitationLineChart.data != null && precipitationLineChart.data.dataSetCount > 0) {
                 val dataList = arrayListOf<Entry>()
                 for (i in currentData.forecast.forecastday.indices)
                     dataList.add(
@@ -122,7 +115,7 @@ class ForecastDetailsViewPagerFragment(
                 }
             }
 
-            if (temperatureLineChart.data != null && temperatureLineChart.data.dataSetCount > 0){
+            if (temperatureLineChart.data != null && temperatureLineChart.data.dataSetCount > 0) {
                 val minTempDataList = arrayListOf<Entry>()
                 for (i in currentData.forecast.forecastday.indices)
                     minTempDataList.add(
@@ -171,7 +164,7 @@ class ForecastDetailsViewPagerFragment(
                 }
             }
 
-            if (humidityLineChart.data != null && humidityLineChart.data.dataSetCount > 0){
+            if (humidityLineChart.data != null && humidityLineChart.data.dataSetCount > 0) {
                 val dataList = arrayListOf<Entry>()
                 for (i in currentData.forecast.forecastday.indices)
                     dataList.add(
@@ -188,7 +181,7 @@ class ForecastDetailsViewPagerFragment(
                 }
             }
 
-            if (windSpeedLineChart.data != null && windSpeedLineChart.data.dataSetCount > 0){
+            if (windSpeedLineChart.data != null && windSpeedLineChart.data.dataSetCount > 0) {
                 val dataList = arrayListOf<Entry>()
                 for (i in currentData.forecast.forecastday.indices)
                     dataList.add(
@@ -388,7 +381,8 @@ class ForecastDetailsViewPagerFragment(
                 lineWidth = 1.8f
                 setDrawValues(true)
                 circleRadius = 4f
-                circleColors = arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiRed))
+                circleColors =
+                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiRed))
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
                 color = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
@@ -407,7 +401,8 @@ class ForecastDetailsViewPagerFragment(
                 lineWidth = 1.8f
                 setDrawValues(true)
                 circleRadius = 4f
-                circleColors = arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiYellow))
+                circleColors =
+                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiYellow))
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.standardUiYellow)
                 color = ContextCompat.getColor(requireContext(), R.color.standardUiYellow)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.standardUiYellow)
@@ -426,7 +421,8 @@ class ForecastDetailsViewPagerFragment(
                 lineWidth = 1.8f
                 setDrawValues(true)
                 circleRadius = 4f
-                circleColors = arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiBlue))
+                circleColors =
+                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiBlue))
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.standardUiBlue)
                 color = ContextCompat.getColor(requireContext(), R.color.standardUiBlue)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.standardUiBlue)
@@ -509,7 +505,8 @@ class ForecastDetailsViewPagerFragment(
                 lineWidth = 1.8f
                 setDrawValues(true)
                 circleRadius = 4f
-                circleColors = arrayListOf(ContextCompat.getColor(requireContext(), R.color.humidityColor))
+                circleColors =
+                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.humidityColor))
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
                 color = ContextCompat.getColor(requireContext(), R.color.humidityColor)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
@@ -591,7 +588,8 @@ class ForecastDetailsViewPagerFragment(
                 lineWidth = 1.8f
                 setDrawValues(true)
                 circleRadius = 4f
-                circleColors = arrayListOf(ContextCompat.getColor(requireContext(), R.color.windSpeedColor))
+                circleColors =
+                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.windSpeedColor))
                 highLightColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
                 color = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
                 fillColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
