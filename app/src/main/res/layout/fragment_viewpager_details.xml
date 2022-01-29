@@ -175,7 +175,7 @@
                         android:layout_width="@dimen/mainIconSize"
                         android:layout_height="@dimen/mainIconSize"
                         android:layout_margin="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_wind_speed"
+                        android:src="@drawable/ic_wind"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/precipImage" />
 
