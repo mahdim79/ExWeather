@@ -16,7 +16,7 @@ abstract class ContributeMainFragments {
     @ContributesAndroidInjector
     abstract fun contributeCurrentWeatherFragment(): CurrentWeatherFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [HistoryFragmentModule::class])
     abstract fun contributeHistoryWeatherFragment(): WeatherHistoryFragment
 
     @ContributesAndroidInjector
