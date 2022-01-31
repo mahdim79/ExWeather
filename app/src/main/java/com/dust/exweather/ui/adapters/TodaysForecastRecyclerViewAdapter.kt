@@ -5,14 +5,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.Hour
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.utils.customviews.CTextView
 import kotlinx.android.synthetic.main.item_todays_hour_forecast.view.*
 import java.util.*
 
@@ -30,24 +27,27 @@ class TodaysForecastRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val data = listData[position]
-        holder.dateTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(data.time_epoch)
-        holder.temperatureTextView.text = data.temp_c.toString()
-        holder.precipText.text =
-            context.resources.getString(R.string.precipitationText, data.precip_mm.toString())
-        holder.humidityText.text =
-            context.resources.getString(R.string.humidityText, data.humidity.toString())
-        holder.windSpeedText.text =
-            context.resources.getString(R.string.windSpeedText, data.wind_kph.toString())
-        holder.airPressureText.text =
-            context.resources.getString(R.string.airPressureText, data.precip_mm.toString())
+        holder.apply {
+            isDayImage.setImageResource(if (data.is_day == 1) R.drawable.ic_day_light else R.drawable.ic_night)
+            dateTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(data.time_epoch)
+            temperatureTextView.text = data.temp_c.toString()
+            precipText.text =
+                context.resources.getString(R.string.precipitationText, data.precip_mm.toString())
+            humidityText.text =
+                context.resources.getString(R.string.humidityText, data.humidity.toString())
+            windSpeedText.text =
+                context.resources.getString(R.string.windSpeedText, data.wind_kph.toString())
+            airPressureText.text =
+                context.resources.getString(R.string.airPressureText, data.precip_mm.toString())
 
-        Glide.with(context).load(data.condition.icon.replace("//", ""))
-            .into(holder.weatherStateImage)
-        if (data.chance_of_rain >= 50)
-            holder.chanceOfRainImageView.setImageResource(R.drawable.ic_rain)
+            Glide.with(context).load(data.condition.icon.replace("//", ""))
+                .into(weatherStateImage)
+            if (data.chance_of_rain >= 50)
+                chanceOfRainImageView.setImageResource(R.drawable.ic_rain)
 
-        if (data.chance_of_snow >= 50)
-            holder.chanceOfSnowImageView.setImageResource(R.drawable.ic_snow)
+            if (data.chance_of_snow >= 50)
+                chanceOfSnowImageView.setImageResource(R.drawable.ic_snow)
+        }
     }
 
     override fun getItemCount(): Int = listData.size
@@ -69,5 +69,6 @@ class TodaysForecastRecyclerViewAdapter(
         val weatherStateImage = itemView.weatherStateImage
         val chanceOfRainImageView = itemView.chanceOfRainImageView
         val chanceOfSnowImageView = itemView.chanceOfSnowImageView
+        val isDayImage = itemView.isDayImage
     }
 }

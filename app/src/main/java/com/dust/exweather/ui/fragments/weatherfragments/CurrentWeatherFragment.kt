@@ -109,7 +109,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun addSomeLocations() {
         lifecycleScope.launch(Dispatchers.IO) {
 
-            /* viewModel.insertLocationToCache("London")
+             /*viewModel.insertLocationToCache("London")
              viewModel.insertLocationToCache("Tehran")*/
 
             withContext(Dispatchers.Main) {
@@ -142,7 +142,6 @@ class CurrentWeatherFragment : DaggerFragment() {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 val dataList = it.map { data -> data.toDataClass() }
-
                 if (firstData)
                     managePrimaryUi(dataList)
                 else
@@ -179,7 +178,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun managePrimaryUi(listData: List<MainWeatherData>) {
         setUpPrimaryViewPager(listData.size)
         setUpPrimaryRecyclerView(listData[0])
-        setBackground(if (listData[0].current!!.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL)
+        listData[0].current?.let { setBackground(if (it.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL) }
         doApiCall()
     }
 

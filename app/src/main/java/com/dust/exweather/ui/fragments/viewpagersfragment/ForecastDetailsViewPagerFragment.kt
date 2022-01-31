@@ -372,6 +372,7 @@ class ForecastDetailsViewPagerFragment(
                 )
 
             val minTempDataSet = LineDataSet(minTempDataList, "کمینه")
+            val chartColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
             minTempDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -381,10 +382,10 @@ class ForecastDetailsViewPagerFragment(
                 setDrawValues(true)
                 circleRadius = 4f
                 circleColors =
-                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.standardUiRed))
-                highLightColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
-                color = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
-                fillColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
+                    arrayListOf(chartColor)
+                highLightColor = chartColor
+                color = chartColor
+                fillColor = chartColor
                 fillAlpha = 100
                 setDrawHorizontalHighlightIndicator(true)
                 fillFormatter =
@@ -496,6 +497,7 @@ class ForecastDetailsViewPagerFragment(
                     )
                 )
             val lineDataSet = LineDataSet(dataList, "رطوبت هوا")
+            val chartColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -505,10 +507,10 @@ class ForecastDetailsViewPagerFragment(
                 setDrawValues(true)
                 circleRadius = 4f
                 circleColors =
-                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.humidityColor))
-                highLightColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
-                color = ContextCompat.getColor(requireContext(), R.color.humidityColor)
-                fillColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
+                    arrayListOf(chartColor)
+                highLightColor = chartColor
+                color = chartColor
+                fillColor = chartColor
                 fillAlpha = 100
                 setDrawHorizontalHighlightIndicator(true)
                 fillFormatter =
@@ -579,6 +581,7 @@ class ForecastDetailsViewPagerFragment(
                     )
                 )
             val lineDataSet = LineDataSet(dataList, "سرعت باد")
+            val chartColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -588,10 +591,10 @@ class ForecastDetailsViewPagerFragment(
                 setDrawValues(true)
                 circleRadius = 4f
                 circleColors =
-                    arrayListOf(ContextCompat.getColor(requireContext(), R.color.windSpeedColor))
-                highLightColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
-                color = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
-                fillColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
+                    arrayListOf(chartColor)
+                highLightColor = chartColor
+                color = chartColor
+                fillColor = chartColor
                 fillAlpha = 100
                 setDrawHorizontalHighlightIndicator(true)
                 fillFormatter =
@@ -610,7 +613,7 @@ class ForecastDetailsViewPagerFragment(
 
     private fun setUpPrimaryUiStuff() {
         requireView().apply {
-
+            // TODO: 1/30/2022 complete this part
         }
     }
 
