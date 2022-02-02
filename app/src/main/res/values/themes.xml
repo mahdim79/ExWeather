@@ -29,4 +29,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="CalendarView.DayColor" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/standardUiWhite</item>
+        <item name="android:weekNumberColor">@color/standardUiWhite</item>
+        <item name="colorAccent">@color/standardUiBlue</item>
+        <item name="colorPrimary">@color/standardUiWhite</item>
+    </style>
+
+    <style name="CalendarView.MainTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/standardUiBlue</item>
+        <item name="colorPrimary">@color/standardUiWhite</item>
+    </style>
 </resources>

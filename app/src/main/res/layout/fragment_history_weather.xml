@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layoutDirection="ltr"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
@@ -15,6 +16,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:overScrollMode="never"
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,330 +80,343 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standardMargin"
+                    android:theme="@style/CalendarView.MainTheme"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:dateTextAppearance="@style/CalendarView.DayColor"
+                    android:weekDayTextAppearance="@style/CalendarView.DayColor"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/arrowRightIcon" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.cardview.widget.CardView
                     android:id="@+id/historyDetailsMainContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/standardMargin1.5x"
+                    app:cardCornerRadius="@dimen/standardMargin"
+                    app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/historyCalendarView">
-
-                    <ImageView
-                        android:id="@+id/shareImageView"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_margin="@dimen/standardMargin0.5x"
-                        android:src="@drawable/ic_baseline_share_24"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/dateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/standardUiWhite"
-                        android:textSize="18dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/shareImageView"
-                        tools:text="2022-01-02" />
-
-
-                    <View
-                        android:id="@+id/dividerView1"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="@dimen/standardMargin6x"
-                        android:layout_marginTop="@dimen/standardMargin"
-                        android:background="@color/mainContainerTransparentBackground"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
-
+                    app:layout_constraintTop_toBottomOf="@+id/historyCalendarView"
+                    android:backgroundTint="@color/mainContainerTransparentBackground"
+                    android:layout_height="wrap_content">
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/detailsContainer"
                         android:layout_width="match_parent"
+                        android:padding="@dimen/standardMargin0.5x"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/standardMargin"
-                        android:paddingBottom="@dimen/standardMargin2x"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dividerView1">
+                        android:layout_marginTop="@dimen/standardMargin1.5x">
 
                         <ImageView
-                            android:id="@+id/cloudImage"
-                            android:layout_width="@dimen/mainIconSize"
-                            android:layout_height="@dimen/mainIconSize"
-                            android:layout_margin="@dimen/standardMargin1.5x"
-                            android:src="@drawable/ic_cloud"
+                            android:id="@+id/shareImageView"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_margin="@dimen/standardMargin0.5x"
+                            android:src="@drawable/ic_baseline_share_24"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.dust.exweather.utils.customviews.CTextView
-                            android:id="@+id/weatherStateText"
+                            android:id="@+id/dateTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/standardMargin"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/TextSize5x"
-                            app:layout_constraintBottom_toBottomOf="@id/cloudImage"
-                            app:layout_constraintEnd_toStartOf="@id/cloudImage"
-                            app:layout_constraintTop_toTopOf="@id/cloudImage"
-                            tools:text="صاف و بدون ابر" />
-
-                        <LinearLayout
-                            android:id="@+id/detailsLinear"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/standardMargin2x"
-                            android:orientation="horizontal"
-                            app:layout_constraintTop_toBottomOf="@id/cloudImage">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50">
-
-                                <ImageView
-                                    android:id="@+id/humidityImage"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_marginHorizontal="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_humidity"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/weatherHumidityText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@id/humidityImage"
-                                    app:layout_constraintEnd_toStartOf="@id/humidityImage"
-                                    app:layout_constraintTop_toTopOf="@id/humidityImage"
-                                    tools:text="2g.m3" />
-
-                                <ImageView
-                                    android:id="@+id/precipImage"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_margin="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_rain"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/humidityImage" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/precipText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@id/precipImage"
-                                    app:layout_constraintEnd_toStartOf="@id/precipImage"
-                                    app:layout_constraintTop_toTopOf="@id/precipImage"
-                                    tools:text="5mm" />
-
-                                <ImageView
-                                    android:id="@+id/windSpeedImage"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_margin="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_wind"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/precipImage" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/windSpeedText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@id/windSpeedImage"
-                                    app:layout_constraintEnd_toStartOf="@id/windSpeedImage"
-                                    app:layout_constraintTop_toTopOf="@id/windSpeedImage"
-                                    tools:text="20kph" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="50">
-
-                                <ImageView
-                                    android:id="@+id/cityImage"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_marginHorizontal="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_country"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/weatherCityNameText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@id/cityImage"
-                                    app:layout_constraintEnd_toStartOf="@id/cityImage"
-                                    app:layout_constraintTop_toTopOf="@id/cityImage"
-                                    tools:text="London" />
-
-                                <ImageView
-                                    android:id="@+id/visibilityImage"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_margin="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_visibility"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/cityImage" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/weatherTempText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@+id/visibilityImage"
-                                    app:layout_constraintEnd_toStartOf="@id/visibilityImage"
-                                    app:layout_constraintTop_toTopOf="@id/visibilityImage"
-                                    tools:text="40°C" />
-
-                                <ImageView
-                                    android:id="@+id/uvImageView"
-                                    android:layout_width="@dimen/mainIconSize"
-                                    android:layout_height="@dimen/mainIconSize"
-                                    android:layout_margin="@dimen/standardMargin1.5x"
-                                    android:src="@drawable/ic_uv_index"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/visibilityImage" />
-
-
-                                <com.dust.exweather.utils.customviews.CTextView
-                                    android:id="@+id/lastUpdateText"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/standardMargin"
-                                    android:textColor="@color/mainTextColor"
-                                    android:textSize="@dimen/mainTextSize"
-                                    app:layout_constraintBottom_toBottomOf="@id/uvImageView"
-                                    app:layout_constraintEnd_toStartOf="@id/uvImageView"
-                                    app:layout_constraintTop_toTopOf="@id/uvImageView"
-                                    tools:text="آپدیت شده" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </LinearLayout>
-
-                        <FrameLayout
-                            android:id="@+id/temperatureContainer"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/standardMargin"
-                            android:layout_marginTop="@dimen/standardMargin2x"
-                            android:background="@drawable/temperature_rectangle_shape"
-                            android:layoutDirection="ltr"
-                            android:padding="@dimen/standardMargin"
+                            android:textColor="@color/standardUiWhite"
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/detailsLinear">
+                            app:layout_constraintTop_toTopOf="@id/shareImageView"
+                            tools:text="2022-01-02" />
 
-                            <TextView
-                                android:id="@+id/minTemperatureText"
+
+                        <View
+                            android:id="@+id/dividerView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="@dimen/standardMargin6x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:background="@color/mainContainerTransparentBackground"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/detailsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:paddingBottom="@dimen/standardMargin2x"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/dividerView1">
+
+                            <ImageView
+                                android:id="@+id/cloudImage"
+                                android:layout_width="@dimen/mainIconSize"
+                                android:layout_height="@dimen/mainIconSize"
+                                android:layout_margin="@dimen/standardMargin1.5x"
+                                android:src="@drawable/ic_cloud"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.dust.exweather.utils.customviews.CTextView
+                                android:id="@+id/weatherStateText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="start"
                                 android:layout_marginHorizontal="@dimen/standardMargin"
-                                android:text="12°C"
-                                android:textColor="@color/standardUiWhite"
-                                android:textSize="@dimen/TextSize3x" />
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/TextSize4x"
+                                app:layout_constraintBottom_toBottomOf="@id/cloudImage"
+                                app:layout_constraintEnd_toStartOf="@id/cloudImage"
+                                app:layout_constraintTop_toTopOf="@id/cloudImage"
+                                tools:text="صاف و بدون ابر" />
 
-                            <TextView
-                                android:id="@+id/avgWeatherTempText"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/detailsLinear"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginHorizontal="@dimen/standardMargin"
-                                android:text="12°C"
-                                android:textColor="@color/standardUiYellow"
-                                android:textSize="@dimen/TextSize3x" />
+                                android:layout_marginTop="@dimen/standardMargin2x"
+                                android:orientation="horizontal"
+                                app:layout_constraintTop_toBottomOf="@id/cloudImage">
 
-                            <TextView
-                                android:id="@+id/maxTemperatureText"
-                                android:layout_width="wrap_content"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="50">
+
+                                    <ImageView
+                                        android:id="@+id/humidityImage"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_humidity"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/weatherHumidityText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@id/humidityImage"
+                                        app:layout_constraintEnd_toStartOf="@id/humidityImage"
+                                        app:layout_constraintTop_toTopOf="@id/humidityImage"
+                                        tools:text="2g.m3" />
+
+                                    <ImageView
+                                        android:id="@+id/precipImage"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_margin="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_rain"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@id/humidityImage" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/precipText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@id/precipImage"
+                                        app:layout_constraintEnd_toStartOf="@id/precipImage"
+                                        app:layout_constraintTop_toTopOf="@id/precipImage"
+                                        tools:text="5mm" />
+
+                                    <ImageView
+                                        android:id="@+id/windSpeedImage"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_margin="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_wind"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@id/precipImage" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/windSpeedText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@id/windSpeedImage"
+                                        app:layout_constraintEnd_toStartOf="@id/windSpeedImage"
+                                        app:layout_constraintTop_toTopOf="@id/windSpeedImage"
+                                        tools:text="20kph" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="50">
+
+                                    <ImageView
+                                        android:id="@+id/cityImage"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_country"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/weatherCityNameText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@id/cityImage"
+                                        app:layout_constraintEnd_toStartOf="@id/cityImage"
+                                        app:layout_constraintTop_toTopOf="@id/cityImage"
+                                        tools:text="London" />
+
+                                    <ImageView
+                                        android:id="@+id/visibilityImage"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_margin="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_visibility"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@id/cityImage" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/visibilityTextView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@+id/visibilityImage"
+                                        app:layout_constraintEnd_toStartOf="@id/visibilityImage"
+                                        app:layout_constraintTop_toTopOf="@id/visibilityImage"
+                                        tools:text="40°C" />
+
+                                    <ImageView
+                                        android:id="@+id/uvImageView"
+                                        android:layout_width="@dimen/mainIconSize"
+                                        android:layout_height="@dimen/mainIconSize"
+                                        android:layout_margin="@dimen/standardMargin1.5x"
+                                        android:src="@drawable/ic_uv_index"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@id/visibilityImage" />
+
+
+                                    <com.dust.exweather.utils.customviews.CTextView
+                                        android:id="@+id/uvIndexTextView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="@dimen/standardMargin"
+                                        android:textColor="@color/mainTextColor"
+                                        android:textSize="@dimen/mainTextSize"
+                                        app:layout_constraintBottom_toBottomOf="@id/uvImageView"
+                                        app:layout_constraintEnd_toStartOf="@id/uvImageView"
+                                        app:layout_constraintTop_toTopOf="@id/uvImageView"
+                                        tools:text="آپدیت شده" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:id="@+id/temperatureContainer"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="end"
                                 android:layout_marginHorizontal="@dimen/standardMargin"
-                                android:text="42°C"
-                                android:textColor="@color/standardUiWhite"
-                                android:textSize="@dimen/TextSize3x" />
+                                android:layout_marginTop="@dimen/standardMargin2x"
+                                android:background="@drawable/temperature_rectangle_shape"
+                                android:layoutDirection="ltr"
+                                android:padding="@dimen/standardMargin"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/detailsLinear">
 
-                        </FrameLayout>
+                                <TextView
+                                    android:id="@+id/minTemperatureText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start"
+                                    android:layout_marginHorizontal="@dimen/standardMargin"
+                                    android:text="12°C"
+                                    android:textColor="@color/standardUiWhite"
+                                    android:textSize="12dp" />
 
+                                <TextView
+                                    android:id="@+id/avgWeatherTempText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="@dimen/standardMargin"
+                                    android:text="12°C"
+                                    android:textColor="@color/standardUiYellow"
+                                    android:textSize="12dp" />
+
+                                <TextView
+                                    android:id="@+id/maxTemperatureText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginHorizontal="@dimen/standardMargin"
+                                    android:text="42°C"
+                                    android:textColor="@color/standardUiWhite"
+                                    android:textSize="12dp" />
+
+                            </FrameLayout>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <ImageView
+                            android:id="@+id/exportImageView"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:src="@drawable/ic_export_to_cvs"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/cvsExportTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                            android:text="خروجی اکسل"
+                            android:textColor="@color/standardUiWhite"
+                            android:textSize="@dimen/TextSize2x"
+                            app:layout_constraintBottom_toBottomOf="@+id/exportImageView"
+                            app:layout_constraintEnd_toStartOf="@+id/exportImageView"
+                            app:layout_constraintTop_toTopOf="@+id/exportImageView" />
+
+                        <ImageView
+                            android:id="@+id/hourlyDetailsImageView"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginEnd="@dimen/standardMargin2x"
+                            android:src="@drawable/ic_export_to_cvs"
+                            app:layout_constraintEnd_toStartOf="@+id/cvsExportTextView"
+                            app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/hourlyDetailsTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                            android:text="تاریخچه 24 ساعته"
+                            android:textColor="@color/standardUiWhite"
+                            android:textSize="@dimen/TextSize2x"
+                            app:layout_constraintBottom_toBottomOf="@+id/hourlyDetailsImageView"
+                            app:layout_constraintEnd_toStartOf="@+id/hourlyDetailsImageView"
+                            app:layout_constraintTop_toTopOf="@+id/hourlyDetailsImageView" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
 
-
-                    <ImageView
-                        android:id="@+id/exportImageView"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:src="@drawable/ic_export_to_cvs"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/cvsExportTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                        android:text="خروجی اکسل"
-                        android:textColor="@color/standardUiWhite"
-                        android:textSize="@dimen/TextSize3x"
-                        app:layout_constraintBottom_toBottomOf="@+id/exportImageView"
-                        app:layout_constraintEnd_toStartOf="@+id/exportImageView"
-                        app:layout_constraintTop_toTopOf="@+id/exportImageView" />
-
-                    <ImageView
-                        android:id="@+id/hourlyDetailsImageView"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginEnd="@dimen/standardMargin2x"
-                        android:src="@drawable/ic_export_to_cvs"
-                        app:layout_constraintEnd_toStartOf="@+id/cvsExportTextView"
-                        app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/hourlyDetailsTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                        android:text="تاریخچه 24 ساعته"
-                        android:textColor="@color/standardUiWhite"
-                        android:textSize="@dimen/TextSize3x"
-                        app:layout_constraintBottom_toBottomOf="@+id/hourlyDetailsImageView"
-                        app:layout_constraintEnd_toStartOf="@+id/hourlyDetailsImageView"
-                        app:layout_constraintTop_toTopOf="@+id/hourlyDetailsImageView" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
