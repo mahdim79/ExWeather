@@ -13,7 +13,11 @@
     </fragment>
     <fragment
         android:id="@+id/weatherHistoryFragment"
-        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment" />
+        android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment" >
+        <action
+            android:id="@+id/action_weatherHistoryFragment_to_historyDetailsFragment"
+            app:destination="@id/historyDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/weatherPredictionFragment"
         android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherForecastFragment" >
@@ -47,6 +51,20 @@
             app:argType="string" />
         <argument
             android:name="date"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyDetailsFragment"
+        android:name="com.dust.exweather.ui.fragments.others.HistoryDetailsFragment"
+        android:label="HistoryDetailsFragment" >
+        <argument
+            android:name="latlong"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="location"
             app:argType="string" />
     </fragment>
 </navigation>

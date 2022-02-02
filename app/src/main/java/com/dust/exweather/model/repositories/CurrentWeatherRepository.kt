@@ -13,6 +13,9 @@ import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toEntity
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
 class CurrentWeatherRepository @Inject constructor() {
     @Inject
     lateinit var mainApiRequests: MainApiRequests

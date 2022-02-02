@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
-import com.dust.exweather.model.room.WeatherEntity
-import com.dust.exweather.model.toDataClass
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.HistoryFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.HistoryFragmentViewModel
@@ -27,6 +26,8 @@ class WeatherHistoryFragment : DaggerFragment() {
     private lateinit var viewModel: HistoryFragmentViewModel
 
     private var locationIndex = 0
+
+    private val calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,44 +62,63 @@ class WeatherHistoryFragment : DaggerFragment() {
                 updateLocationData()
                 setUpLocationSwitcherButtons(it.lastIndex)
                 setUpPrimaryCalendarView()
+                setUpFirstData()
             }
         }
     }
 
+    private fun setUpFirstData() {
+        changeDate(UtilityFunctions.calculateDayOfMonth(viewModel.getHistoryDataList()[locationIndex].forecast.forecastday.first().date_epoch))
+    }
+
     private fun setUpPrimaryCalendarView() {
         updateCalendarViewTime()
-        val calendar = Calendar.getInstance()
         requireView().historyCalendarView.setOnDateChangeListener { _, _, _, dayOfMonth ->
-            viewModel.getHistoryDataList()[locationIndex].also { weatherHistory ->
-                weatherHistory.forecast.forecastday.forEach { forecastDay ->
-                    calendar.time = Date((forecastDay.date_epoch.toLong()) * 1000)
-                    if (dayOfMonth == calendar.get(Calendar.DAY_OF_MONTH)) {
-                        updateDayDetailsData(forecastDay, weatherHistory.location.name)
-                    }
+            changeDate(dayOfMonth)
+        }
+
+    }
+
+    private fun changeDate(dayOfMonth: Int) {
+        updateNoDataAvailable()
+        viewModel.getHistoryDataList()[locationIndex].also { weatherHistory ->
+            weatherHistory.forecast.forecastday.forEach { forecastDay ->
+                calendar.time = Date((forecastDay.date_epoch.toLong()) * 1000)
+                if (dayOfMonth == calendar.get(Calendar.DAY_OF_MONTH)) {
+                    updateDayDetailsData(
+                        forecastDay,
+                        weatherHistory.location.name,
+                        UtilityFunctions.createLatLongPattern(weatherHistory.location)
+                    )
                 }
             }
         }
-
     }
 
     private fun updateCalendarViewTime() {
         viewModel.getHistoryDataList()[locationIndex].also { weatherHistory ->
             requireView().historyCalendarView.apply {
-              //  minDate = weatherHistory.forecast.forecastday.last().date_epoch.toLong() * 1000
-                // maxDate = weatherHistory.forecast.forecastday.first().date_epoch.toLong() * 1000
-              date = weatherHistory.forecast.forecastday.first().date_epoch.toLong() * 1000
+                date = weatherHistory.forecast.forecastday.first().date_epoch.toLong() * 1000
             }
         }
-        clearHistoryDetailsData()
+        updateNoDataAvailable()
     }
 
-    private fun clearHistoryDetailsData() {
-        requireView().historyDetailsMainContainer.visibility = View.GONE
+    private fun updateNoDataAvailable(){
+        requireView().apply {
+            historyDetailsMainContainer.visibility = View.GONE
+            noDataTextView.visibility = View.VISIBLE
+        }
     }
 
-    private fun updateDayDetailsData(forecastDay: Forecastday, locationName: String) {
+    private fun updateDayDetailsData(
+        forecastDay: Forecastday,
+        locationName: String,
+        latlong: String
+    ) {
         requireView().apply {
             historyDetailsMainContainer.visibility = View.VISIBLE
+            noDataTextView.visibility = View.GONE
             dateTextView.text = "${forecastDay.day.dayOfWeek}\n" +
                     "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
             weatherStateText.text = forecastDay.day.condition.text
@@ -133,7 +153,29 @@ class WeatherHistoryFragment : DaggerFragment() {
                 R.string.temperatureText,
                 forecastDay.day.maxtemp_c.toString()
             )
+
+            hourlyDetailsTextView.setOnClickListener {
+                navigateToDetailsFragment(latlong, forecastDay.date, locationName)
+            }
+
+            hourlyDetailsImageView.setOnClickListener {
+                navigateToDetailsFragment(latlong, forecastDay.date, locationName)
+            }
+
         }
+    }
+
+    private fun navigateToDetailsFragment(latlong: String, date: String, location: String) {
+        val bundleArgs = Bundle()
+        bundleArgs.apply {
+            putString("latlong", latlong)
+            putString("date", date)
+            putString("location", location)
+        }
+        requireActivity().findNavController(R.id.mainFragmentContainerView).navigate(
+            R.id.action_weatherHistoryFragment_to_historyDetailsFragment,
+            bundleArgs
+        )
     }
 
     private fun setUpLocationSwitcherButtons(lastIndex: Int) {
@@ -142,6 +184,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                 locationIndex--
                 updateCalendarViewTime()
                 updateLocationData()
+                setUpFirstData()
             }
         }
 
@@ -150,6 +193,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                 locationIndex++
                 updateCalendarViewTime()
                 updateLocationData()
+                setUpFirstData()
             }
         }
     }

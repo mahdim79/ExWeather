@@ -3,6 +3,7 @@ package com.dust.exweather.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
 import com.google.gson.Gson
 import java.io.BufferedInputStream
@@ -38,7 +39,7 @@ class UtilityFunctions {
             return Gson().fromJson(stringBuilder.toString(), WeatherStatesDetails::class.java)
         }
 
-        fun getDaysLeft(currentTime: Int, timeZone: String, days:Int): String {
+        fun getDaysLeft(currentTime: Int, timeZone: String, days: Int): String {
             val date = Date((currentTime - (days * 86400)).toLong() * 1000)
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             sdf.timeZone = TimeZone.getTimeZone(timeZone)
@@ -102,18 +103,28 @@ class UtilityFunctions {
             }
         }
 
-        fun calculateCurrentDateByTimeEpoch(timeEpoch:Int, tz:String = "Asia/tehran"):String{
+        fun calculateCurrentDateByTimeEpoch(timeEpoch: Int, tz: String = "Asia/tehran"): String {
             val date = Date((timeEpoch).toLong() * 1000)
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             sdf.timeZone = TimeZone.getTimeZone(tz)
             return sdf.format(date)
         }
 
-        fun calculateCurrentTimeByTimeEpoch(timeEpoch:Int, tz:String = "Asia/tehran"):String{
+        fun calculateCurrentTimeByTimeEpoch(timeEpoch: Int, tz: String = "Asia/tehran"): String {
             val date = Date((timeEpoch).toLong() * 1000)
             val sdf = SimpleDateFormat("HH:mm", Locale.ENGLISH)
             sdf.timeZone = TimeZone.getTimeZone(tz)
             return sdf.format(date)
+        }
+
+        fun createLatLongPattern(locationObj: Location): String {
+            return "${locationObj.lat},${locationObj.lon}"
+        }
+
+        fun calculateDayOfMonth(dateEpoch: Int): Int {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(dateEpoch.toLong() * 1000)
+            return calendar.get(Calendar.DAY_OF_MONTH)
         }
 
     }

@@ -1,13 +1,14 @@
 package com.dust.exweather.di.contributefragments
 
-import com.dust.exweather.ui.fragments.others.WeatherDetailsFragment
 import com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment
 import com.dust.exweather.ui.fragments.others.ForecastDetailsFragment
+import com.dust.exweather.ui.fragments.others.HistoryDetailsFragment
+import com.dust.exweather.ui.fragments.others.WeatherDetailsFragment
 import com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment
 import com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment
 import com.dust.exweather.ui.fragments.weatherfragments.CurrentWeatherFragment
-import com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment
 import com.dust.exweather.ui.fragments.weatherfragments.WeatherForecastFragment
+import com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -23,18 +24,21 @@ abstract class ContributeMainFragments {
     abstract fun contributePredictionWeatherFragment(): WeatherForecastFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeGeneralSettingsFragment() :GeneralSettingsFragment
+    abstract fun contributeGeneralSettingsFragment(): GeneralSettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeWeatherSettingsFragment():WeatherSettingsFragment
+    abstract fun contributeWeatherSettingsFragment(): WeatherSettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeAboutUsFragment():AboutUsFragment
+    abstract fun contributeAboutUsFragment(): AboutUsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeWeatherDetailsFragment(): WeatherDetailsFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeForecastDetailsFragment():ForecastDetailsFragment
+    abstract fun contributeForecastDetailsFragment(): ForecastDetailsFragment
+
+    @ContributesAndroidInjector(modules = [HistoryDetailsFragmentModule::class])
+    abstract fun contributeHistoryDetailsFragment(): HistoryDetailsFragment
 
 }
