@@ -189,6 +189,10 @@ class CsvFactory @Inject constructor() {
             file.mkdirs()
 
         val file2 = File(file, "$fileName.xls")
+
+        if (file2.exists())
+            return DataWrapper("فایلی بااین نام از قبل وجود دارد!", DataStatus.DATA_SAVE_FAILURE)
+
         var fileOutputStream: FileOutputStream? = null
         try {
             fileOutputStream = FileOutputStream(file2)

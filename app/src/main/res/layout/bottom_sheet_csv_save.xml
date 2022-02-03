@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="250dp"
+    android:paddingVertical="@dimen/standardMargin">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/standardMargin"
+        app:layout_constraintBottom_toTopOf="@+id/applyFileNameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:errorEnabled="true"
+        app:errorTextColor="@color/standardUiRed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fileNameEditText"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/standardMargin"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/standardUiBlue"
+            android:hint="  نام فایل را وارد کنید، پیش فرض:"
+            android:textSize="@dimen/TextSize3x" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.dust.exweather.utils.customviews.CButton
+        android:id="@+id/applyFileNameButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/standardMargin6x"
+        android:background="@drawable/main_button_shape"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="تایید"
+        android:textColor="@color/standardUiWhite"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginTop="@dimen/standardMargin1.5x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        tools:layout_editor_absoluteX="60dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

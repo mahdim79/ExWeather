@@ -28,7 +28,7 @@ class HistoryFragmentViewModel(private val repository: WeatherHistoryRepository)
         }
     }
 
-    fun exportToCsvFile(forecastDay: Forecastday, location: String): DataWrapper<String> =
-        repository.createWeatherCsvFile(forecastDay, location)
+    fun exportToCsvFile(forecastDay: Forecastday, location: String, fileName:String): DataWrapper<String> =
+        repository.createWeatherCsvFile(forecastDay, location, fileName)
 
 }

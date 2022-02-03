@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
+import com.dust.exweather.ui.fragments.bottomsheetdialogs.CsvSaveBottomSheetDialogFragment
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
@@ -181,22 +182,37 @@ class WeatherHistoryFragment : DaggerFragment() {
     }
 
     private fun exportToCsvFile(forecastDay: Forecastday, locationName: String) {
-        
-        val result = viewModel.exportToCsvFile(forecastDay, locationName)
-        if (result.status == DataStatus.DATA_SAVED_SUCCESS
-        ) {
-            Toast.makeText(
-                requireContext(),
-                "فایل با موفقیت در ${result.data} دخیره شد!",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "مشکلی در ذخیره فایل پیش آمده است! ${result.data}",
-                Toast.LENGTH_SHORT
-            ).show()
+        CsvSaveBottomSheetDialogFragment(defaultName = "$locationName-${forecastDay.date}") { fileName ->
+            if (checkStoragePermission()) {
+                val result = viewModel.exportToCsvFile(
+                    forecastDay,
+                    locationName,
+                    if (fileName.isEmpty()) "$locationName-${forecastDay.date}" else fileName
+                )
+
+                if (result.status == DataStatus.DATA_SAVED_SUCCESS
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        "فایل با موفقیت در ${result.data} دخیره شد!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "مشکلی در ذخیره فایل پیش آمده است! ${result.data}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "لطفا دسترسی لازم را به برنامه بدهید و دوباره تلاش کنید",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
+            .show(childFragmentManager, "csvNameFileSelectFragment")
     }
 
     private fun checkStoragePermission(): Boolean {

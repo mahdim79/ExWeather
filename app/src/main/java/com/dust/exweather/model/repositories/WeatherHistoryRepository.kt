@@ -20,7 +20,7 @@ class WeatherHistoryRepository @Inject constructor() {
     fun getWeatherLiveDataFromCache(): LiveData<List<WeatherEntity>> =
         weatherDao.getLiveWeatherData()
 
-    fun createWeatherCsvFile(forecastDay: Forecastday, location: String): DataWrapper<String> =
-        csvFactory.createWeatherHistorySheet("exportDetails", forecastDay, location)
+    fun createWeatherCsvFile(forecastDay: Forecastday, location: String, fileName:String): DataWrapper<String> =
+        csvFactory.createWeatherHistorySheet(fileName, forecastDay, location)
 
 }
