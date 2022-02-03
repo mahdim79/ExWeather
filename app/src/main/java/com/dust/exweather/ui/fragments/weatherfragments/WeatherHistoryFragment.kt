@@ -1,14 +1,19 @@
 package com.dust.exweather.ui.fragments.weatherfragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
+import com.dust.exweather.utils.Constants
+import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.HistoryFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.HistoryFragmentViewModel
@@ -104,7 +109,7 @@ class WeatherHistoryFragment : DaggerFragment() {
         updateNoDataAvailable()
     }
 
-    private fun updateNoDataAvailable(){
+    private fun updateNoDataAvailable() {
         requireView().apply {
             historyDetailsMainContainer.visibility = View.GONE
             noDataTextView.visibility = View.VISIBLE
@@ -162,7 +167,54 @@ class WeatherHistoryFragment : DaggerFragment() {
                 navigateToDetailsFragment(latlong, forecastDay.date, locationName)
             }
 
+            cvsExportTextView.setOnClickListener {
+                if (checkStoragePermission())
+                    exportToCsvFile(forecastDay, locationName)
+            }
+
+            exportImageView.setOnClickListener {
+                if (checkStoragePermission())
+                    exportToCsvFile(forecastDay, locationName)
+            }
+
         }
+    }
+
+    private fun exportToCsvFile(forecastDay: Forecastday, locationName: String) {
+        
+        val result = viewModel.exportToCsvFile(forecastDay, locationName)
+        if (result.status == DataStatus.DATA_SAVED_SUCCESS
+        ) {
+            Toast.makeText(
+                requireContext(),
+                "فایل با موفقیت در ${result.data} دخیره شد!",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "مشکلی در ذخیره فایل پیش آمده است! ${result.data}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun checkStoragePermission(): Boolean {
+        requireActivity().apply {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                requireActivity().requestPermissions(
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), Constants.STORAGE_PERMISSION_REQUEST_CODE
+                )
+                return false
+            }
+        }
+        return true
     }
 
     private fun navigateToDetailsFragment(latlong: String, date: String, location: String) {
@@ -203,6 +255,18 @@ class WeatherHistoryFragment : DaggerFragment() {
             locationTextView.text = location.name
 
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == Constants.STORAGE_PERMISSION_REQUEST_CODE) {
+            if (grantResults[0] != -1)
+                requireView().cvsExportTextView.performClick()
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
 

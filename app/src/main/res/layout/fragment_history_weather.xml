@@ -407,6 +407,8 @@
                                 android:text="خروجی اکسل"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize2x"
+                                android:gravity="center"
+                                android:paddingVertical="@dimen/standardMargin0.5x"
                                 app:layout_constraintBottom_toBottomOf="@+id/exportImageView"
                                 app:layout_constraintEnd_toStartOf="@+id/exportImageView"
                                 app:layout_constraintTop_toTopOf="@+id/exportImageView" />
@@ -428,6 +430,8 @@
                                 android:text="تاریخچه 24 ساعته"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize2x"
+                                android:paddingVertical="@dimen/standardMargin0.5x"
+                                android:gravity="center"
                                 app:layout_constraintBottom_toBottomOf="@+id/hourlyDetailsImageView"
                                 app:layout_constraintEnd_toStartOf="@+id/hourlyDetailsImageView"
                                 app:layout_constraintTop_toTopOf="@+id/hourlyDetailsImageView" />

@@ -1,5 +1,6 @@
 package com.dust.exweather.di.contributefragments
 
+import com.dust.exweather.di.contributefragments.scopes.WeatherHistoryScope
 import com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment
 import com.dust.exweather.ui.fragments.others.ForecastDetailsFragment
 import com.dust.exweather.ui.fragments.others.HistoryDetailsFragment
@@ -18,6 +19,7 @@ abstract class ContributeMainFragments {
     abstract fun contributeCurrentWeatherFragment(): CurrentWeatherFragment
 
     @ContributesAndroidInjector(modules = [HistoryFragmentModule::class])
+    @WeatherHistoryScope
     abstract fun contributeHistoryWeatherFragment(): WeatherHistoryFragment
 
     @ContributesAndroidInjector

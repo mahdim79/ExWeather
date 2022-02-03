@@ -9,4 +9,8 @@ class HistoryDetailsFragmentViewModel(private val repository: CurrentWeatherRepo
     ViewModel() {
     fun getWeatherLiveDataFromCache(): LiveData<List<WeatherEntity>> =
         repository.getLiveWeatherDataFromCache()
+
+    fun saveDataToExcelFile(){
+
+    }
 }

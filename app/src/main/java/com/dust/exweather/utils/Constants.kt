@@ -8,4 +8,5 @@ object Constants {
     const val DEFAULT_WALLPAPER_URL = "https://wallpapercave.com/wp/wp2733241.png"
     const val NIGHT_BACKGROUND_URL = "https://i.pinimg.com/474x/43/f5/f1/43f5f1af81ba50ef0c633d8438de3ced.jpg"
     const val LIGHT_BACKGROUND_URL = "https://i.pinimg.com/originals/d8/46/5e/d8465e80d68e6f3fb3227499da7fc5af.jpg"
+    const val STORAGE_PERMISSION_REQUEST_CODE = 105
 }

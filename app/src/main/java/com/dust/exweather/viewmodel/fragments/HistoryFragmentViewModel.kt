@@ -2,18 +2,20 @@ package com.dust.exweather.viewmodel.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
-import com.dust.exweather.model.repositories.CurrentWeatherRepository
+import com.dust.exweather.model.dataclasswrapper.DataWrapper
+import com.dust.exweather.model.repositories.WeatherHistoryRepository
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import java.util.*
 
-class HistoryFragmentViewModel(private val repository: CurrentWeatherRepository) : ViewModel() {
+class HistoryFragmentViewModel(private val repository: WeatherHistoryRepository) : ViewModel() {
 
     private val historyDataList = arrayListOf<WeatherHistory>()
 
     fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
-        repository.getLiveWeatherDataFromCache()
+        repository.getWeatherLiveDataFromCache()
 
     fun getHistoryDataList(): ArrayList<WeatherHistory> = historyDataList
 
@@ -25,5 +27,8 @@ class HistoryFragmentViewModel(private val repository: CurrentWeatherRepository)
             }
         }
     }
+
+    fun exportToCsvFile(forecastDay: Forecastday, location: String): DataWrapper<String> =
+        repository.createWeatherCsvFile(forecastDay, location)
 
 }

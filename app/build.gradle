@@ -36,6 +36,7 @@ android {
 
 dependencies {
 
+    implementation files('libs\\poi-3.7.jar')
     def room_version = "2.3.0"
     def lifecycle_version = "2.2.0"
     def dagger_version = "2.35.1"
