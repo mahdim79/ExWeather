@@ -121,10 +121,14 @@ class UtilityFunctions {
             return "${locationObj.lat},${locationObj.lon}"
         }
 
-        fun calculateDayOfMonth(dateEpoch: Int): Int {
+        fun calculateDayOfMonth(dateEpoch: Int): Array<Int> {
             val calendar = Calendar.getInstance()
             calendar.time = Date(dateEpoch.toLong() * 1000)
-            return calendar.get(Calendar.DAY_OF_MONTH)
+            return arrayOf(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
         }
 
     }

@@ -74,23 +74,30 @@ class WeatherHistoryFragment : DaggerFragment() {
     }
 
     private fun setUpFirstData() {
-        changeDate(UtilityFunctions.calculateDayOfMonth(viewModel.getHistoryDataList()[locationIndex].forecast.forecastday.first().date_epoch))
+        val dataList =
+            UtilityFunctions.calculateDayOfMonth(viewModel.getHistoryDataList()[locationIndex].forecast.forecastday.first().date_epoch)
+
+        // dataList is an int list: int year , int month, int dayOfMonth
+        changeDate(dataList[0], dataList[1], dataList[2])
     }
 
     private fun setUpPrimaryCalendarView() {
         updateCalendarViewTime()
-        requireView().historyCalendarView.setOnDateChangeListener { _, _, _, dayOfMonth ->
-            changeDate(dayOfMonth)
+        requireView().historyCalendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            changeDate(year, month, dayOfMonth)
         }
 
     }
 
-    private fun changeDate(dayOfMonth: Int) {
+    private fun changeDate(year: Int, month: Int, dayOfMonth: Int) {
         updateNoDataAvailable()
         viewModel.getHistoryDataList()[locationIndex].also { weatherHistory ->
             weatherHistory.forecast.forecastday.forEach { forecastDay ->
                 calendar.time = Date((forecastDay.date_epoch.toLong()) * 1000)
-                if (dayOfMonth == calendar.get(Calendar.DAY_OF_MONTH)) {
+                if (year == calendar.get(Calendar.YEAR) &&
+                    month == calendar.get(Calendar.MONTH) &&
+                    dayOfMonth == calendar.get(Calendar.DAY_OF_MONTH)
+                ) {
                     updateDayDetailsData(
                         forecastDay,
                         weatherHistory.location.name,
