@@ -1,6 +1,7 @@
 package com.dust.exweather.ui.fragments.weatherfragments
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -86,7 +87,6 @@ class WeatherHistoryFragment : DaggerFragment() {
         requireView().historyCalendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             changeDate(year, month, dayOfMonth)
         }
-
     }
 
     private fun changeDate(year: Int, month: Int, dayOfMonth: Int) {
@@ -183,6 +183,28 @@ class WeatherHistoryFragment : DaggerFragment() {
             exportImageView.setOnClickListener {
                 if (checkStoragePermission())
                     exportToCsvFile(forecastDay, locationName)
+            }
+
+            shareImageView.setOnClickListener {
+                Intent(Intent.ACTION_SEND).apply {
+                    type = "plain/text"
+                    putExtra(
+                        Intent.EXTRA_TITLE,
+                        "تاریخچه آب و هوای شهر $locationName ${forecastDay.day.dayOfWeek} ${forecastDay.date}"
+                    )
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "تاریخچه آب و هوای شهر $locationName ${forecastDay.day.dayOfWeek} ${forecastDay.date} \n" +
+                                "شرایط آب و هوا :${forecastDay.day.condition.text} \n" +
+                                "میزان بارندگی :${forecastDay.day.totalprecip_mm}mm\n" +
+                                "میانگین دمای روزانه :${forecastDay.day.avgtemp_c}°C\n" +
+                                "کمینه دما :${forecastDay.day.mintemp_c}°C\n" +
+                                "بیشینه دما :${forecastDay.day.maxtemp_c}°C\n" +
+                                "سرعت باد :${forecastDay.day.maxwind_kph}kph"
+
+                    )
+                    requireActivity().startActivity(Intent.createChooser(this, "ارسال با..."))
+                }
             }
 
         }
