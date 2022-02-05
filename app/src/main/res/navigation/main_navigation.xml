@@ -28,7 +28,11 @@
     </fragment>
     <fragment
         android:id="@+id/generalSettingsFragment"
-        android:name="com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment" />
+        android:name="com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment" >
+        <action
+            android:id="@+id/action_generalSettingsFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/weatherSettingsFragment"
         android:name="com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment" />

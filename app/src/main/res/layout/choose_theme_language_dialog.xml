@@ -11,12 +11,12 @@
         android:id="@+id/dialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="انتخاب"
+        tools:text="انتخاب"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/standardUiDark"
         android:padding="@dimen/standardMargin"
-        android:textSize="18dp"/>
+        android:textSize="@dimen/TextSize4x"/>
 
     <View
         android:layout_width="match_parent"
@@ -32,7 +32,8 @@
         <RadioButton
             android:id="@+id/positiveRadioButton"
             android:layout_width="match_parent"
-            android:text="اول"
+            android:textSize="@dimen/TextSize3x"
+            tools:text="اول"
             android:textColor="@color/standardUiDark"
             android:buttonTint="@color/standardUiDark"
             android:layout_height="wrap_content"
@@ -41,6 +42,7 @@
             android:id="@+id/negativeRadioButton"
             android:layout_width="match_parent"
             tools:text="دوم"
+            android:textSize="@dimen/TextSize3x"
             android:buttonTint="@color/standardUiDark"
             android:textColor="@color/standardUiDark"
             android:layout_height="wrap_content"/>
@@ -58,6 +60,7 @@
             android:layout_width="150dp"
             android:text="تایید"
             android:textColor="@color/white"
+            android:textSize="@dimen/TextSize3x"
             android:layout_marginVertical="@dimen/standardMargin"
             android:background="@drawable/main_button_shape"
             android:layout_marginHorizontal="@dimen/standardMargin0.5x"
