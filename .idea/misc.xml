@@ -16,6 +16,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/yellow_to_gray_gradient.xml" value="0.209375" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_csv_save.xml" value="0.33" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/choose_theme_language_dialog.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_current_details_viewpager.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_current_weather.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_day_details_viewpager.xml" value="0.19322916666666667" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_forecast_details_main_viewpager.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_forecast_details_viewpager.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_forecast_weather.xml" value="0.19322916666666667" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_general_settings.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_history_details.xml" value="0.16" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_history_details_viewpager.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_history_weather.xml" value="0.25" />

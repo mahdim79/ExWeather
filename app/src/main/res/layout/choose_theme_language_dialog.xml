@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="?colorOnPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="انتخاب"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/standardUiDark"
+        android:padding="@dimen/standardMargin"
+        android:textSize="18dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/blue"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+        android:layout_marginTop="@dimen/standardMargin1.5x"
+        android:layoutDirection="rtl"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/positiveRadioButton"
+            android:layout_width="match_parent"
+            android:text="اول"
+            android:textColor="@color/standardUiDark"
+            android:buttonTint="@color/standardUiDark"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/standardMargin0.5x"/>
+        <RadioButton
+            android:id="@+id/negativeRadioButton"
+            android:layout_width="match_parent"
+            tools:text="دوم"
+            android:buttonTint="@color/standardUiDark"
+            android:textColor="@color/standardUiDark"
+            android:layout_height="wrap_content"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/standardMargin0.5x"
+        android:orientation="horizontal">
+
+        <com.dust.exweather.utils.customviews.CButton
+            android:id="@+id/add_button"
+            android:layout_width="150dp"
+            android:text="تایید"
+            android:textColor="@color/white"
+            android:layout_marginVertical="@dimen/standardMargin"
+            android:background="@drawable/main_button_shape"
+            android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

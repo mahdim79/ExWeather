@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/standardUiWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                android:layout_marginTop="@dimen/standardMargin1.5x"
+                android:backgroundTint="?colorOnPrimary"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="@dimen/standardMargin0.5x">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.dust.exweather.utils.customviews.CTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                        android:layout_marginTop="@dimen/standardMargin0.5x"
+                        android:text="زبان"
+                        android:textColor="@color/standardUiBlue"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/languageSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/standardMargin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:text="زبان برنامه"
+                            android:textColor="@color/standardUiPink"
+                            android:textSize="@dimen/standardMargin1.5x" />
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin0.5x"
+                            android:layout_marginBottom="@dimen/standardMargin"
+                            android:text="فارسی"
+                            android:textColor="?colorAccent"
+                            android:textSize="@dimen/TextSize3x" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                android:layout_marginTop="@dimen/standardMargin1.5x"
+                android:backgroundTint="?colorOnPrimary"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="@dimen/standardMargin0.5x">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.dust.exweather.utils.customviews.CTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                        android:layout_marginTop="@dimen/standardMargin0.5x"
+                        android:text="تم"
+                        android:textColor="@color/standardUiBlue"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/themeSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/standardMargin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:text="تم برنامه"
+                            android:textColor="@color/standardUiPink"
+                            android:textSize="@dimen/standardMargin1.5x"
+                            android:textStyle="bold" />
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/currentLanguage"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin0.5x"
+                            android:layout_marginBottom="@dimen/standardMargin"
+                            android:text="روشن"
+                            android:textColor="?colorAccent"
+                            android:textSize="@dimen/TextSize3x" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                android:layout_marginTop="@dimen/standardMargin1.5x"
+                android:backgroundTint="?colorOnPrimary"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="@dimen/standardMargin0.5x">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.dust.exweather.utils.customviews.CTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                        android:layout_marginTop="@dimen/standardMargin0.5x"
+                        android:text="اعلانات"
+                        android:textColor="@color/standardUiBlue"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/notificationsSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/standardMargin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:text="اعلانات برنامه"
+                            android:textColor="@color/standardUiPink"
+                            android:textSize="@dimen/standardMargin1.5x"
+                            android:textStyle="bold" />
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin0.5x"
+                            android:layout_marginBottom="@dimen/standardMargin"
+                            android:text="فعال"
+                            android:textColor="?colorAccent"
+                            android:textSize="@dimen/TextSize3x" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                android:layout_marginTop="@dimen/standardMargin1.5x"
+                android:layout_marginBottom="@dimen/standardMargin6x"
+                android:backgroundTint="?colorOnPrimary"
+                app:cardCornerRadius="@dimen/standardMargin"
+                app:cardElevation="@dimen/standardMargin0.5x">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.dust.exweather.utils.customviews.CTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                        android:layout_marginTop="@dimen/standardMargin0.5x"
+                        android:text="درباره ما"
+                        android:textColor="@color/standardUiBlue"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/versionSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/standardMargin"
+                        android:layout_marginTop="@dimen/standardMargin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/version"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:layout_marginBottom="@dimen/standardMargin"
+                            android:gravity="center_vertical"
+                            android:text="ورژن"
+                            android:textColor="@color/standardUiPink"
+                            android:textSize="@dimen/standardMargin1.5x"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/sourceSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/standardMargin"
+                        android:layout_marginBottom="@dimen/standardMargin"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
+
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:layout_gravity="end"
+                            android:layout_marginHorizontal="@dimen/standardMargin2x"
+                            android:layout_marginTop="@dimen/standardMargin"
+                            android:layout_marginBottom="@dimen/standardMargin"
+                            android:gravity="center_vertical"
+                            android:text="لایسنس برنامه"
+                            android:textColor="@color/standardUiPink"
+                            android:textSize="@dimen/standardMargin1.5x"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

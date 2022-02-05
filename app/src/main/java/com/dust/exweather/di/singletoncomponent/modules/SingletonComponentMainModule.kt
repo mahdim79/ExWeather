@@ -6,8 +6,9 @@ import android.location.LocationManager
 import androidx.room.Room
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.retrofit.TranslationApiRequests
-import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.room.RoomManager
+import com.dust.exweather.model.room.WeatherDao
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -52,7 +53,7 @@ class SingletonComponentMainModule {
 
     @Singleton
     @Provides
-    fun provideTranslationApiRequestInterface(@Named("translation_api") retrofit: Retrofit):TranslationApiRequests{
+    fun provideTranslationApiRequestInterface(@Named("translation_api") retrofit: Retrofit): TranslationApiRequests {
         return retrofit.create(TranslationApiRequests::class.java)
     }
 
@@ -83,4 +84,9 @@ class SingletonComponentMainModule {
     fun provideLocationManager(application: Application): LocationManager {
         return (application.applicationContext.getSystemService(Context.LOCATION_SERVICE)) as LocationManager
     }
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesManager(application: Application): SharedPreferencesManager =
+        SharedPreferencesManager(application.applicationContext)
 }
