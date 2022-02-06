@@ -71,6 +71,7 @@ class GeneralSettingsFragment : DaggerFragment() {
 
             nightModeSwitchCompat.setOnCheckedChangeListener { _, b ->
                 sharedPreferencesManager.setThemeSettings(if (b) Settings.THEME_DARK else Settings.THEME_LIGHT)
+                requireActivity().recreate()
             }
 
             notificationsSettings.setOnClickListener {

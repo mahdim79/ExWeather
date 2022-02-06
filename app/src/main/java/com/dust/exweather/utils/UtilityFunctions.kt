@@ -1,11 +1,14 @@
 package com.dust.exweather.utils
 
+import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
+import com.dust.exweather.service.NotificationService
 import com.google.gson.Gson
+import dagger.android.support.DaggerAppCompatActivity
 import java.io.BufferedInputStream
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -129,6 +132,16 @@ class UtilityFunctions {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
             )
+        }
+
+        fun checkNotificationServiceRunning(context: Context): Boolean {
+            val activityManager =
+                context.getSystemService(DaggerAppCompatActivity.ACTIVITY_SERVICE) as ActivityManager
+            activityManager.getRunningServices(Int.MAX_VALUE).forEach {
+                if (it.service.className == NotificationService::class.java.name)
+                    return true
+            }
+            return false
         }
 
     }

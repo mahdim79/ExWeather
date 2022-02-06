@@ -19,4 +19,6 @@
     <string name="windSpeedText">%s kph</string>
     <string name="airPressureText">%s PA</string>
     <string name="dateText">%s %s</string>
+    <string name="duplicateFile">فایلی بااین نام از قبل وجود دارد!</string>
+    <string name="fileStoreError">مشکلی در ذخیره فایل پیش آمده است! </string>
 </resources>

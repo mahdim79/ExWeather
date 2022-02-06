@@ -1,5 +1,7 @@
 package com.dust.exweather.utils
 
+import com.dust.exweather.R
+
 object Constants {
     const val BASE_URL = "https://api.weatherapi.com/v1/"
     const val TRANSLATION_API_BASE_URL = "https://api.codebazan.ir/translate/"
@@ -19,4 +21,7 @@ object Constants {
     const val NOTIFICATION_OFF = 4
     const val THEME_LIGHT = 5
     const val THEME_DARK = 6
+    const val LIGHT_THEME_RES_ID = R.style.Theme_ExWeather
+    const val DARK_THEME_RES_ID = R.style.Theme_DarkExWeather
+    const val NOTIFICATION_TIME_EPOCH_KEY = "notificationTimeEpochKey"
 }

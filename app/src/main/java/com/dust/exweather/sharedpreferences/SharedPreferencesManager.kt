@@ -60,4 +60,12 @@ class SharedPreferencesManager constructor(private val context: Context) {
         else
             Settings.NOTIFICATION_OFF
     }
+
+    fun setLastNotificationTimeEpoch(timeEpoch: Long) {
+        pref.edit().putLong(Constants.NOTIFICATION_TIME_EPOCH_KEY, timeEpoch).apply()
+    }
+
+    fun getLastNotificationTimeEpoch(): Long =
+        pref.getLong(Constants.NOTIFICATION_TIME_EPOCH_KEY, 0L)
+
 }

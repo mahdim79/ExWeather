@@ -46,4 +46,5 @@
     <color name="mainContainerTransparentBackground">#33181A1C</color>
     <color name="humidityColor">#a9dcf4</color>
     <color name="windSpeedColor">#b9fdff</color>
+    <color name="notificationBackgroundMainColor">#35bdd0</color>
 </resources>

@@ -1,6 +1,8 @@
 package com.dust.exweather.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -8,11 +10,17 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.dust.exweather.MyApplication
 import com.dust.exweather.R
+import com.dust.exweather.service.NotificationService
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.utils.Constants
+import com.dust.exweather.utils.Settings
 import com.dust.exweather.utils.customviews.CTextView
 import com.koushikdutta.ion.Ion
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -20,15 +28,19 @@ class MainActivity : DaggerAppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var titleText: CTextView
 
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setCurrentTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
         setUpPrimaryUiStuff()
+    }
 
-
-
+    private fun setCurrentTheme() {
+        setTheme((applicationContext as MyApplication).getCurrentThemeResId())
     }
 
     private fun setUpPrimaryUiStuff() {

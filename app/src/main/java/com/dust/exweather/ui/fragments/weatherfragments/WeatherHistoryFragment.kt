@@ -227,11 +227,19 @@ class WeatherHistoryFragment : DaggerFragment() {
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "مشکلی در ذخیره فایل پیش آمده است! ${result.data}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    if (result.data == "duplicateFile") {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.fileStoreError).plus(getString(R.string.duplicateFile)),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.fileStoreError).plus(result.data),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             } else {
                 Toast.makeText(

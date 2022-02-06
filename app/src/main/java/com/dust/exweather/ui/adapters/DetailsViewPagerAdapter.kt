@@ -3,6 +3,7 @@ package com.dust.exweather.ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import com.dust.exweather.model.room.WeatherEntity
@@ -14,7 +15,7 @@ class DetailsViewPagerAdapter(
     val dataCount: Int,
     val progressLiveData:LiveData<Boolean>,
     val navController: NavController
-) : FragmentPagerAdapter(
+) : FragmentStatePagerAdapter(
     fragmentManager
 ) {
     override fun getCount(): Int = dataCount

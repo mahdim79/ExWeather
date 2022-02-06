@@ -30,6 +30,7 @@
             android:name=".ui.activities.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
+        <service android:name=".service.NotificationService"/>
     </application>
 
 </manifest>

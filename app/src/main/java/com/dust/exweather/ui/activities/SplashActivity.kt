@@ -4,18 +4,32 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.*
-import androidx.appcompat.app.AppCompatActivity
+import com.dust.exweather.MyApplication
 import com.dust.exweather.R
+import com.dust.exweather.service.NotificationService
+import com.dust.exweather.utils.UtilityFunctions
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : DaggerAppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setCurrentTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         setUpImageAnimation()
         setUpTextAnimation()
         setUpTranslationHandler()
+        startNotificationService()
+    }
 
+    private fun startNotificationService() {
+        if (!UtilityFunctions.checkNotificationServiceRunning(applicationContext))
+            startService(Intent(this, NotificationService::class.java))
+    }
+
+    private fun setCurrentTheme() {
+        setTheme((applicationContext as MyApplication).getCurrentThemeResId())
     }
 
     private fun setUpTranslationHandler() {
