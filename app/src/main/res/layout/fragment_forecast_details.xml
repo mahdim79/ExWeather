@@ -40,7 +40,7 @@
                         android:layout_marginHorizontal="@dimen/standardMargin"
                         android:layout_marginTop="@dimen/standardMargin"
                         android:gravity="center"
-                        android:text="2022-01-02"
+                        tools:text="2022-01-02"
                         android:textColor="@color/standardUiWhite"
                         android:textSize="@dimen/TextSize2x"
                         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/standardMargin"
                         android:gravity="center"
-                        android:text="جزییات پیش بینی"
+                        android:text="@string/predictionDetails"
                         android:textColor="@color/standardUiWhite"
                         android:textSize="@dimen/mainTextSize"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -363,7 +363,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:layout_marginHorizontal="@dimen/standardMargin"
-                            android:text="12°C"
+                            tools:text="12°C"
                             android:textColor="@color/standardUiWhite"
                             android:textSize="@dimen/TextSize3x" />
 
@@ -373,7 +373,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginHorizontal="@dimen/standardMargin"
-                            android:text="12°C"
+                            tools:text="12°C"
                             android:textColor="@color/standardUiYellow"
                             android:textSize="@dimen/TextSize3x" />
 
@@ -383,7 +383,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginHorizontal="@dimen/standardMargin"
-                            android:text="42°C"
+                            tools:text="42°C"
                             android:textColor="@color/standardUiWhite"
                             android:textSize="@dimen/TextSize3x" />
 
@@ -432,7 +432,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/standardMargin2x"
                         android:gravity="center"
-                        android:text="پیش بینی 24 ساعته"
+                        android:text="@string/hourlyPrediction"
                         android:textColor="@color/standardUiWhite"
                         android:textSize="@dimen/mainTextSize"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -484,7 +484,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="نمودار میزان بارندگی 24 ساعته"
+                                android:text="@string/hourlyPrecipitationChart"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 
@@ -520,7 +520,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="نمودار دمای 24 ساعته"
+                                android:text="@string/hourlyTempChart"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 
@@ -555,7 +555,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="نمودار سرعت باد 24 ساعته"
+                                android:text="@string/hourlyWindSpeedChart"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 
@@ -586,7 +586,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/standardMargin1.5x"
                             android:gravity="center"
-                            android:text="سایر جزییات"
+                            android:text="@string/otherDetails"
                             android:textColor="@color/standardUiWhite"
                             android:textSize="@dimen/mainTextSize"
                             />

@@ -39,7 +39,7 @@
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin0.5x"
-                        android:text="زبان"
+                        android:text="@string/language"
                         android:textColor="@color/standardUiBlue"
                         android:textSize="@dimen/TextSize3x"
                         android:textStyle="bold" />
@@ -58,7 +58,7 @@
                             android:layout_gravity="end"
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin"
-                            android:text="زبان برنامه"
+                            android:text="@string/applicationLanguage"
                             android:textColor="@color/standardUiPink"
                             android:textSize="12dp" />
 
@@ -70,7 +70,7 @@
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin0.5x"
                             android:layout_marginBottom="@dimen/standardMargin"
-                            android:text="فارسی"
+                            tools:text="فارسی"
                             android:textColor="?colorAccent"
                             android:textSize="@dimen/TextSize2x" />
                     </LinearLayout>
@@ -97,7 +97,7 @@
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin0.5x"
-                        android:text="تم"
+                        android:text="@string/theme"
                         android:textColor="@color/standardUiBlue"
                         android:textSize="@dimen/TextSize3x"
                         android:textStyle="bold" />
@@ -116,7 +116,7 @@
                             android:layout_gravity="end"
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginVertical="@dimen/standardMargin1.5x"
-                            android:text="حالت شب"
+                            android:text="@string/nightMode"
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textColor="@color/standardUiPink"
                             app:layout_constraintTop_toTopOf="parent"
@@ -161,7 +161,7 @@
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin0.5x"
-                        android:text="اعلانات"
+                        android:text="@string/notifications"
                         android:textColor="@color/standardUiBlue"
                         android:textSize="@dimen/TextSize3x"
                         android:textStyle="bold" />
@@ -180,7 +180,7 @@
                             android:layout_gravity="end"
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin"
-                            android:text="اعلانات برنامه"
+                            android:text="@string/applicationNotifications"
                             android:textColor="@color/standardUiPink"
                             android:textSize="12dp"
                             android:textStyle="bold" />
@@ -193,7 +193,7 @@
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin0.5x"
                             android:layout_marginBottom="@dimen/standardMargin"
-                            android:text="فعال"
+                            tools:text="فعال"
                             android:textColor="?colorAccent"
                             android:textSize="@dimen/TextSize2x" />
                     </LinearLayout>
@@ -221,7 +221,7 @@
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin0.5x"
-                        android:text="سایر"
+                        android:text="@string/others"
                         android:textColor="@color/standardUiBlue"
                         android:textSize="@dimen/TextSize3x"
                         android:textStyle="bold" />
@@ -259,7 +259,7 @@
                             app:layout_constraintTop_toTopOf="@+id/versionText"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="@+id/versionText"
-                            android:text="ورژن"
+                            android:text="@string/version"
                             android:textColor="@color/standardUiPink"
                             android:textSize="12dp"
                             android:textStyle="bold" />
@@ -282,7 +282,7 @@
                             android:layout_marginTop="@dimen/standardMargin"
                             android:layout_marginBottom="@dimen/standardMargin"
                             android:gravity="center_vertical"
-                            android:text="درباره ما"
+                            android:text="@string/aboutUs"
                             android:textColor="@color/standardUiPink"
                             android:textSize="12dp"
                             android:textStyle="bold" />

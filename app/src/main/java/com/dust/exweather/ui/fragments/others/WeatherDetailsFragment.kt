@@ -77,7 +77,7 @@ class WeatherDetailsFragment : DaggerFragment() {
     }
 
     private fun observeForApiCallState() {
-        viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner){
+        viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
                 DataStatus.DATA_RECEIVE_LOADING -> {
                     setProgressMode(true)
@@ -153,7 +153,7 @@ class WeatherDetailsFragment : DaggerFragment() {
                 viewModel.getLiveWeatherDataFromCache(),
                 alphaAnimation,
                 requireArguments().getString("location")!!,
-                object :DayDetailsViewPagerOnClickListener{
+                object : DayDetailsViewPagerOnClickListener {
                     override fun goToCurrentWeatherPage() {
                         weatherDetailsViewPager.currentItem = 1
                     }

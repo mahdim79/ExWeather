@@ -133,7 +133,7 @@ class NotificationService : DaggerService() {
                                 }
                             }.await()
                             data.current!!.day_of_week =
-                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.location!!.localtime_epoch)
+                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.location!!.localtime_epoch, applicationContext)
 
                             val mainWeatherData = MainWeatherData(
                                 data,
@@ -193,7 +193,7 @@ class NotificationService : DaggerService() {
             .setCustomContentView(RemoteViews(packageName, R.layout.notification_normal_layout))
             .setCustomBigContentView(RemoteViews(packageName, R.layout.notification_big_layout))
             .setSmallIcon(R.drawable.ic_cloud)
-            .setContentTitle("weather status")
+            .setContentTitle("ExWeather")
             .setOngoing(false)
             .setContentIntent(
                 PendingIntent.getActivity(
@@ -344,7 +344,7 @@ class NotificationService : DaggerService() {
         // calculate day of week
         for (i in listDays.indices)
             listDays[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch, applicationContext)
 
         // find duplicate data and delete it from list
         if (!listDays.isNullOrEmpty())
@@ -373,7 +373,7 @@ class NotificationService : DaggerService() {
             val forecastDay =
                 historyTempList[i]
             historyTempList[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch, applicationContext)
         }
 
         return historyTempList

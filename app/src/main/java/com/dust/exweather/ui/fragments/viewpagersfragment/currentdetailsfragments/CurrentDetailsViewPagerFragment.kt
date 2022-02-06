@@ -15,11 +15,9 @@ import com.dust.exweather.model.dataclasses.currentweather.main.Current
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
-import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.fragment_current_details_viewpager.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_viewpager.view.*
-import java.lang.StringBuilder
 import java.util.*
 
 class CurrentDetailsViewPagerFragment(
@@ -146,31 +144,31 @@ class CurrentDetailsViewPagerFragment(
                         "${
                             requireActivity().resources.getString(
                                 R.string.coAmount,
-                                (currentData.air_quality.co ?: "مشخص نشده").toString()
+                                (currentData.air_quality.co ?: getString(R.string.unknown)).toString()
                             )
                         } \n" +
                         "${
                             requireActivity().resources.getString(
                                 R.string.o3Amount,
-                                (currentData.air_quality.o3 ?: "مشخص نشده").toString()
+                                (currentData.air_quality.o3 ?: getString(R.string.unknown)).toString()
                             )
                         } \n" +
                         "${
                             requireActivity().resources.getString(
                                 R.string.no2Amount,
-                                (currentData.air_quality.no2 ?: "مشخص نشده").toString()
+                                (currentData.air_quality.no2 ?: getString(R.string.unknown)).toString()
                             )
                         } \n" +
                         "${
                             requireActivity().resources.getString(
                                 R.string.defraIndex,
-                                (currentData.air_quality.`gb-defra-index` ?: "مشخص نشده").toString()
+                                (currentData.air_quality.`gb-defra-index` ?: getString(R.string.unknown)).toString()
                             )
                         } \n" +
                         "${
                             requireActivity().resources.getString(
                                 R.string.epaIndex,
-                                (currentData.air_quality.`us-epa-index` ?: "مشخص نشده").toString()
+                                (currentData.air_quality.`us-epa-index` ?: getString(R.string.unknown)).toString()
                             )
                         } \n"
             )

@@ -4,8 +4,10 @@ import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
+import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.service.NotificationService
 import com.google.gson.Gson
 import dagger.android.support.DaggerAppCompatActivity
@@ -49,60 +51,52 @@ class UtilityFunctions {
             return sdf.format(date)
         }
 
-        fun getDayOfWeekByUnixTimeStamp(unix: Int): String {
+        fun getDayOfWeekByUnixTimeStamp(unix: Int, context: Context): String {
             val date = Date(unix.toLong() * 1000)
             val calendar = Calendar.getInstance()
             calendar.time = date
             return when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                Calendar.SATURDAY -> {
-                    "شنبه"
-                }
-                Calendar.SUNDAY -> {
-                    "یک شنبه"
-                }
-                Calendar.MONDAY -> {
-                    "دوشنبه"
-                }
-                Calendar.TUESDAY -> {
-                    "سه شنبه"
-                }
-                Calendar.WEDNESDAY -> {
-                    "چهارشنبه"
-                }
-                Calendar.THURSDAY -> {
-                    "پنج شنبه"
-                }
-                else -> {
-                    "جمعه"
-                }
+                Calendar.SATURDAY -> context.getString(R.string.saturday)
+                Calendar.SUNDAY -> context.getString(R.string.sunday)
+                Calendar.MONDAY -> context.getString(R.string.monday)
+                Calendar.TUESDAY -> context.getString(R.string.tuesday)
+                Calendar.WEDNESDAY -> context.getString(R.string.wednesday)
+                Calendar.THURSDAY -> context.getString(R.string.thursday)
+                else -> context.getString(R.string.friday)
             }
         }
 
-        fun calculateLastUpdateText(systemLastUpdateEpoch: Long): String {
+        fun calculateLastUpdateText(systemLastUpdateEpoch: Long, context: Context): String {
             val diff = System.currentTimeMillis() - systemLastUpdateEpoch
             return when {
-                diff <= 60000 -> "به تازگی"
-                diff in 60000..3600000 -> "${
-                    String.format(
-                        Locale.ENGLISH,
-                        "%.0f",
-                        floor((diff / 60000).toDouble())
+                diff <= 60000 -> context.getString(R.string.recently)
+                diff in 60000..3600000 -> {
+                    context.getString(
+                        R.string.minuteAgo, String.format(
+                            Locale.ENGLISH,
+                            "%.0f",
+                            floor((diff / 60000).toDouble())
+                        )
                     )
-                } دقیقه پیش"
-                diff in 3600000..86400000 -> "${
-                    String.format(
-                        Locale.ENGLISH,
-                        "%.0f",
-                        floor((diff / 3600000).toDouble())
+                }
+                diff in 3600000..86400000 -> {
+                    context.getString(
+                        R.string.hourAgo, String.format(
+                            Locale.ENGLISH,
+                            "%.0f",
+                            floor((diff / 3600000).toDouble())
+                        )
                     )
-                } ساعت پیش"
-                else -> "${
-                    String.format(
-                        Locale.ENGLISH,
-                        "%.0f",
-                        floor((diff / 86400000).toDouble())
+                }
+                else -> {
+                    context.getString(
+                        R.string.dayAgo, String.format(
+                            Locale.ENGLISH,
+                            "%.0f",
+                            floor((diff / 86400000).toDouble())
+                        )
                     )
-                } روز پیش"
+                }
             }
         }
 

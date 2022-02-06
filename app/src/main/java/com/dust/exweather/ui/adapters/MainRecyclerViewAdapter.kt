@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
-import com.dust.exweather.model.dataclasses.historyweather.Day
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.utils.UtilityFunctions
@@ -39,7 +38,7 @@ class MainRecyclerViewAdapter(
                 val data = listData[position].data as CurrentData
                 Glide.with(context).load(data.current!!.condition.icon.replace("//", ""))
                     .into(holder.itemStateImage)
-                holder.dayOfWeekText.text = "امروز"
+                holder.dayOfWeekText.text = context.getString(R.string.today)
                 holder.item_TempText.text = data.current.temp_c.toString()
                 holder.minTempText.visibility = View.INVISIBLE
                 holder.maxTempText.visibility = View.INVISIBLE
@@ -58,7 +57,8 @@ class MainRecyclerViewAdapter(
                 holder.minTempText.text = data.day.mintemp_c.toString()
                 holder.maxTempText.text = data.day.maxtemp_c.toString()
                 holder.weatherStateText.text = data.day.condition.text
-                holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
+                holder.dateText.text =
+                    UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
             }
             is com.dust.exweather.model.dataclasses.forecastweather.Forecastday -> {
                 val data =
@@ -69,7 +69,8 @@ class MainRecyclerViewAdapter(
                 holder.minTempText.text = data.day.mintemp_c.toString()
                 holder.maxTempText.text = data.day.maxtemp_c.toString()
                 holder.weatherStateText.text = data.day.condition.text
-                holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
+                holder.dateText.text =
+                    UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
             }
         }
         holder.item_progressBar_divider.isIndeterminate = progressMode

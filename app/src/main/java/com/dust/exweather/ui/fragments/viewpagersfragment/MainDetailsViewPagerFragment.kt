@@ -40,19 +40,26 @@ class MainDetailsViewPagerFragment(
                 requireView().apply {
                     weatherStateText.text = data.current!!.condition.text
                     weatherHumidityText.text = data.current.humidity.toString()
-                    weatherIsDayText.text = if (data.current.is_day == 1) "روز" else "شب"
+                    weatherIsDayText.text =
+                        if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
                     precipText.text = data.current.precip_mm.toString()
                     windSpeedText.text = data.current.wind_kph.toString()
                     weatherCityNameText.text = data.location!!.name
                     weatherTempText.text = "${data.current.temp_c}°C"
                     lastUpdateText.text =
-                        UtilityFunctions.calculateLastUpdateText(data.current.system_last_update_epoch)
+                        UtilityFunctions.calculateLastUpdateText(
+                            data.current.system_last_update_epoch,
+                            requireContext()
+                        )
                     airPressureText.text = data.current.pressure_mb.toString()
 
                     detailsContainer.setOnClickListener { _ ->
                         val bundle = Bundle()
                         bundle.putString("location", it[position].toDataClass().location)
-                        navController.navigate(R.id.action_currentWeatherFragment_to_weatherDetailsFragment, bundle)
+                        navController.navigate(
+                            R.id.action_currentWeatherFragment_to_weatherDetailsFragment,
+                            bundle
+                        )
                     }
 
                 }

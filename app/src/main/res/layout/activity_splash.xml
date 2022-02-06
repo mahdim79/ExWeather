@@ -21,6 +21,6 @@
         android:textSize="@dimen/TextSize4x"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/standardMargin3x"
-        android:text="وضعیت آب و هوا در گوشی شما!"/>
+        android:text="@string/splashNote"/>
 
 </RelativeLayout>

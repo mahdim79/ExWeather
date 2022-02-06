@@ -190,20 +190,23 @@ class WeatherHistoryFragment : DaggerFragment() {
                     type = "plain/text"
                     putExtra(
                         Intent.EXTRA_TITLE,
-                        "تاریخچه آب و هوای شهر $locationName ${forecastDay.day.dayOfWeek} ${forecastDay.date}"
+                        getString(
+                            R.string.shareTitle,
+                            locationName,
+                            forecastDay.day.dayOfWeek,
+                            forecastDay.date
+                        )
                     )
                     putExtra(
                         Intent.EXTRA_TEXT,
-                        "تاریخچه آب و هوای شهر $locationName ${forecastDay.day.dayOfWeek} ${forecastDay.date} \n" +
-                                "شرایط آب و هوا :${forecastDay.day.condition.text} \n" +
-                                "میزان بارندگی :${forecastDay.day.totalprecip_mm}mm\n" +
-                                "میانگین دمای روزانه :${forecastDay.day.avgtemp_c}°C\n" +
-                                "کمینه دما :${forecastDay.day.mintemp_c}°C\n" +
-                                "بیشینه دما :${forecastDay.day.maxtemp_c}°C\n" +
-                                "سرعت باد :${forecastDay.day.maxwind_kph}kph"
-
+                        viewModel.createShareSample(requireContext(), forecastDay, locationName)
                     )
-                    requireActivity().startActivity(Intent.createChooser(this, "ارسال با..."))
+                    requireActivity().startActivity(
+                        Intent.createChooser(
+                            this,
+                            getString(R.string.sendWith)
+                        )
+                    )
                 }
             }
 
@@ -223,7 +226,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                 ) {
                     Toast.makeText(
                         requireContext(),
-                        "فایل با موفقیت در ${result.data} دخیره شد!",
+                        getString(R.string.fileSuccessfullySaved, result.data),
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
@@ -244,7 +247,7 @@ class WeatherHistoryFragment : DaggerFragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "لطفا دسترسی لازم را به برنامه بدهید و دوباره تلاش کنید",
+                    getString(R.string.allowPermission),
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.Settings
 
-class SharedPreferencesManager constructor(private val context: Context) {
+class SharedPreferencesManager (private val context: Context) {
     val pref = context.getSharedPreferences(Constants.SETTINGS_KEY, Context.MODE_PRIVATE)
 
     fun setLanguageSettings(setting: Settings) {

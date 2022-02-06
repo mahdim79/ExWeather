@@ -93,7 +93,7 @@
                     android:textColor="@color/standardUiWhite"
                     android:textSize="@dimen/TextSize2x"
                     android:textDirection="ltr"
-                    android:text="برای مشاهده جزییات بیشتر ضربه بزنید"/>
+                    android:text="@string/tabToSeeMore"/>
 
             </LinearLayout>
             <LinearLayout

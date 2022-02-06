@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -17,6 +18,7 @@ import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
+import com.dust.exweather.utils.convertAmPm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -33,13 +35,17 @@ class CurrentFragmentViewModel(
     private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
 
     suspend fun insertLocationToCache(location: String) {
-        currentWeatherRepository.insertWeatherDataToRoom(arrayListOf(MainWeatherData(
-            current = null,
-            forecastDetailsData = null,
-            historyDetailsData = null,
-            location = location,
-            id = null
-        )))
+        currentWeatherRepository.insertWeatherDataToRoom(
+            arrayListOf(
+                MainWeatherData(
+                    current = null,
+                    forecastDetailsData = null,
+                    historyDetailsData = null,
+                    location = location,
+                    id = null
+                )
+            )
+        )
     }
     /* @SuppressLint("MissingPermission")
      fun getWeatherDataByUserLocation(context: Context) {
@@ -57,7 +63,7 @@ class CurrentFragmentViewModel(
         emitLoadingState()
 
         if (!UtilityFunctions.isNetworkConnectionEnabled(context)) {
-            emitFailureState("ارتباط با سرور میسر نیست")
+            emitFailureState(context.getString(R.string.connectionLost))
             return
         }
 
@@ -107,7 +113,10 @@ class CurrentFragmentViewModel(
                                 data.current.condition.weatherPersianText = persianTextResponse.body()!!.result*/
 
                             data.current!!.day_of_week =
-                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.location!!.localtime_epoch)
+                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                                    data.location!!.localtime_epoch,
+                                    context
+                                )
 
                             val mainWeatherData = MainWeatherData(
                                 data,
@@ -120,7 +129,10 @@ class CurrentFragmentViewModel(
                             // sort historical data
                             if (historyWeatherData != null) {
                                 historyWeatherData!!.forecast.forecastday =
-                                    optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
+                                    optimizeHistoryData(
+                                        historyWeatherData!!.forecast.forecastday,
+                                        context
+                                    )
                                 mainWeatherData.historyDetailsData = historyWeatherData
                             }
 
@@ -129,7 +141,8 @@ class CurrentFragmentViewModel(
                                 mainWeatherData.forecastDetailsData!!.forecast.forecastday =
                                     optimizeForecastData(
                                         mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                                        mainWeatherData.current!!.current!!.day_of_week
+                                        mainWeatherData.current!!.current!!.day_of_week,
+                                        context
                                     )
                             }
 
@@ -155,7 +168,8 @@ class CurrentFragmentViewModel(
 
     private fun optimizeForecastData(
         forecastday: List<Forecastday>,
-        currentDayOfWeek: String
+        currentDayOfWeek: String,
+        context: Context
     ): List<Forecastday> {
         val listDays = arrayListOf<Forecastday>()
         listDays.addAll(forecastday)
@@ -163,7 +177,7 @@ class CurrentFragmentViewModel(
         // calculate day of week
         for (i in listDays.indices)
             listDays[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch, context)
 
         // find duplicate data and delete it from list
         if (!listDays.isNullOrEmpty())
@@ -173,7 +187,8 @@ class CurrentFragmentViewModel(
     }
 
     private fun optimizeHistoryData(
-        forecastday: List<com.dust.exweather.model.dataclasses.historyweather.Forecastday>
+        forecastday: List<com.dust.exweather.model.dataclasses.historyweather.Forecastday>,
+        context: Context
     ): List<com.dust.exweather.model.dataclasses.historyweather.Forecastday> {
 
         // sort data by time epoch because its fetched by parallel method
@@ -192,7 +207,7 @@ class CurrentFragmentViewModel(
             val forecastDay =
                 historyTempList[i]
             historyTempList[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch, context)
         }
 
         return historyTempList
@@ -265,6 +280,52 @@ class CurrentFragmentViewModel(
 
     fun getDetailsViewPagerProgressStateLiveData(): LiveData<Boolean> =
         detailsViewPagerProgressStateLiveData
+
+    fun calculateForecastWeatherDetailsData(context: Context, forecastDay:Forecastday):String{
+        val stringBuilder = StringBuilder()
+        context.apply {
+            stringBuilder.apply {
+                append(
+                    getString(
+                        R.string.sunrise,
+                        forecastDay.astro.sunrise.convertAmPm()
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.sunset,
+                        forecastDay.astro.sunset.convertAmPm()
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonrise,
+                        forecastDay.astro.moonrise.convertAmPm()
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonset,
+                        forecastDay.astro.moonset.convertAmPm()
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonIllumination,
+                        forecastDay.astro.moon_illumination.convertAmPm()
+                    ).plus("\n")
+                )
+                append(
+                    getString(R.string.moonPhase, forecastDay.astro.moon_phase.convertAmPm()).plus(
+                        "\n"
+                    )
+                )
+                append(getString(R.string.uvIndex, forecastDay.day.uv.toString()))
+            }
+        }
+        return stringBuilder.toString()
+    }
+
 
     fun setDetailsViewPagerProgressState(b: Boolean) {
         detailsViewPagerProgressStateLiveData.value = b

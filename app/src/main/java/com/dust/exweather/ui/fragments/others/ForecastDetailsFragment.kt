@@ -17,7 +17,6 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.utils.convertAmPm
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
 import com.github.mikephil.charting.components.XAxis
@@ -34,7 +33,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_current_weather.view.*
 import kotlinx.android.synthetic.main.fragment_forecast_details.view.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.precipitationLineChart
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.temperatureLineChart
@@ -87,7 +85,8 @@ class ForecastDetailsFragment : DaggerFragment() {
                             forecastDay,
                             mainWeatherData.forecastDetailsData?.location?.name ?: "null",
                             UtilityFunctions.calculateLastUpdateText(
-                                mainWeatherData.current?.current?.system_last_update_epoch ?: 0
+                                mainWeatherData.current?.current?.system_last_update_epoch ?: 0,
+                                requireContext()
                             )
                         )
 
@@ -175,7 +174,12 @@ class ForecastDetailsFragment : DaggerFragment() {
             // update header ui
             Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
             dateText.text =
-                "${UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch)} \n" +
+                "${
+                    UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                        forecastDay.date_epoch,
+                        requireContext()
+                    )
+                } \n" +
                         "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
             weatherStateText.text = forecastDay.day.condition.text
             weatherCityNameText.text = locationName
@@ -219,14 +223,9 @@ class ForecastDetailsFragment : DaggerFragment() {
             hourlyForecastRecyclerViewAdapter.setNewData(forecastDay.hour)
 
             // update details textview
-            forecastDetailsTextView.text =
-                "طلوع آفتاب: ${forecastDay.astro.sunrise.convertAmPm()} \n" +
-                        "غروب آفتاب: ${forecastDay.astro.sunset.convertAmPm()} \n" +
-                        "طلوع ماه: ${forecastDay.astro.moonrise.convertAmPm()} \n" +
-                        "غروب ماه: ${forecastDay.astro.moonset.convertAmPm()} \n" +
-                        "روشنایی ماه: ${forecastDay.astro.moon_illumination} \n" +
-                        "فاز ماه: ${forecastDay.astro.moon_phase} \n" +
-                        " میزان اشعه ماورابنفش: ${forecastDay.day.uv}"
+
+            forecastDetailsTextView.text = viewModel.calculateForecastWeatherDetailsData(requireContext(),forecastDay)
+
         }
     }
 
@@ -371,7 +370,7 @@ class ForecastDetailsFragment : DaggerFragment() {
                     invalidate()
                 }
 
-                val lineDataSet = LineDataSet(arrayListOf(), "میزان بارندگی")
+                val lineDataSet = LineDataSet(arrayListOf(), getString(R.string.totalPrecipitation))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.standardUiBlue
@@ -449,7 +448,7 @@ class ForecastDetailsFragment : DaggerFragment() {
                     invalidate()
                 }
 
-                val lineDataSet = LineDataSet(arrayListOf(), "دما")
+                val lineDataSet = LineDataSet(arrayListOf(), getString(R.string.temperature))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.standardUiYellow
@@ -527,7 +526,7 @@ class ForecastDetailsFragment : DaggerFragment() {
                     invalidate()
                 }
 
-                val lineDataSet = LineDataSet(arrayListOf(), "سرعت باد")
+                val lineDataSet = LineDataSet(arrayListOf(), getString(R.string.windSpeed))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.windSpeedColor

@@ -80,8 +80,6 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private var firstData = true
 
-    private var hourlyForecastRecyclerViewScrolled = false
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -109,8 +107,8 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun addSomeLocations() {
         lifecycleScope.launch(Dispatchers.IO) {
 
-             /*viewModel.insertLocationToCache("London")
-             viewModel.insertLocationToCache("Tehran")*/
+            /*viewModel.insertLocationToCache("London")
+            viewModel.insertLocationToCache("Tehran")*/
 
             withContext(Dispatchers.Main) {
                 setUpUiView()

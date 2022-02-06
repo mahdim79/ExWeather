@@ -69,36 +69,36 @@ class MainActivity : DaggerAppCompatActivity() {
                 R.id.currentWeatherFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(true)
-                    titleText.text = "آب و هوای فعلی"
+                    titleText.text = getString(R.string.currentWeather)
                 }
                 R.id.weatherHistoryFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(true)
-                    titleText.text = "تاریخچه آب و هوا"
+                    titleText.text = getString(R.string.weatherHistory)
                 }
                 R.id.weatherPredictionFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(true)
-                    titleText.text = "پیش بینی آب و هوا"
+                    titleText.text = getString(R.string.weatherPrediction)
                 }
                 R.id.generalSettingsFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
-                    titleText.text = "تنظیمات عمومی"
+                    titleText.text = getString(R.string.generalSettings)
                 }
                 R.id.weatherSettingsFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
-                    titleText.text = "تنظیمات آب و هوا"
+                    titleText.text = getString(R.string.weatherSettings)
                 }
                 R.id.aboutUsFragment -> {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
-                    titleText.text = "درباره ما"
+                    titleText.text = getString(R.string.aboutUs)
                 }
                 R.id.weatherDetailsFragment -> {
                     setBottomNavigationVisibility(false)
-                    titleText.text = "جزییات آب و هوا"
+                    titleText.text = getString(R.string.weatherDetails)
                 }
             }
         }

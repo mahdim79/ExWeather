@@ -129,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:textColor="@color/standardUiYellow"
                             android:visibility="gone"
-                            android:text="تاریخچه ای برای این تاریخ موجود نیست!"
+                            android:text="@string/noHistory"
                             android:paddingVertical="@dimen/standardMargin2x"
                             android:layout_height="wrap_content"/>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -381,7 +381,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="start"
                                         android:layout_marginHorizontal="@dimen/standardMargin"
-                                        android:text="12°C"
+                                        tools:text="12°C"
                                         android:textColor="@color/standardUiWhite"
                                         android:textSize="12dp" />
 
@@ -391,7 +391,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_marginHorizontal="@dimen/standardMargin"
-                                        android:text="12°C"
+                                        tools:text="12°C"
                                         android:textColor="@color/standardUiYellow"
                                         android:textSize="12dp" />
 
@@ -401,7 +401,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
                                         android:layout_marginHorizontal="@dimen/standardMargin"
-                                        android:text="42°C"
+                                        tools:text="42°C"
                                         android:textColor="@color/standardUiWhite"
                                         android:textSize="12dp" />
 
@@ -424,7 +424,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                                android:text="خروجی اکسل"
+                                android:text="@string/exportExcel"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize2x"
                                 android:gravity="center"
@@ -447,7 +447,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                                android:text="تاریخچه 24 ساعته"
+                                android:text="@string/dailyHistory"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize2x"
                                 android:paddingVertical="@dimen/standardMargin0.5x"

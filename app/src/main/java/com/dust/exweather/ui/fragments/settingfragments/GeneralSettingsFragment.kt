@@ -37,11 +37,15 @@ class GeneralSettingsFragment : DaggerFragment() {
         requireView().apply {
 
             currentLanguageText.text =
-                if (sharedPreferencesManager.getLanguageSettings() == Settings.LANGUAGE_PERSIAN) "فارسی" else "انگلیسی"
+                if (sharedPreferencesManager.getLanguageSettings() == Settings.LANGUAGE_PERSIAN) getString(
+                    R.string.persian
+                ) else getString(R.string.english)
             nightModeSwitchCompat.isChecked =
                 sharedPreferencesManager.getThemeSettings() == Settings.THEME_DARK
             currentNotificationText.text =
-                if (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON) "فعال" else "غیرفعال"
+                if (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON) getString(
+                    R.string.enable
+                ) else getString(R.string.disable)
 
             versionText.text = BuildConfig.VERSION_NAME
 
@@ -49,9 +53,9 @@ class GeneralSettingsFragment : DaggerFragment() {
                 val currentLanguageSettings = sharedPreferencesManager.getLanguageSettings()
                 Dialog(requireContext()).apply {
                     setContentView(R.layout.choose_theme_language_dialog)
-                    positiveRadioButton.text = "فارسی"
-                    negativeRadioButton.text = "انگلیسی"
-                    dialogTitle.text = "انتخاب زبان"
+                    positiveRadioButton.text = getString(R.string.persian)
+                    negativeRadioButton.text = getString(R.string.english)
+                    dialogTitle.text = getString(R.string.chooseLang)
                     if (currentLanguageSettings == Settings.LANGUAGE_PERSIAN)
                         positiveRadioButton.isChecked = true
                     else
@@ -59,10 +63,10 @@ class GeneralSettingsFragment : DaggerFragment() {
                     add_button.setOnClickListener {
                         if (positiveRadioButton.isChecked) {
                             sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_PERSIAN)
-                            requireView().currentLanguageText.text = "فارسی"
+                            requireView().currentLanguageText.text = getString(R.string.persian)
                         } else {
                             sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_ENGLISH)
-                            requireView().currentLanguageText.text = "انگلیسی"
+                            requireView().currentLanguageText.text = getString(R.string.english)
                         }
                         dismiss()
                     }
@@ -78,9 +82,9 @@ class GeneralSettingsFragment : DaggerFragment() {
                 val currentNotificationSettings = sharedPreferencesManager.getNotificationSettings()
                 Dialog(requireContext()).apply {
                     setContentView(R.layout.choose_theme_language_dialog)
-                    positiveRadioButton.text = "فعال"
-                    negativeRadioButton.text = "غیرفعال"
-                    dialogTitle.text = "اعلانات"
+                    positiveRadioButton.text = getString(R.string.enable)
+                    negativeRadioButton.text = getString(R.string.disable)
+                    dialogTitle.text = getString(R.string.notifications)
                     if (currentNotificationSettings == Settings.NOTIFICATION_ON)
                         positiveRadioButton.isChecked = true
                     else
@@ -88,10 +92,10 @@ class GeneralSettingsFragment : DaggerFragment() {
                     add_button.setOnClickListener {
                         if (positiveRadioButton.isChecked) {
                             sharedPreferencesManager.setNotificationSettings(Settings.NOTIFICATION_ON)
-                            requireView().currentNotificationText.text = "فعال"
+                            requireView().currentNotificationText.text = getString(R.string.enable)
                         } else {
                             sharedPreferencesManager.setNotificationSettings(Settings.NOTIFICATION_OFF)
-                            requireView().currentNotificationText.text = "غیرفعال"
+                            requireView().currentNotificationText.text = getString(R.string.disable)
                         }
                         dismiss()
                     }

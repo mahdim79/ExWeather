@@ -15,7 +15,6 @@ import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.ui.adapters.HistoryHourlyRecyclerViewAdapter
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.utils.convertAmPm
 import com.dust.exweather.viewmodel.factories.HistoryDetailsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.HistoryDetailsFragmentViewModel
 import com.github.mikephil.charting.components.XAxis
@@ -27,11 +26,6 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_forecast_details.view.*
-import kotlinx.android.synthetic.main.fragment_forecast_details.view.hourlyForecastTextView
-import kotlinx.android.synthetic.main.fragment_forecast_details.view.precipitationLineChart
-import kotlinx.android.synthetic.main.fragment_forecast_details.view.temperatureLineChart
-import kotlinx.android.synthetic.main.fragment_forecast_details.view.windSpeedLineChart
-import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.*
 import javax.inject.Inject
 
 class HistoryDetailsFragment : DaggerFragment() {
@@ -73,12 +67,17 @@ class HistoryDetailsFragment : DaggerFragment() {
             // disable swipe refresh layout
             forecastDetailsSwipeRefreshLayout.isEnabled = false
             // setup header ui
-            forecastDetailsText.text = "جزییات تاریخچه"
-            hourlyForecastTextView.text = "تاریخچه 24 ساعته"
+            forecastDetailsText.text = getString(R.string.historyDetails)
+            hourlyForecastTextView.text = getString(R.string.dailyHistory)
 
             Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
             dateText.text =
-                "${UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch)} \n" +
+                "${
+                    UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                        forecastDay.date_epoch,
+                        requireContext()
+                    )
+                } \n" +
                         "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
             weatherStateText.text = forecastDay.day.condition.text
             weatherCityNameText.text = requireArguments().getString("location")
@@ -115,13 +114,8 @@ class HistoryDetailsFragment : DaggerFragment() {
 
             // setup details textview
             forecastDetailsTextView.text =
-                "طلوع آفتاب: ${forecastDay.astro.sunrise.convertAmPm()} \n" +
-                        "غروب آفتاب: ${forecastDay.astro.sunset.convertAmPm()} \n" +
-                        "طلوع ماه: ${forecastDay.astro.moonrise.convertAmPm()} \n" +
-                        "غروب ماه: ${forecastDay.astro.moonset.convertAmPm()} \n" +
-                        "روشنایی ماه: ${forecastDay.astro.moon_illumination} \n" +
-                        "فاز ماه: ${forecastDay.astro.moon_phase} \n" +
-                        " میزان اشعه ماورابنفش: ${forecastDay.day.uv}"
+                viewModel.calculateHistoryWeatherDetailsData(requireContext(), forecastDay)
+
 
             // setup RecyclerView
             hourlyForecastRecyclerView.layoutManager =
@@ -184,9 +178,14 @@ class HistoryDetailsFragment : DaggerFragment() {
 
                 val precipitationDataList = arrayListOf<Entry>()
                 for (i in forecastDay.hour.indices)
-                    precipitationDataList.add(Entry(i.toFloat(), forecastDay.hour[i].precip_mm.toFloat()))
+                    precipitationDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            forecastDay.hour[i].precip_mm.toFloat()
+                        )
+                    )
 
-                val lineDataSet = LineDataSet(precipitationDataList, "میزان بارندگی")
+                val lineDataSet = LineDataSet(precipitationDataList, getString(R.string.totalPrecipitation))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.standardUiBlue
@@ -268,7 +267,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                 for (i in forecastDay.hour.indices)
                     tempDataList.add(Entry(i.toFloat(), forecastDay.hour[i].temp_c.toFloat()))
 
-                val lineDataSet = LineDataSet(tempDataList, "دما")
+                val lineDataSet = LineDataSet(tempDataList, getString(R.string.temperature))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.standardUiYellow
@@ -348,9 +347,14 @@ class HistoryDetailsFragment : DaggerFragment() {
 
                 val windSpeedDataList = arrayListOf<Entry>()
                 for (i in forecastDay.hour.indices)
-                    windSpeedDataList.add(Entry(i.toFloat(), forecastDay.hour[i].wind_kph.toFloat()))
+                    windSpeedDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            forecastDay.hour[i].wind_kph.toFloat()
+                        )
+                    )
 
-                val lineDataSet = LineDataSet(windSpeedDataList, "سرعت باد")
+                val lineDataSet = LineDataSet(windSpeedDataList, getString(R.string.windSpeed))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.windSpeedColor

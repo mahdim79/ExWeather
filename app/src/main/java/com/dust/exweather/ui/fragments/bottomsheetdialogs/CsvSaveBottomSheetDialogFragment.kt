@@ -38,7 +38,7 @@ class CsvSaveBottomSheetDialogFragment(
                     onSelectPath(fileNameEditText.text.toString())
                     this@CsvSaveBottomSheetDialogFragment.dismiss()
                 } else {
-                    textInputLayout.error = "لطفا نام فایل را درست وارد کنید"
+                    textInputLayout.error = getString(R.string.wrongFileName)
                 }
             }
         }

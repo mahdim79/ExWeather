@@ -55,7 +55,12 @@ class ForecastDetailsViewPagerFragment(
     private fun observeLiveData() {
 
         data.observe(viewLifecycleOwner) { data ->
-            calculateCurrentPositionData(data)?.let { setUpUi(it, data[position].toDataClass().location) }
+            calculateCurrentPositionData(data)?.let {
+                setUpUi(
+                    it,
+                    data[position].toDataClass().location
+                )
+            }
         }
 
         progressStateLiveData.observe(viewLifecycleOwner) {
@@ -70,7 +75,7 @@ class ForecastDetailsViewPagerFragment(
         }
     }
 
-    private fun setUpUi(currentData: WeatherForecast, currentLocation:String) {
+    private fun setUpUi(currentData: WeatherForecast, currentLocation: String) {
         if (firstData)
             setUpPrimaryUi(currentData, currentLocation)
         else
@@ -270,7 +275,7 @@ class ForecastDetailsViewPagerFragment(
                         currentData.forecast.forecastday[i].day.totalprecip_mm.toFloat()
                     )
                 )
-            val lineDataSet = LineDataSet(dataList, "میزان بارندگی روزانه")
+            val lineDataSet = LineDataSet(dataList, getString(R.string.dailyPrecipitation))
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -371,7 +376,7 @@ class ForecastDetailsViewPagerFragment(
                     )
                 )
 
-            val minTempDataSet = LineDataSet(minTempDataList, "کمینه")
+            val minTempDataSet = LineDataSet(minTempDataList, getString(R.string.minimum))
             val chartColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
             minTempDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
@@ -392,7 +397,7 @@ class ForecastDetailsViewPagerFragment(
                     IFillFormatter { _, _ -> axisLeft.axisMinimum }
             }
 
-            val avgTempDataSet = LineDataSet(avgTempDataList, "میانگین")
+            val avgTempDataSet = LineDataSet(avgTempDataList, getString(R.string.average))
             avgTempDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -412,7 +417,7 @@ class ForecastDetailsViewPagerFragment(
                     IFillFormatter { _, _ -> axisLeft.axisMinimum }
             }
 
-            val maxTempDataSet = LineDataSet(maxTempDataList, "بیشینه")
+            val maxTempDataSet = LineDataSet(maxTempDataList, getString(R.string.maximum))
             maxTempDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -496,7 +501,7 @@ class ForecastDetailsViewPagerFragment(
                         currentData.forecast.forecastday[i].day.avghumidity.toFloat()
                     )
                 )
-            val lineDataSet = LineDataSet(dataList, "رطوبت هوا")
+            val lineDataSet = LineDataSet(dataList, getString(R.string.airHumidity))
             val chartColor = ContextCompat.getColor(requireContext(), R.color.humidityColor)
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
@@ -580,7 +585,7 @@ class ForecastDetailsViewPagerFragment(
                         currentData.forecast.forecastday[i].day.maxwind_kph.toFloat()
                     )
                 )
-            val lineDataSet = LineDataSet(dataList, "سرعت باد")
+            val lineDataSet = LineDataSet(dataList, getString(R.string.windSpeed))
             val chartColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
