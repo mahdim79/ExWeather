@@ -5,7 +5,7 @@
     android:layout_height="350dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/standardMargin0.5x"
-    android:backgroundTint="@color/mainContainerTransparentBackground"
+    android:backgroundTint="?colorSurface"
     app:cardCornerRadius="@dimen/standardMargin"
     app:cardElevation="0dp">
 

@@ -17,7 +17,7 @@
     <color name="light_black2">#787777</color>
     <color name="blue">#00BCD4</color>
     <color name="dark_blue">#2C3A87</color>
-    <color name="black_normal">#171717</color>
+    <color name="black_normal">#121212</color>
     <color name="black_transparent">#63171717</color>
     <color name="white_bottom_navigation">#E8E8E8</color>
     <color name="white_varient">#D8D8D8</color>
@@ -47,4 +47,6 @@
     <color name="humidityColor">#a9dcf4</color>
     <color name="windSpeedColor">#b9fdff</color>
     <color name="notificationBackgroundMainColor">#35bdd0</color>
+    <color name="mainContainerWhiteTransparentBackground">#33181A1C</color>
+    <color name="mainContainerBlackTransparentBackground">#66000000</color>
 </resources>

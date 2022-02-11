@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="?colorOnPrimary"
+    android:background="?colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.dust.exweather.utils.customviews.CTextView
@@ -14,7 +14,7 @@
         tools:text="انتخاب"
         android:gravity="center"
         android:textStyle="bold"
-        android:textColor="@color/standardUiDark"
+        android:textColor="?android:textColor"
         android:padding="@dimen/standardMargin"
         android:textSize="@dimen/TextSize4x"/>
 
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:textSize="@dimen/TextSize3x"
             tools:text="اول"
-            android:textColor="@color/standardUiDark"
+            android:textColor="?android:textColor"
             android:buttonTint="@color/standardUiDark"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/standardMargin0.5x"/>
@@ -44,7 +44,7 @@
             tools:text="دوم"
             android:textSize="@dimen/TextSize3x"
             android:buttonTint="@color/standardUiDark"
-            android:textColor="@color/standardUiDark"
+            android:textColor="?android:textColor"
             android:layout_height="wrap_content"/>
     </RadioGroup>
 

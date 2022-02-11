@@ -14,6 +14,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_view_header"
+        app:itemIconTint="?android:textColor"
+        app:itemTextColor="?android:textColor"
+        android:background="?colorPrimary"
         app:menu="@menu/navigation_view_menu" />
 
     <RelativeLayout
@@ -62,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/standardUiWhite"
+            android:background="?colorPrimary"
             app:itemIconTint="@color/bottom_navigation_text_item_selector"
             app:itemTextColor="@color/bottom_navigation_text_item_selector"
             app:menu="@menu/bottom_navigation_menu" />

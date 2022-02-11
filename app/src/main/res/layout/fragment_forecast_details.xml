@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                 android:layout_marginVertical="@dimen/standardMargin"
-                android:backgroundTint="@color/mainContainerTransparentBackground"
+                android:backgroundTint="?colorSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp">
 
@@ -424,7 +424,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="@dimen/standardMargin"
                         app:layout_constraintTop_toBottomOf="@+id/chanceContainer"
-                        android:background="@color/mainContainerTransparentBackground"/>
+                        android:background="?colorSurface"/>
 
                     <com.dust.exweather.utils.customviews.CTextView
                         android:id="@+id/hourlyForecastTextView"
@@ -459,7 +459,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginTop="@dimen/standardMargin"
                         app:layout_constraintTop_toBottomOf="@+id/hourlyForecastRecyclerView"
-                        android:background="@color/mainContainerTransparentBackground"/>
+                        android:background="?colorSurface"/>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/precipitationCardView"
@@ -467,7 +467,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                         android:layout_marginTop="@dimen/standardMargin2x"
-                        android:backgroundTint="@color/mainContainerTransparentBackground"
+                        android:backgroundTint="?colorSurface"
                         app:cardCornerRadius="@dimen/standardMargin"
                         app:cardElevation="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -503,7 +503,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                         android:layout_marginTop="@dimen/standardMargin2x"
-                        android:backgroundTint="@color/mainContainerTransparentBackground"
+                        android:backgroundTint="?colorSurface"
                         app:cardCornerRadius="@dimen/standardMargin"
                         app:cardElevation="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -538,7 +538,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                         android:layout_marginTop="@dimen/standardMargin2x"
-                        android:backgroundTint="@color/mainContainerTransparentBackground"
+                        android:backgroundTint="?colorSurface"
                         app:cardCornerRadius="@dimen/standardMargin"
                         app:cardElevation="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -573,7 +573,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:background="@color/mainContainerTransparentBackground"
+                        android:background="?colorSurface"
                         android:gravity="center"
                         android:paddingBottom="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin1.5x"

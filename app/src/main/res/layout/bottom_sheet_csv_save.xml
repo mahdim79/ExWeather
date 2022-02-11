@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/constraint"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="?colorPrimary"
     android:layout_height="250dp"
     android:paddingVertical="@dimen/standardMargin">
 
@@ -16,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:errorEnabled="true"
         app:errorTextColor="@color/standardUiRed"
+        android:textColorHint="?android:textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,6 +29,7 @@
             android:layout_marginHorizontal="@dimen/standardMargin"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/standardUiBlue"
+            android:textColor="?android:textColor"
             android:hint="@string/fileNameWithDefault"
             android:textSize="@dimen/TextSize3x" />
     </com.google.android.material.textfield.TextInputLayout>

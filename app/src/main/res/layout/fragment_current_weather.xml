@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/detailsViewPager"
                     android:layout_margin="@dimen/standardMargin"
-                    android:backgroundTint="@color/mainContainerTransparentBackground"
+                    android:backgroundTint="?colorSurface"
                     app:cardCornerRadius="@dimen/standardMargin0.5x"
                     app:cardElevation="0dp">
 
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                android:backgroundTint="@color/mainContainerTransparentBackground"
+                android:backgroundTint="?colorSurface"
                 android:layoutDirection="ltr"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp">
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                android:backgroundTint="@color/mainContainerTransparentBackground"
+                android:backgroundTint="?colorSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp">
 
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin2x"
                 android:layout_marginVertical="@dimen/standardMargin1.5x"
-                android:backgroundTint="@color/mainContainerTransparentBackground"
+                android:backgroundTint="?colorSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp">
 

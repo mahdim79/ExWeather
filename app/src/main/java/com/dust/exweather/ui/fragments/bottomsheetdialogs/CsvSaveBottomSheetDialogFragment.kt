@@ -27,6 +27,10 @@ class CsvSaveBottomSheetDialogFragment(
 
     }
 
+    override fun getTheme(): Int {
+        return R.style.BottomSheetDialogRounded
+    }
+
     private fun setUpUi() {
         requireView().apply {
             fileNameEditText.hint = fileNameEditText.hint.toString().plus(defaultName)

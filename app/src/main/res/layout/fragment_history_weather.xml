@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/standardMargin"
-        android:backgroundTint="@color/mainContainerTransparentBackground"
+        android:backgroundTint="?colorSurface"
         app:cardCornerRadius="@dimen/standardMargin"
         app:cardElevation="0dp">
 
@@ -30,7 +30,7 @@
                     android:id="@+id/calendarViewContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/mainContainerTransparentBackground"
+                    android:backgroundTint="?colorSurface"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
                             android:layout_height="50dp"
                             android:layout_marginTop="@dimen/standardMargin1.5x"
                             android:background="?attr/selectableItemBackground"
-                            android:backgroundTint="@color/mainContainerTransparentBackground"
+                            android:backgroundTint="?colorSurface"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
                             android:layout_height="50dp"
                             android:layout_marginTop="@dimen/standardMargin1.5x"
                             android:background="?attr/selectableItemBackground"
-                            android:backgroundTint="@color/mainContainerTransparentBackground"
+                            android:backgroundTint="?colorSurface"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginTop="@dimen/standardMargin1.5x"
                     app:layout_constraintTop_toBottomOf="@+id/calendarViewContainer"
-                    android:backgroundTint="@color/mainContainerTransparentBackground"
+                    android:backgroundTint="?colorSurface"
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                                 android:layout_height="1dp"
                                 android:layout_marginHorizontal="@dimen/standardMargin6x"
                                 android:layout_marginTop="@dimen/standardMargin"
-                                android:background="@color/mainContainerTransparentBackground"
+                                android:background="?colorSurface"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
