@@ -108,4 +108,6 @@
     <string name="noHistory">تاریخچه ای برای این تاریخ موجود نیست!</string>
     <string name="exportExcel">خروجی اکسل</string>
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
+    <string name="morning">صبح</string>
+    <string name="afterNoon">عصر</string>
 </resources>

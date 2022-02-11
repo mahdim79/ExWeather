@@ -26,7 +26,7 @@
                 android:layout_marginTop="@dimen/standardMargin2x"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
-                >
+                app:cardElevation="@dimen/standardMargin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,7 +71,8 @@
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin0.5x"
                             android:layout_marginBottom="@dimen/standardMargin"
-                            tools:text="فارسی"
+                            tools:text="English"
+                            android:textDirection="ltr"
                             android:textColor="?android:textColor"
                             android:textSize="@dimen/TextSize2x" />
                     </LinearLayout>
@@ -85,11 +86,12 @@
                 android:layout_marginTop="@dimen/standardMargin1.5x"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
-                >
+                app:cardElevation="@dimen/standardMargin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layoutDirection="ltr"
                     android:orientation="vertical">
 
                     <com.dust.exweather.utils.customviews.CTextView
@@ -98,6 +100,7 @@
                         android:layout_gravity="end"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                         android:layout_marginTop="@dimen/standardMargin"
+                        android:textDirection="ltr"
                         android:text="@string/theme"
                         android:textColor="@color/standardUiBlue"
                         android:textSize="@dimen/TextSize3x"
@@ -122,7 +125,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:textColor="?android:textColor"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             android:textSize="12dp"
                             android:textStyle="bold" />
 
@@ -133,7 +136,7 @@
                             android:layout_gravity="end"
                             app:layout_constraintTop_toTopOf="@+id/nightModeText"
                             app:layout_constraintBottom_toBottomOf="@+id/nightModeText"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin0.5x"
                             app:thumbTint="?colorAccent"
@@ -150,7 +153,7 @@
                 android:layout_marginTop="@dimen/standardMargin1.5x"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
-                >
+                app:cardElevation="@dimen/standardMargin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -196,7 +199,8 @@
                             android:layout_marginHorizontal="@dimen/standardMargin2x"
                             android:layout_marginTop="@dimen/standardMargin0.5x"
                             android:layout_marginBottom="@dimen/standardMargin"
-                            tools:text="فعال"
+                            tools:text="Enable"
+                            android:textDirection="ltr"
                             android:textColor="?android:textColor"
                             android:textSize="@dimen/TextSize2x" />
                     </LinearLayout>
@@ -211,7 +215,7 @@
                 android:layout_marginBottom="@dimen/standardMargin6x"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
-                >
+                app:cardElevation="@dimen/standardMargin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -234,6 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/standardMargin"
+                        android:layoutDirection="ltr"
                         android:layout_marginTop="@dimen/standardMargin0.5x"
                         android:foreground="?attr/selectableItemBackground">
 
@@ -241,13 +246,14 @@
                             android:id="@+id/versionText"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/versionLabel"
+                            app:layout_constraintStart_toEndOf="@+id/versionLabel"
                             tools:text="1.0.0-beta"
                             android:gravity="center_vertical"
                             android:textColor="@color/standardUiGray"
                             android:textSize="12dp"
+                            android:textDirection="rtl"
                             android:textStyle="bold" />
 
                         <com.dust.exweather.utils.customviews.CTextView
@@ -260,9 +266,10 @@
                             android:layout_marginBottom="@dimen/standardMargin"
                             android:gravity="center_vertical"
                             app:layout_constraintTop_toTopOf="@+id/versionText"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="@+id/versionText"
                             android:text="@string/version"
+                            android:textDirection="ltr"
                             android:textColor="?android:textColor"
                             android:textSize="12dp"
                             android:textStyle="bold" />

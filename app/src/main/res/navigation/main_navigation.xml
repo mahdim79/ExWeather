@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/forecastDetailsFragment"
         android:name="com.dust.exweather.ui.fragments.others.ForecastDetailsFragment"
-        android:label="ForecastDetailsFragment" >
+         >
         <argument
             android:name="location"
             app:argType="string" />
@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/historyDetailsFragment"
         android:name="com.dust.exweather.ui.fragments.others.HistoryDetailsFragment"
-        android:label="HistoryDetailsFragment" >
+        >
         <argument
             android:name="latlong"
             app:argType="string" />

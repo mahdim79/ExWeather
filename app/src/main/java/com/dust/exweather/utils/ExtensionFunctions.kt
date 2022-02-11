@@ -1,3 +1,8 @@
 package com.dust.exweather.utils
 
-fun String.convertAmPm():String = this.replace("AM", "صبح").replace("PM", "عصر")
+import android.content.Context
+import com.dust.exweather.R
+
+fun String.convertAmPm(context: Context): String =
+    this.replace("AM", context.getString(R.string.morning))
+        .replace("PM", context.getString(R.string.afterNoon))

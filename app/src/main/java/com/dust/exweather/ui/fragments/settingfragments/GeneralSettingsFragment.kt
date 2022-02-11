@@ -1,6 +1,7 @@
 package com.dust.exweather.ui.fragments.settingfragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.navigation.findNavController
 import com.dust.exweather.BuildConfig
 import com.dust.exweather.R
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.ui.activities.SplashActivity
 import com.dust.exweather.utils.Settings
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.choose_theme_language_dialog.*
@@ -61,21 +63,22 @@ class GeneralSettingsFragment : DaggerFragment() {
                     else
                         negativeRadioButton.isChecked = true
                     add_button.setOnClickListener {
-                        if (positiveRadioButton.isChecked) {
-                            sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_PERSIAN)
-                            requireView().currentLanguageText.text = getString(R.string.persian)
+                        if ((currentLanguageSettings == Settings.LANGUAGE_ENGLISH && negativeRadioButton.isChecked) || (currentLanguageSettings == Settings.LANGUAGE_PERSIAN && positiveRadioButton.isChecked)) {
+                            dismiss()
                         } else {
-                            sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_ENGLISH)
-                            requireView().currentLanguageText.text = getString(R.string.english)
+                            if (positiveRadioButton.isChecked)
+                                sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_PERSIAN)
+                            else
+                                sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_ENGLISH)
+                            restartApplication()
                         }
-                        dismiss()
                     }
                 }.show()
             }
 
             nightModeSwitchCompat.setOnCheckedChangeListener { _, b ->
                 sharedPreferencesManager.setThemeSettings(if (b) Settings.THEME_DARK else Settings.THEME_LIGHT)
-                requireActivity().recreate()
+                restartApplication()
             }
 
             notificationsSettings.setOnClickListener {
@@ -107,6 +110,13 @@ class GeneralSettingsFragment : DaggerFragment() {
                     .navigate(R.id.action_generalSettingsFragment_to_aboutUsFragment)
             }
 
+        }
+    }
+
+    private fun restartApplication() {
+        requireActivity().apply {
+            finishAffinity()
+            startActivity(Intent(this, SplashActivity::class.java))
         }
     }
 }

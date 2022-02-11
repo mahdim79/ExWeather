@@ -27,9 +27,7 @@ class CsvSaveBottomSheetDialogFragment(
 
     }
 
-    override fun getTheme(): Int {
-        return R.style.BottomSheetDialogRounded
-    }
+    override fun getTheme(): Int = R.style.BottomSheetDialogRounded
 
     private fun setUpUi() {
         requireView().apply {

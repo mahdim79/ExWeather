@@ -104,6 +104,8 @@
     <string name="nightMode">حالت شب</string>
     <string name="applicationNotifications">اعلانات برنامه</string>
     <string name="others">سایر</string>
+    <string name="morning">صبح</string>
+    <string name="afterNoon">عصر</string>
     <string name="version">ورژن</string>
     <string name="noHistory">تاریخچه ای برای این تاریخ موجود نیست!</string>
     <string name="exportExcel">خروجی اکسل</string>

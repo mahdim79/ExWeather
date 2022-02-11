@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="@dimen/standardMargin0.5x"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="?colorSurface"
+        app:cardCornerRadius="@dimen/standardMargin"
+        app:cardElevation="0dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:background="@color/full_transparent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/standardMargin1.5x"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/itemProgressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:progress="1"
+                    android:max="1"
+                    android:indeterminate="true"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/location_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/standardMargin2x"
+                    android:gravity="center"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Tehran" />
+
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/forecastTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standardMargin"
+                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:text="@string/weatherPrediction"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize3x"
+                    android:gravity="center"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/location_textView" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainForecastRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standardMargin"
+                    android:layoutDirection="rtl"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin0.5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/forecastTextView" />
+
+
+                <com.dust.exweather.utils.customviews.CTextView
+                    android:id="@+id/hourlyForecastTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standardMargin"
+                    android:layout_marginTop="@dimen/standardMargin2x"
+                    android:text="@string/hourlyRecentPrediction"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="@dimen/TextSize3x"
+                    android:textDirection="rtl"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mainForecastRecyclerView" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todaysHourlyForecastRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standardMargin"
+                    android:layoutDirection="rtl"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/standardMargin0.5x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hourlyForecastTextView" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/precipitationCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/standardMargin1.5x"
+                    android:backgroundTint="?colorSurface"
+                    android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                    app:layout_constraintTop_toBottomOf="@+id/todaysHourlyForecastRecyclerView"
+                    app:cardCornerRadius="@dimen/standardMargin"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/precipChartText"
+                            android:layout_width="match_parent"
+                            android:text="@string/hourlyPrecipitationPredictionChart"
+                            android:textSize="@dimen/TextSize3x"
+                            android:textColor="@color/standardUiWhite"
+                            android:gravity="center"
+                            android:layout_marginVertical="@dimen/standardMargin"
+                            android:layout_height="wrap_content"/>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/precipitationLineChart"
+                            android:layout_width="match_parent"
+                            android:layoutDirection="rtl"
+                            android:layout_height="200dp"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/temperatureCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/standardMargin1.5x"
+                    android:backgroundTint="?colorSurface"
+                    android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                    app:layout_constraintTop_toBottomOf="@+id/precipitationCardView"
+                    app:cardCornerRadius="@dimen/standardMargin"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/tempChartText"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:text="@string/hourlyTempPredictionChart"
+                            android:textSize="@dimen/TextSize3x"
+                            android:textColor="@color/standardUiWhite"
+                            android:layout_marginVertical="@dimen/standardMargin"
+                            android:layout_height="wrap_content"/>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/temperatureLineChart"
+                            android:layout_width="match_parent"
+                            android:layoutDirection="rtl"
+                            android:layout_height="200dp"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/humidityCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/standardMargin1.5x"
+                    android:backgroundTint="?colorSurface"
+                    android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                    app:layout_constraintTop_toBottomOf="@+id/temperatureCardView"
+                    app:cardCornerRadius="@dimen/standardMargin"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/humidityChartText"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:text="@string/humidityPredictionChart"
+                            android:textSize="@dimen/TextSize3x"
+                            android:textColor="@color/standardUiWhite"
+                            android:layout_marginVertical="@dimen/standardMargin"
+                            android:layout_height="wrap_content"/>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/humidityLineChart"
+                            android:layout_width="match_parent"
+                            android:layoutDirection="rtl"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="@dimen/standardMargin0.5x"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/windSpeedCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/standardMargin1.5x"
+                    android:backgroundTint="?colorSurface"
+                    android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+                    app:layout_constraintTop_toBottomOf="@+id/humidityCardView"
+                    app:cardCornerRadius="@dimen/standardMargin"
+                    app:cardElevation="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <com.dust.exweather.utils.customviews.CTextView
+                            android:id="@+id/windSpeedChartText"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:text="@string/windSpeedPredictionChart"
+                            android:textSize="@dimen/TextSize3x"
+                            android:textColor="@color/standardUiWhite"
+                            android:layout_marginVertical="@dimen/standardMargin"
+                            android:layout_height="wrap_content"/>
+
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/windSpeedLineChart"
+                            android:layout_width="match_parent"
+                            android:layoutDirection="rtl"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="@dimen/standardMargin0.5x"
+                            />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

@@ -21,6 +21,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.activities.SplashActivity
+import com.dust.exweather.utils.Settings
 import com.dust.exweather.utils.UtilityFunctions
 import dagger.android.DaggerService
 import kotlinx.coroutines.*
@@ -133,7 +134,10 @@ class NotificationService : DaggerService() {
                                 }
                             }.await()
                             data.current!!.day_of_week =
-                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.location!!.localtime_epoch, applicationContext)
+                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                                    data.location!!.localtime_epoch,
+                                    applicationContext
+                                )
 
                             val mainWeatherData = MainWeatherData(
                                 data,
@@ -185,6 +189,9 @@ class NotificationService : DaggerService() {
     }
 
     private fun sendNotification(data: MainWeatherData) {
+        if (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_OFF)
+            return
+
         val contentIntent = Intent(this, SplashActivity::class.java)
         contentIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
@@ -344,7 +351,10 @@ class NotificationService : DaggerService() {
         // calculate day of week
         for (i in listDays.indices)
             listDays[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch, applicationContext)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                    listDays[i].date_epoch,
+                    applicationContext
+                )
 
         // find duplicate data and delete it from list
         if (!listDays.isNullOrEmpty())
@@ -373,7 +383,10 @@ class NotificationService : DaggerService() {
             val forecastDay =
                 historyTempList[i]
             historyTempList[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch, applicationContext)
+                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                    forecastDay.date_epoch,
+                    applicationContext
+                )
         }
 
         return historyTempList

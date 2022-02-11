@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -27,7 +28,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
-    private lateinit var titleText: CTextView
+    private lateinit var titleText: TextView
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager

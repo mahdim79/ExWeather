@@ -108,4 +108,6 @@
     <string name="noHistory"> There is no history for this date! </string>
     <string name="exportExcel"> Excel output </string>
     <string name="tabToSeeMore"> Tap to see more details </string>
+    <string name="morning">Morning</string>
+    <string name="afterNoon">AfterNoon</string>
 </resources>

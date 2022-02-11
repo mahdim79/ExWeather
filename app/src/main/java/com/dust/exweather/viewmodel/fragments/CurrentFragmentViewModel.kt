@@ -288,35 +288,35 @@ class CurrentFragmentViewModel(
                 append(
                     getString(
                         R.string.sunrise,
-                        forecastDay.astro.sunrise.convertAmPm()
+                        forecastDay.astro.sunrise.convertAmPm(context)
                     ).plus("\n")
                 )
                 append(
                     getString(
                         R.string.sunset,
-                        forecastDay.astro.sunset.convertAmPm()
+                        forecastDay.astro.sunset.convertAmPm(context)
                     ).plus("\n")
                 )
                 append(
                     getString(
                         R.string.moonrise,
-                        forecastDay.astro.moonrise.convertAmPm()
+                        forecastDay.astro.moonrise.convertAmPm(context)
                     ).plus("\n")
                 )
                 append(
                     getString(
                         R.string.moonset,
-                        forecastDay.astro.moonset.convertAmPm()
+                        forecastDay.astro.moonset.convertAmPm(context)
                     ).plus("\n")
                 )
                 append(
                     getString(
                         R.string.moonIllumination,
-                        forecastDay.astro.moon_illumination.convertAmPm()
+                        forecastDay.astro.moon_illumination.convertAmPm(context)
                     ).plus("\n")
                 )
                 append(
-                    getString(R.string.moonPhase, forecastDay.astro.moon_phase.convertAmPm()).plus(
+                    getString(R.string.moonPhase, forecastDay.astro.moon_phase.convertAmPm(context)).plus(
                         "\n"
                     )
                 )
