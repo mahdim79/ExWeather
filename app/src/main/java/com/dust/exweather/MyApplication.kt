@@ -7,6 +7,7 @@ import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.Settings
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
+import java.util.*
 import javax.inject.Inject
 
 class MyApplication : DaggerApplication() {
@@ -16,11 +17,17 @@ class MyApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         getTypeFace()
-        getCurrentThemeResId()
     }
 
     fun getCurrentThemeResId(): Int {
         return if (sharedPreferencesManager.getThemeSettings() == Settings.THEME_LIGHT) Constants.LIGHT_THEME_RES_ID else Constants.DARK_THEME_RES_ID
+    }
+    
+    fun getCurrentLocaleStr():String{
+        return if (sharedPreferencesManager.getLanguageSettings() == Settings.LANGUAGE_ENGLISH)
+            "en"
+        else
+            "fa"
     }
 
     fun getTypeFace(): Typeface {

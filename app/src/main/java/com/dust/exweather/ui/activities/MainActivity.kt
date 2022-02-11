@@ -20,6 +20,7 @@ import com.dust.exweather.utils.customviews.CTextView
 import com.koushikdutta.ion.Ion
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -33,10 +34,20 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setCurrentTheme()
+        setCurrentLocaleConfiguration()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
         setUpPrimaryUiStuff()
+    }
+
+    private fun setCurrentLocaleConfiguration() {
+        val localeStr = (applicationContext as MyApplication).getCurrentLocaleStr()
+        val locale = Locale(localeStr)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     private fun setCurrentTheme() {
