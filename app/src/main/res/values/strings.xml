@@ -110,4 +110,10 @@
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
     <string name="morning">صبح</string>
     <string name="afterNoon">عصر</string>
+    <string name="aboutUsDescription">متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی </string>
+    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="companyLocation">company location address</string>
+    <string name="companyPhoneNumber">+98 905 499 4569</string>
+    <string name="openWith">باز کردن با…</string>
+
 </resources>

@@ -110,4 +110,10 @@
     <string name="tabToSeeMore"> Tap to see more details </string>
     <string name="morning">Morning</string>
     <string name="afterNoon">AfterNoon</string>
+    <string name="aboutUsDescription">Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description Sample Description </string>
+    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="companyLocation">company location address</string>
+    <string name="companyPhoneNumber">+98 905 499 4569</string>
+    <string name="openWith">Open With…</string>
+
 </resources>

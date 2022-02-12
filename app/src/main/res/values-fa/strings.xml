@@ -110,4 +110,9 @@
     <string name="noHistory">تاریخچه ای برای این تاریخ موجود نیست!</string>
     <string name="exportExcel">خروجی اکسل</string>
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
+    <string name="aboutUsDescription">متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی </string>
+    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="companyLocation">company location address</string>
+    <string name="companyPhoneNumber">+98 905 499 4569</string>
+    <string name="openWith">باز کردن با…</string>
 </resources>

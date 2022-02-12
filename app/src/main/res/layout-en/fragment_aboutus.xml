@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?colorPrimary"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary"
+        android:paddingBottom="@dimen/standardMargin4x">
+
+        <ImageView
+            android:id="@+id/mainImage"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="@dimen/standardMargin6x"
+            android:src="@drawable/ic_launcher_background" />
+
+        <com.dust.exweather.utils.customviews.CTextView
+            android:id="@+id/aboutUsDescriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainImage"
+            android:layout_marginTop="@dimen/standardMargin2x"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainImage"
+            android:paddingHorizontal="@dimen/standardMargin2x"
+            android:textColor="?android:textColor"
+            android:textSize="11dp"
+            android:text="@string/aboutUsDescription" />
+
+        <com.dust.exweather.utils.customviews.CTextView
+            android:id="@+id/contactusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainImage"
+            android:layout_marginTop="@dimen/standardMargin1.5x"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutUsDescriptionText"
+            android:paddingHorizontal="@dimen/standardMargin2x"
+            android:textColor="?android:textColor"
+            android:textSize="11dp"
+            tools:text="09054994569" />
+
+        <ImageView
+            android:id="@+id/shareImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_share_24"
+            app:layout_constraintBottom_toTopOf="@+id/telegramImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:foreground="?attr/selectableItemBackground"
+            app:tint="?android:textColor"
+            android:layout_marginBottom="@dimen/standardMargin"
+            app:layout_constraintTop_toBottomOf="@+id/contactusText"
+            android:layout_marginTop="@dimen/standardMargin4x"
+            android:padding="@dimen/standardMargin"
+            />
+
+
+        <ImageView
+            android:id="@+id/telegramImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintEnd_toStartOf="@+id/whatsAppImageView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:tint="@color/standardUiBlue"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/whatsAppImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/standardMargin"
+            android:layout_toEndOf="@+id/telegramImageView"
+            android:src="@drawable/telegram"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/metaImageView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:tint="@color/standardUiGray"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/telegramImageView" />
+
+        <ImageView
+            android:id="@+id/metaImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/standardMargin"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_toEndOf="@+id/whatsAppImageView"
+            android:src="@drawable/whatsapp"
+            app:tint="@color/standardUiGreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/instagramImageView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/whatsAppImageView" />
+
+        <ImageView
+            android:id="@+id/instagramImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@dimen/standardMargin"
+            android:layout_toEndOf="@+id/metaImageView"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/instagram"
+            android:padding="3dp"
+            app:tint="@color/standardUiPink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/metaImageView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
