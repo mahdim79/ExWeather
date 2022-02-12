@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -11,9 +11,10 @@
         android:id="@+id/dialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="choose"
+        tools:text="انتخاب"
         android:gravity="center"
         android:textStyle="bold"
+        android:layout_marginVertical="@dimen/standardMargin"
         android:textColor="?android:textColor"
         android:padding="@dimen/standardMargin"
         android:textSize="@dimen/TextSize4x"/>
@@ -21,18 +22,20 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/blue"/>
+        android:background="@color/white_bottom_navigation"
+        />
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:layout_marginTop="@dimen/standardMargin1.5x"
+        android:layoutDirection="rtl"
         android:layout_height="wrap_content">
         <RadioButton
             android:id="@+id/positiveRadioButton"
             android:layout_width="match_parent"
             android:textSize="@dimen/TextSize3x"
-            tools:text="first"
+            tools:text="اول"
             android:textColor="?android:textColor"
             android:buttonTint="@color/standardUiDark"
             android:layout_height="wrap_content"
@@ -40,7 +43,7 @@
         <RadioButton
             android:id="@+id/negativeRadioButton"
             android:layout_width="match_parent"
-            tools:text="last"
+            tools:text="دوم"
             android:textSize="@dimen/TextSize3x"
             android:buttonTint="@color/standardUiDark"
             android:textColor="?android:textColor"

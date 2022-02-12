@@ -1,6 +1,5 @@
 package com.dust.exweather.ui.fragments.settingfragments
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +10,9 @@ import com.dust.exweather.BuildConfig
 import com.dust.exweather.R
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.activities.SplashActivity
+import com.dust.exweather.ui.fragments.bottomsheetdialogs.ChooseLanguageThemeBottomSheetDialog
 import com.dust.exweather.utils.Settings
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.choose_theme_language_dialog.*
 import kotlinx.android.synthetic.main.fragment_general_settings.view.*
 import javax.inject.Inject
 
@@ -53,27 +52,21 @@ class GeneralSettingsFragment : DaggerFragment() {
 
             languageSettings.setOnClickListener {
                 val currentLanguageSettings = sharedPreferencesManager.getLanguageSettings()
-                Dialog(requireContext()).apply {
-                    setContentView(R.layout.choose_theme_language_dialog)
-                    positiveRadioButton.text = getString(R.string.persian)
-                    negativeRadioButton.text = getString(R.string.english)
-                    dialogTitle.text = getString(R.string.chooseLang)
-                    if (currentLanguageSettings == Settings.LANGUAGE_PERSIAN)
-                        positiveRadioButton.isChecked = true
-                    else
-                        negativeRadioButton.isChecked = true
-                    add_button.setOnClickListener {
-                        if ((currentLanguageSettings == Settings.LANGUAGE_ENGLISH && negativeRadioButton.isChecked) || (currentLanguageSettings == Settings.LANGUAGE_PERSIAN && positiveRadioButton.isChecked)) {
-                            dismiss()
-                        } else {
-                            if (positiveRadioButton.isChecked)
-                                sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_PERSIAN)
-                            else
-                                sharedPreferencesManager.setLanguageSettings(Settings.LANGUAGE_ENGLISH)
-                            restartApplication()
-                        }
+                ChooseLanguageThemeBottomSheetDialog(
+                    positiveButtonChecked = (currentLanguageSettings == Settings.LANGUAGE_PERSIAN),
+                    title = getString(R.string.chooseLang),
+                    positiveText = getString(R.string.persian),
+                    negativeText = getString(R.string.english)
+                ) { positiveChecked ->
+                    val settings =
+                        if (positiveChecked) Settings.LANGUAGE_PERSIAN else Settings.LANGUAGE_ENGLISH
+
+                    if (!((currentLanguageSettings == Settings.LANGUAGE_ENGLISH && settings == Settings.LANGUAGE_ENGLISH) || (currentLanguageSettings == Settings.LANGUAGE_PERSIAN && settings == Settings.LANGUAGE_PERSIAN))) {
+                        sharedPreferencesManager.setLanguageSettings(settings)
+                        restartApplication()
                     }
-                }.show()
+
+                }.show(childFragmentManager, "chooseLangDialog")
             }
 
             nightModeSwitchCompat.setOnCheckedChangeListener { _, b ->
@@ -83,26 +76,21 @@ class GeneralSettingsFragment : DaggerFragment() {
 
             notificationsSettings.setOnClickListener {
                 val currentNotificationSettings = sharedPreferencesManager.getNotificationSettings()
-                Dialog(requireContext()).apply {
-                    setContentView(R.layout.choose_theme_language_dialog)
-                    positiveRadioButton.text = getString(R.string.enable)
-                    negativeRadioButton.text = getString(R.string.disable)
-                    dialogTitle.text = getString(R.string.notifications)
-                    if (currentNotificationSettings == Settings.NOTIFICATION_ON)
-                        positiveRadioButton.isChecked = true
-                    else
-                        negativeRadioButton.isChecked = true
-                    add_button.setOnClickListener {
-                        if (positiveRadioButton.isChecked) {
-                            sharedPreferencesManager.setNotificationSettings(Settings.NOTIFICATION_ON)
-                            requireView().currentNotificationText.text = getString(R.string.enable)
-                        } else {
-                            sharedPreferencesManager.setNotificationSettings(Settings.NOTIFICATION_OFF)
-                            requireView().currentNotificationText.text = getString(R.string.disable)
-                        }
-                        dismiss()
-                    }
-                }.show()
+
+                ChooseLanguageThemeBottomSheetDialog(
+                    positiveButtonChecked = (currentNotificationSettings == Settings.NOTIFICATION_ON),
+                    title = getString(R.string.notifications),
+                    positiveText = getString(R.string.enable),
+                    negativeText = getString(R.string.disable)
+                ) { positiveChecked ->
+
+                    sharedPreferencesManager.setNotificationSettings(if (positiveChecked) Settings.NOTIFICATION_ON else Settings.NOTIFICATION_OFF)
+
+                    requireView().currentNotificationText.text =
+                        getString(if (positiveChecked) R.string.enable else R.string.disable)
+
+                }.show(childFragmentManager, "notificationDialog")
+
             }
 
             aboutUsSettings.setOnClickListener {

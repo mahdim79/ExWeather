@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -14,6 +14,7 @@
         tools:text="انتخاب"
         android:gravity="center"
         android:textStyle="bold"
+        android:layout_marginVertical="@dimen/standardMargin"
         android:textColor="?android:textColor"
         android:padding="@dimen/standardMargin"
         android:textSize="@dimen/TextSize4x"/>
@@ -21,11 +22,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/blue"/>
+        android:background="@color/white_bottom_navigation"
+        />
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:layout_marginTop="@dimen/standardMargin1.5x"
         android:layoutDirection="rtl"
         android:layout_height="wrap_content">
