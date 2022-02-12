@@ -5,6 +5,7 @@ import com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment
 import com.dust.exweather.ui.fragments.others.ForecastDetailsFragment
 import com.dust.exweather.ui.fragments.others.HistoryDetailsFragment
 import com.dust.exweather.ui.fragments.others.WeatherDetailsFragment
+import com.dust.exweather.ui.fragments.settingfragments.AddLocationFragment
 import com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment
 import com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment
 import com.dust.exweather.ui.fragments.weatherfragments.CurrentWeatherFragment
@@ -42,5 +43,8 @@ abstract class ContributeMainFragments {
 
     @ContributesAndroidInjector(modules = [HistoryDetailsFragmentModule::class])
     abstract fun contributeHistoryDetailsFragment(): HistoryDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAddLocationFragment():AddLocationFragment
 
 }

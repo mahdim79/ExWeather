@@ -4,7 +4,7 @@ import android.content.Context
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.Settings
 
-class SharedPreferencesManager (private val context: Context) {
+class SharedPreferencesManager(private val context: Context) {
     val pref = context.getSharedPreferences(Constants.SETTINGS_KEY, Context.MODE_PRIVATE)
 
     fun setLanguageSettings(setting: Settings) {
@@ -67,5 +67,11 @@ class SharedPreferencesManager (private val context: Context) {
 
     fun getLastNotificationTimeEpoch(): Long =
         pref.getLong(Constants.NOTIFICATION_TIME_EPOCH_KEY, 0L)
+
+    fun getDefaultLocation(): String? = pref.getString(Constants.DEFAULT_LOCATION_KEY, "")
+
+    fun setDefaultLocation(location: String) {
+        pref.edit().putString(Constants.DEFAULT_LOCATION_KEY, location).apply()
+    }
 
 }

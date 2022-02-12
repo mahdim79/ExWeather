@@ -15,6 +15,7 @@ object Constants {
     const val THEME_KEY = "themeKey"
     const val NOTIFICATION_KEY = "notificationKey"
     const val SETTINGS_KEY = "settings"
+    const val DEFAULT_LOCATION_KEY = "defaultLocation"
     const val LANGUAGE_PERSIAN = 1
     const val LANGUAGE_ENGLISH = 2
     const val NOTIFICATION_ON = 3

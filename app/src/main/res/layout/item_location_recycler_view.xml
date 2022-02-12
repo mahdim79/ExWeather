@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/standardMargin1.5x"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/locationNameText"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Tehran"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize3x"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="match_parent"/>
+
+    <RadioButton
+        android:id="@+id/defaultRadioButton"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/removeImage"
+        tools:text="Default"
+        tools:checked="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/removeImage"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_baseline_remove_circle_yellow_24"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,11 @@
     </fragment>
     <fragment
         android:id="@+id/weatherSettingsFragment"
-        android:name="com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment" />
+        android:name="com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment" >
+        <action
+            android:id="@+id/action_weatherSettingsFragment_to_addLocationFragment"
+            app:destination="@id/addLocationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"
         android:name="com.dust.exweather.ui.fragments.aboutfragments.AboutUsFragment" />
@@ -71,4 +75,8 @@
             android:name="location"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/addLocationFragment"
+        android:name="com.dust.exweather.ui.fragments.settingfragments.AddLocationFragment"
+        />
 </navigation>
