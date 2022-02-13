@@ -1,5 +1,6 @@
 package com.dust.exweather.ui.fragments.bottomsheetdialogs
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.location.LocationData
 import com.dust.exweather.ui.adapters.LocationsRecyclerViewAdapter
+import com.dust.exweather.utils.Constants
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_locations.*
 import kotlinx.android.synthetic.main.bottom_sheet_locations.view.*
@@ -51,9 +53,15 @@ class LocationsBottomSheetDialog(
             }
         }
 
-        addLocationButton.setOnClickListener {
-            dismiss()
-            onAddLocationButtonClicked()
+        // set limit on add location
+        if (locationList.size <= (Constants.LOCATION_LIMIT_COUNT - 1)) {
+            addLocationButton.setOnClickListener {
+                dismiss()
+                onAddLocationButtonClicked()
+            }
+        } else {
+            addLocationButton.text = "حداکثر تعداد مکان"
+            addLocationButton.setBackgroundColor(Color.GRAY)
         }
     }
 }

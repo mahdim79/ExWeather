@@ -25,4 +25,5 @@ object Constants {
     const val LIGHT_THEME_RES_ID = R.style.Theme_ExWeather
     const val DARK_THEME_RES_ID = R.style.Theme_DarkExWeather
     const val NOTIFICATION_TIME_EPOCH_KEY = "notificationTimeEpochKey"
+    const val LOCATION_LIMIT_COUNT = 5
 }
