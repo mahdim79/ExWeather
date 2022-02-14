@@ -17,6 +17,16 @@
         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
         android:layout_height="30dp"/>
 
+    <ImageView
+        android:id="@+id/addCurrentLocationButton"
+        android:layout_width="25dp"
+        android:src="@drawable/ic_baseline_my_location_24"
+        app:layout_constraintStart_toEndOf="@+id/addLocationButton"
+        app:layout_constraintTop_toTopOf="@+id/locationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/locationTitle"
+        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+        android:layout_height="25dp"/>
+
     <TextView
         android:id="@+id/maxTextView"
         android:layout_width="30dp"

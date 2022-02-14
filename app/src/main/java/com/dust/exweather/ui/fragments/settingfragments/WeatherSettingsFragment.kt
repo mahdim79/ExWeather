@@ -5,21 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dust.exweather.R
+import com.dust.exweather.ui.fragments.bottomsheetdialogs.AddCurrentLocationBottomSheetDialog
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.LocationsBottomSheetDialog
 import com.dust.exweather.viewmodel.factories.WeatherSettingsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.WeatherSettingsViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_add_location.*
-import kotlinx.android.synthetic.main.fragment_weather_settings.*
-import kotlinx.android.synthetic.main.fragment_weather_settings.UnitsSettings
-import kotlinx.android.synthetic.main.fragment_weather_settings.locationsSettings
 import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WeatherSettingsFragment : DaggerFragment() {
@@ -77,6 +76,45 @@ class WeatherSettingsFragment : DaggerFragment() {
                         },
                         onAddLocationButtonClicked = {
                             findNavController().navigate(R.id.action_weatherSettingsFragment_to_addLocationFragment)
+                        }, onAddCurrentLocationButtonClicked = {
+                            AddCurrentLocationBottomSheetDialog(
+                                onRequestCurrentLocation = {
+                                    val result = viewModel.getCurrentUserLocation(requireContext())
+                                    if (result == null) {
+                                        true
+                                    } else {
+                                        Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT)
+                                            .show()
+                                        false
+                                    }
+                                }, onLocationAddButtonClicked = { location ->
+                                    location?.let {
+                                        lifecycleScope.launch(Dispatchers.IO) {
+                                            val result = viewModel.insertLocationToCache(it)
+                                            withContext(Dispatchers.Main) {
+                                                if (result.isEmpty()) {
+                                                    Toast.makeText(
+                                                        requireContext(),
+                                                        "با موفقیت اضافه شد",
+                                                        Toast.LENGTH_SHORT
+                                                    )
+                                                        .show()
+                                                } else {
+                                                    Toast.makeText(
+                                                        requireContext(),
+                                                        result,
+                                                        Toast.LENGTH_SHORT
+                                                    )
+                                                        .show()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }, locationDetailsLiveData = viewModel.getLocationDetailsLiveData()
+                            ).show(
+                                childFragmentManager,
+                                "AddCurrentLocationBottomSheetDialog"
+                            )
                         })
                         .show(
                             childFragmentManager,

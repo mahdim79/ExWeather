@@ -10,6 +10,9 @@
         <action
             android:id="@+id/action_currentWeatherFragment_to_weatherDetailsFragment"
             app:destination="@id/weatherDetailsFragment" />
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_addLocationFragment"
+            app:destination="@id/addLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/weatherHistoryFragment"

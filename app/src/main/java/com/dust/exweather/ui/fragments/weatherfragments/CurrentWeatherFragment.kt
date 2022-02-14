@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -161,7 +162,7 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun setUpAddLocationButton() {
         requireView().addLocationImageView.setOnClickListener {
-            // requireActivity().findNavController(R.id.mainFragmentContainerView).navigate()
+            findNavController().navigate(R.id.action_currentWeatherFragment_to_addLocationFragment)
         }
     }
 

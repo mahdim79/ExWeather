@@ -112,6 +112,10 @@ class MainActivity : DaggerAppCompatActivity() {
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.weatherDetails)
                 }
+                R.id.addLocationFragment -> {
+                    setBottomNavigationVisibility(false)
+                    titleText.text = "افزودن مکان جدید"
+                }
             }
         }
     }

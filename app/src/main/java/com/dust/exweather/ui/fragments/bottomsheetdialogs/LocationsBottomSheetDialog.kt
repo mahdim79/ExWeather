@@ -18,7 +18,8 @@ class LocationsBottomSheetDialog(
     private val locationList: ArrayList<LocationData>,
     private val onLocationRemoved: (String) -> Unit,
     private val onDefaultLocationChanged: (String) -> Unit,
-    private val onAddLocationButtonClicked: () -> Unit
+    private val onAddLocationButtonClicked: () -> Unit,
+    private val onAddCurrentLocationButtonClicked: () -> Unit
 ) :
     BottomSheetDialogFragment() {
     override fun onCreateView(
@@ -60,6 +61,11 @@ class LocationsBottomSheetDialog(
             onAddLocationButtonClicked()
         }
 
+        addCurrentLocationButton.setOnClickListener {
+            dismiss()
+            onAddCurrentLocationButtonClicked()
+        }
+
         // set limit on add location
         if (locationList.size <= (Constants.LOCATION_LIMIT_COUNT - 1))
             enableAddLocationButton()
@@ -70,11 +76,13 @@ class LocationsBottomSheetDialog(
 
     private fun enableAddLocationButton() {
         addLocationButton.visibility = View.VISIBLE
+        addCurrentLocationButton.visibility = View.VISIBLE
         maxTextView.visibility = View.GONE
     }
 
     private fun disableAddLocationButton() {
         addLocationButton.visibility = View.INVISIBLE
+        addCurrentLocationButton.visibility = View.INVISIBLE
         maxTextView.visibility = View.VISIBLE
     }
 

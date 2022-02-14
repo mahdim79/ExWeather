@@ -117,7 +117,7 @@ class AddLocationFragmentViewModel(
         return ""
     }
 
-    suspend fun getDirectCachedData(): List<MainWeatherData> =
+    private suspend fun getDirectCachedData(): List<MainWeatherData> =
         addLocationRepository.getDirectCachedData()
 
     private fun emitFailureSearch() {
