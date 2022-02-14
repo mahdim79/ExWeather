@@ -2,9 +2,11 @@ package com.dust.exweather.model.repositories
 
 import com.dust.exweather.model.dataclasses.location.SearchLocation
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
+import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.room.WeatherEntity
+import com.dust.exweather.model.toDataClass
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
@@ -24,4 +26,7 @@ class AddLocationRepository @Inject constructor() {
 
     suspend fun addNewLocationToCache(listEntities: List<WeatherEntity>) =
         weatherDao.insertWeatherData(listEntities)
+
+    suspend fun getDirectCachedData(): List<MainWeatherData> =
+        weatherDao.getDirectWeatherData().map { it.toDataClass() }
 }

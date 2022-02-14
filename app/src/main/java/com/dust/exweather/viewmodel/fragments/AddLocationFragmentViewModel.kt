@@ -94,7 +94,13 @@ class AddLocationFragmentViewModel(
         }
     }
 
-    suspend fun insertLocationToCache(location: String) {
+    suspend fun insertLocationToCache(location: String): String {
+        val currentData = getDirectCachedData()
+        currentData.forEach { data ->
+            if (data.location == location)
+                return "این مکان قبلا اضافه شده است!"
+        }
+
         if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty())
             sharedPreferencesManager.setDefaultLocation(location)
         addLocationRepository.addNewLocationToCache(
@@ -108,8 +114,11 @@ class AddLocationFragmentViewModel(
                 ).toEntity()
             )
         )
+        return ""
     }
 
+    suspend fun getDirectCachedData(): List<MainWeatherData> =
+        addLocationRepository.getDirectCachedData()
 
     private fun emitFailureSearch() {
         manualLocationPickerFragmentLiveData.value =

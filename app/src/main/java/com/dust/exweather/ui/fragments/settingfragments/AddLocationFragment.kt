@@ -35,6 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_location.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -112,17 +113,34 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                 latLangString = latLangString.substring(0, latLangString.lastIndexOf(","))
                     .plus(latLangString.substring(latLangString.lastIndexOf(",") + 1))
 
-                Log.i("addLocationLog", latLangString)
-
                 lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.insertLocationToCache(latLangString)
-                    withContext(Dispatchers.Main) {
-                        findNavController().popBackStack()
+                    val result = viewModel.insertLocationToCache(latLangString)
+                    if (result.isEmpty()) {
+                        // that means the operation was successful
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "با موفقیت انجام شد",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            findNavController().popBackStack()
+                        }
+                    } else {
+                        // that means the operation was not successful
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                "این مکان از قبل اضافه شده است",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
                     }
                 }
 
             } catch (e: Exception) {
-                Log.i("excep", e.message.toString())
+                Log.i("LatLangCalculateException", e.message.toString())
                 Toast.makeText(
                     requireContext(),
                     "لطفا مکان مورد نظر را از روی نقشه یا به صورت دستی از لیست انتخاب کنید",
@@ -206,6 +224,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                     stopManualLocationPickMode()
                     locationEditText.setText("${locationDetails.name} | ${locationDetails.lat},${locationDetails.lon}")
                     addMarkerAndZoomToLocation(lat = locationDetails.lat, lon = locationDetails.lon)
+                    requireActivity().addLocationFloatButton.visibility = View.VISIBLE
                 }
             }
         )
@@ -244,6 +263,8 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                     floatingActionButton.visibility = View.VISIBLE
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
+                    Toast.makeText(requireContext(), "خطایی پیش آمده است", Toast.LENGTH_SHORT)
+                        .show()
                     locationEditText.setText("")
                     floatingActionButton.visibility = View.GONE
                 }
