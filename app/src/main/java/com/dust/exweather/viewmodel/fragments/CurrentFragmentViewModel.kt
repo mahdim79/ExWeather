@@ -34,19 +34,6 @@ class CurrentFragmentViewModel(
 
     private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
 
-    suspend fun insertLocationToCache(location: String) {
-        currentWeatherRepository.insertWeatherDataToRoom(
-            arrayListOf(
-                MainWeatherData(
-                    current = null,
-                    forecastDetailsData = null,
-                    historyDetailsData = null,
-                    location = location,
-                    id = null
-                )
-            )
-        )
-    }
     /* @SuppressLint("MissingPermission")
      fun getWeatherDataByUserLocation(context: Context) {
          if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)

@@ -1,11 +1,9 @@
 package com.dust.exweather.ui.fragments.bottomsheetdialogs
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.location.LocationData
@@ -47,21 +45,37 @@ class LocationsBottomSheetDialog(
             locationsRecyclerView.apply {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                adapter = LocationsRecyclerViewAdapter(locationList, onDefaultLocationChanged) { latLong ->
+                adapter = LocationsRecyclerViewAdapter(
+                    locationList,
+                    onDefaultLocationChanged
+                ) { latLong ->
                     onLocationRemoved(latLong)
+                    enableAddLocationButton()
                 }
             }
         }
 
-        // set limit on add location
-        if (locationList.size <= (Constants.LOCATION_LIMIT_COUNT - 1)) {
-            addLocationButton.setOnClickListener {
-                dismiss()
-                onAddLocationButtonClicked()
-            }
-        } else {
-            addLocationButton.text = "حداکثر تعداد مکان"
-            addLocationButton.setBackgroundColor(Color.GRAY)
+        addLocationButton.setOnClickListener {
+            dismiss()
+            onAddLocationButtonClicked()
         }
+
+        // set limit on add location
+        if (locationList.size <= (Constants.LOCATION_LIMIT_COUNT - 1))
+            enableAddLocationButton()
+        else
+            disableAddLocationButton()
+
     }
+
+    private fun enableAddLocationButton() {
+        addLocationButton.visibility = View.VISIBLE
+        maxTextView.visibility = View.GONE
+    }
+
+    private fun disableAddLocationButton() {
+        addLocationButton.visibility = View.INVISIBLE
+        maxTextView.visibility = View.VISIBLE
+    }
+
 }

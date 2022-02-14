@@ -15,8 +15,9 @@ import java.util.*
 
 class LocationsRecyclerViewAdapter(
     private val dataList: ArrayList<LocationData>,
-    private val onLocationRemoved: (String) -> Unit,
-    private val onDefaultLocationChanged: (String) -> Unit
+    private val onDefaultLocationChanged: (String) -> Unit,
+    private val onLocationRemoved: (String) -> Unit
+
 ) :
     RecyclerView.Adapter<LocationsRecyclerViewAdapter.MainViewHolder>() {
 
@@ -34,13 +35,27 @@ class LocationsRecyclerViewAdapter(
             if (dataList[position].default) {
                 defaultRadioButton.isChecked = true
                 defaultRadioButton.text = "Default"
+            }else{
+                defaultRadioButton.isChecked = false
+                defaultRadioButton.text = ""
             }
 
             removeImage.setOnClickListener { image ->
                 if (dataList[position].redRemoveState) {
                     resetAllRemoveStates()
                     onLocationRemoved(dataList[position].latlong)
-                    dataList.removeAt(position)
+                    if (dataList[position].default){
+                        if (dataList.size == 1){
+                            onDefaultLocationChanged("")
+                            dataList.removeAt(position)
+                        } else{
+                            dataList.removeAt(position)
+                            onDefaultLocationChanged(dataList[0].latlong)
+                            setNewDefaultLocation(0)
+                        }
+                    }else{
+                        dataList.removeAt(position)
+                    }
                     notifyDataSetChanged()
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:background="?colorPrimary"
+    android:layoutDirection="ltr"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <RelativeLayout
@@ -22,15 +23,52 @@
                     android:layout_height="match_parent"/>
 
             </FrameLayout>
-            <EditText
-                android:id="@+id/locationEditText"
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
+                app:cardElevation="@dimen/standardMargin"
+                app:cardCornerRadius="17dp"
                 android:layout_margin="@dimen/standardMargin1.5x"
-                android:padding="@dimen/standardMargin0.5x"
-                android:hint="Enter Location"
-                android:textSize="@dimen/TextSize3x"
-                android:background="@drawable/location_edit_text_selector"
-                android:layout_height="35dp"/>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:background="@color/white_bottom_navigation"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/backButton"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        app:tint="@color/light_black2"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/standardMargin"
+                        android:layout_height="wrap_content"/>
+
+                    <ImageView
+                        android:id="@+id/removeTextButton"
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_baseline_close_24"
+                        app:tint="@color/light_black2"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/standardMargin"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/locationEditText"
+                        android:layout_width="match_parent"
+                        android:padding="@dimen/standardMargin0.5x"
+                        android:hint="Enter Location"
+                        android:textSize="@dimen/TextSize3x"
+                        android:layout_marginStart="@dimen/standardMargin"
+                        android:background="@drawable/location_edit_text_selector"
+                        android:layout_height="35dp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
         </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

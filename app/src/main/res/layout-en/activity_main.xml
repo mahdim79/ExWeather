@@ -57,6 +57,17 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:navGraph="@navigation/main_navigation" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addLocationFloatButton"
+                android:layout_width="wrap_content"
+                app:fabSize="normal"
+                android:src="@drawable/ic_baseline_done_24"
+                android:layout_gravity="bottom|start"
+                android:visibility="gone"
+                android:layout_margin="@dimen/standardMargin3x"
+                android:layout_height="wrap_content"/>
+
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

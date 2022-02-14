@@ -1,86 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingBottom="@dimen/standardMargin1.5x"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="?colorPrimary"
+    android:paddingBottom="@dimen/standardMargin1.5x">
+
+    <ImageView
+        android:id="@+id/addLocationButton"
+        android:layout_width="30dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/locationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/locationTitle"
+        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+        android:layout_height="30dp"/>
+
+    <TextView
+        android:id="@+id/maxTextView"
+        android:layout_width="30dp"
+        android:text="max"
+        android:textColor="@color/standardUiRed"
+        android:textSize="@dimen/TextSize3x"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/locationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/locationTitle"
+        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+        android:layout_height="30dp"/>
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/locationTitle"
         android:layout_width="match_parent"
-        android:text="مکان های من"
-        android:gravity="center"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standardMargin"
-        android:textColor="?android:textColor"
+        android:gravity="center"
         android:padding="@dimen/standardMargin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="مکان های من"
+        android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize4x"
-        android:layout_height="wrap_content"/>
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/dividerView"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/standardMargin"
-        app:layout_constraintTop_toBottomOf="@+id/locationTitle"
         android:background="@color/white_bottom_navigation"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationTitle" />
 
     <View
         android:id="@+id/dividerView2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/standardMargin"
-        app:layout_constraintTop_toBottomOf="@+id/locationTitle"
         android:background="@color/white_bottom_navigation"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationsRecyclerView"
         android:layout_width="match_parent"
-        android:overScrollMode="never"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dividerView"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standardMargin"
+        android:overScrollMode="never"
         android:padding="@dimen/standardMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView"
         tools:itemCount="5"
-        tools:listitem="@layout/item_location_recycler_view"
-        android:layout_height="wrap_content"/>
+        tools:listitem="@layout/item_location_recycler_view" />
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/noteText"
         android:layout_width="match_parent"
-        android:textColor="@color/light_black"
-        android:text="مکان پیش فرض مکانی است که اعلانات برنامه برای آن تنظیم می شود!"
-        android:textSize="@dimen/TextSize2x"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/standardMargin"
-        app:layout_constraintTop_toBottomOf="@+id/locationsRecyclerView"
-        android:layout_height="wrap_content"/>
-
-    <com.dust.exweather.utils.customviews.CButton
-        android:id="@+id/addLocationButton"
-        android:layout_width="150dp"
-        android:text="افزودن مکان جدید"
-        android:textColor="@color/white"
-        android:textSize="@dimen/TextSize3x"
-        android:layout_marginBottom="@dimen/standardMargin"
-        android:layout_marginTop="@dimen/standardMargin2x"
-        android:background="@drawable/main_button_shape"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="مکان پیش فرض مکانی است که اعلانات برنامه برای آن تنظیم می شود!"
+        android:textColor="@color/light_black"
+        android:textSize="@dimen/TextSize2x"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteText"
-        android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-        android:layout_height="40dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationsRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -12,7 +13,11 @@ import com.dust.exweather.ui.fragments.bottomsheetdialogs.LocationsBottomSheetDi
 import com.dust.exweather.viewmodel.factories.WeatherSettingsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.WeatherSettingsViewModel
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_add_location.*
 import kotlinx.android.synthetic.main.fragment_weather_settings.*
+import kotlinx.android.synthetic.main.fragment_weather_settings.UnitsSettings
+import kotlinx.android.synthetic.main.fragment_weather_settings.locationsSettings
+import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +26,9 @@ class WeatherSettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var weatherSettingsViewModelFactory: WeatherSettingsViewModelFactory
+
+    @Inject
+    lateinit var inputMethodManager: InputMethodManager
 
     private lateinit var viewModel: WeatherSettingsViewModel
 
@@ -34,8 +42,16 @@ class WeatherSettingsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hideKeyboard()
         setUpViewModel()
         setUpView()
+    }
+
+    private fun hideKeyboard() {
+        inputMethodManager.hideSoftInputFromWindow(
+            requireView().locationsSettings.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
     private fun setUpViewModel() {

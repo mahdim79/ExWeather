@@ -3,6 +3,7 @@ package com.dust.exweather.di.singletoncomponent.modules
 import android.app.Application
 import android.content.Context
 import android.location.LocationManager
+import android.view.inputmethod.InputMethodManager
 import androidx.room.Room
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.retrofit.TranslationApiRequests
@@ -89,4 +90,9 @@ class SingletonComponentMainModule {
     @Provides
     fun provideSharedPreferencesManager(application: Application): SharedPreferencesManager =
         SharedPreferencesManager(application.applicationContext)
+
+    @Provides
+    fun provideInputMethodManager(application: Application): InputMethodManager {
+        return application.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
 }

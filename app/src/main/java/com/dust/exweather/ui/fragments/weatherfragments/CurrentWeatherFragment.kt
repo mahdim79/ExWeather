@@ -106,10 +106,6 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun addSomeLocations() {
         lifecycleScope.launch(Dispatchers.IO) {
-
-            /*viewModel.insertLocationToCache("London")
-            viewModel.insertLocationToCache("Tehran")*/
-
             withContext(Dispatchers.Main) {
                 setUpUiView()
             }

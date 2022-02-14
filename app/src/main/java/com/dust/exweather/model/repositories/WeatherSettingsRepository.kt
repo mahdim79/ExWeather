@@ -1,6 +1,5 @@
 package com.dust.exweather.model.repositories
 
-import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
