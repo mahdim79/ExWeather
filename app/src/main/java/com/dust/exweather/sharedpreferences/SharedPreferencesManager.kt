@@ -74,4 +74,23 @@ class SharedPreferencesManager(private val context: Context) {
         pref.edit().putString(Constants.DEFAULT_LOCATION_KEY, location).apply()
     }
 
+    fun setWeatherUnit(unitType: String, amount: String) {
+        pref.edit().putString(unitType, amount).apply()
+    }
+
+    fun getWeatherUnit(unitType: String): String {
+        val result = pref.getString(unitType, "")
+        if (result.isNullOrEmpty()) {
+            return when (unitType) {
+                Constants.PRECIPITATION_UNIT -> Constants.MM
+                Constants.PRESSURE_UNIT -> Constants.IN
+                Constants.TEMPERATURE_UNIT -> Constants.C_PERCENTAGE
+                Constants.VISIBILITY_UNIT -> Constants.KM
+                // else means wind speed!
+                else -> Constants.KPH
+            }
+        }
+        return result
+    }
+
 }

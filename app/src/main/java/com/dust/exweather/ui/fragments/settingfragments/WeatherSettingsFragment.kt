@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dust.exweather.R
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.AddCurrentLocationBottomSheetDialog
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.LocationsBottomSheetDialog
+import com.dust.exweather.ui.fragments.bottomsheetdialogs.UnitsBottomSheetDialog
 import com.dust.exweather.viewmodel.factories.WeatherSettingsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.WeatherSettingsViewModel
 import dagger.android.support.DaggerFragment
@@ -28,6 +30,9 @@ class WeatherSettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var inputMethodManager: InputMethodManager
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     private lateinit var viewModel: WeatherSettingsViewModel
 
@@ -124,7 +129,7 @@ class WeatherSettingsFragment : DaggerFragment() {
             }
 
             UnitsSettings.setOnClickListener {
-
+                UnitsBottomSheetDialog(sharedPreferencesManager).show(childFragmentManager, "UnitsBottomSheetDialog")
             }
         }
     }

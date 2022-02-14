@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?colorPrimary"
+    android:layoutDirection="ltr"
+    android:paddingBottom="@dimen/standardMargin4x">
+
+    <TextView
+        android:id="@+id/maxTextView"
+        android:layout_width="30dp"
+        android:text="max"
+        android:textColor="@color/standardUiRed"
+        android:textSize="@dimen/TextSize3x"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/locationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/locationTitle"
+        android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+        android:layout_height="30dp"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/locationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/standardMargin"
+        android:gravity="center"
+        android:padding="@dimen/standardMargin"
+        android:text="تنظیمات واحدها"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/standardMargin"
+        android:background="@color/white_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationTitle" />
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/precipitationText"
+        android:layout_width="wrap_content"
+        android:text="بارندگی"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView"
+        android:layout_marginTop="@dimen/standardMargin3x"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/precipitationSpinner"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/precipitationText"
+        app:layout_constraintBottom_toBottomOf="@+id/precipitationText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/temperatureText"
+        android:layout_width="wrap_content"
+        android:text="دما"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/precipitationText"
+        android:layout_marginTop="@dimen/standardMargin3x"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/temperatureSpinner"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/temperatureText"
+        app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/windSpeedText"
+        android:layout_width="wrap_content"
+        android:text="سرعت باد"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperatureText"
+        android:layout_marginTop="@dimen/standardMargin3x"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/windSpeedSpinner"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/windSpeedText"
+        app:layout_constraintBottom_toBottomOf="@+id/windSpeedText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/pressureText"
+        android:layout_width="wrap_content"
+        android:text="فشار"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/windSpeedText"
+        android:layout_marginTop="@dimen/standardMargin3x"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/pressureSpinner"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/pressureText"
+        app:layout_constraintBottom_toBottomOf="@+id/pressureText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <com.dust.exweather.utils.customviews.CTextView
+        android:id="@+id/visibilityText"
+        android:layout_width="wrap_content"
+        android:text="میزان دید"
+        android:textColor="?android:textColor"
+        android:textSize="@dimen/TextSize4x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pressureText"
+        android:layout_marginTop="@dimen/standardMargin3x"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/visibilitySpinner"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/visibilityText"
+        app:layout_constraintBottom_toBottomOf="@+id/visibilityText"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/standardMargin2x"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
