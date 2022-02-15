@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.Hour
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.item_todays_hour_forecast.view.*
 import java.util.*
 
 class TodaysForecastRecyclerViewAdapter(
     private val listData: ArrayList<Hour>,
-    private val context: Context
+    private val context: Context,
+    private val unitManager: UnitManager
 ) : RecyclerView.Adapter<TodaysForecastRecyclerViewAdapter.MainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -30,16 +32,12 @@ class TodaysForecastRecyclerViewAdapter(
         holder.apply {
             isDayImage.setImageResource(if (data.is_day == 1) R.drawable.ic_day_light else R.drawable.ic_night)
             dateTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(data.time_epoch)
-            temperatureTextView.text = data.temp_c.toString()
-            precipText.text =
-                context.resources.getString(R.string.precipitationText, data.precip_mm.toString())
+            temperatureTextView.text = unitManager.getTemperatureUnit(data.temp_c.toString(),data.temp_f.toString())
+            precipText.text = unitManager.getPrecipitationUnit(data.precip_mm.toString(),data.precip_in.toString())
             humidityText.text =
                 context.resources.getString(R.string.humidityText, data.humidity.toString())
-            windSpeedText.text =
-                context.resources.getString(R.string.windSpeedText, data.wind_kph.toString())
-            airPressureText.text =
-                context.resources.getString(R.string.airPressureText, data.precip_mm.toString())
-
+            windSpeedText.text = unitManager.getWindSpeedUnit(data.wind_kph.toString(),data.wind_mph.toString())
+            airPressureText.text = unitManager.getPressureUnit(data.pressure_in.toString(),data.pressure_mb.toString())
             Glide.with(context).load(data.condition.icon.replace("//", ""))
                 .into(weatherStateImage)
             if (data.chance_of_rain >= 50)

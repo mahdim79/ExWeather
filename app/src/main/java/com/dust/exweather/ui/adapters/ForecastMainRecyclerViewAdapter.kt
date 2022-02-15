@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.item_main_forecast_recyclerview.view.*
 import java.util.*
@@ -19,7 +20,8 @@ class ForecastMainRecyclerViewAdapter(
     private val listData: ArrayList<Forecastday>,
     private val context: Context,
     private val navController: NavController,
-    private val location: String
+    private val location: String,
+    private val unitManager: UnitManager
 ) :
     RecyclerView.Adapter<ForecastMainRecyclerViewAdapter.MainViewHolder>() {
 
@@ -38,36 +40,26 @@ class ForecastMainRecyclerViewAdapter(
                 currentData.day.dayOfWeek,
                 UtilityFunctions.calculateCurrentDateByTimeEpoch(currentData.date_epoch)
             )
-            minTempText.text = context.resources.getString(
-                R.string.temperatureText,
-                currentData.day.mintemp_c.toString()
-            )
-            maxTempText.text = context.resources.getString(
-                R.string.temperatureText,
-                currentData.day.maxtemp_c.toString()
-            )
+            minTempText.text = unitManager.getTemperatureUnit(currentData.day.mintemp_c.toString(),currentData.day.mintemp_f.toString())
+
+            maxTempText.text = unitManager.getTemperatureUnit(currentData.day.maxtemp_c.toString(),currentData.day.maxtemp_f.toString())
+
             Glide.with(context).load(currentData.day.condition.icon).into(weatherStateImage)
+
             weatherStateText.text = currentData.day.condition.text
-            precipText.text = context.resources.getString(
-                R.string.precipitationText,
-                currentData.day.totalprecip_mm.toString()
-            )
+
+            precipText.text = unitManager.getPrecipitationUnit(currentData.day.totalprecip_mm.toString(),currentData.day.totalprecip_in.toString())
+
             weatherHumidityText.text = context.resources.getString(
                 R.string.humidityText,
                 currentData.day.avghumidity.toString()
             )
-            averageTempTextView.text = context.resources.getString(
-                R.string.temperatureText,
-                currentData.day.avgtemp_c.toString()
-            )
-            visibilityTextView.text = context.resources.getString(
-                R.string.visibilityText,
-                currentData.day.avgvis_km.toString()
-            )
-            windSpeedRangeTextView.text = context.resources.getString(
-                R.string.windSpeedText,
-                currentData.day.maxwind_kph.toString()
-            )
+            averageTempTextView.text = unitManager.getTemperatureUnit(currentData.day.avgtemp_c.toString(),currentData.day.avgtemp_f.toString())
+
+            visibilityTextView.text = unitManager.getVisibilityUnit(currentData.day.avgvis_km.toString(),currentData.day.avgvis_miles.toString())
+
+            windSpeedRangeTextView.text = unitManager.getWindSpeedUnit(currentData.day.maxwind_kph.toString(),currentData.day.maxwind_mph.toString())
+
             uvIndexTextView.text = currentData.day.uv.toString()
 
             if (currentData.day.daily_chance_of_rain > 50)

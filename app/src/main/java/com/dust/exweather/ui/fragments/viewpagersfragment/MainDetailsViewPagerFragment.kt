@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import com.dust.exweather.R
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.fragment_viewpager_details.view.*
 
@@ -17,7 +18,8 @@ class MainDetailsViewPagerFragment(
     private val dataList: LiveData<List<WeatherEntity>>,
     private val position: Int,
     private val progressLiveData: LiveData<Boolean>,
-    private val navController: NavController
+    private val navController: NavController,
+    private val unitManager: UnitManager
 ) : Fragment() {
 
     override fun onCreateView(
@@ -42,16 +44,16 @@ class MainDetailsViewPagerFragment(
                     weatherHumidityText.text = data.current.humidity.toString()
                     weatherIsDayText.text =
                         if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
-                    precipText.text = data.current.precip_mm.toString()
-                    windSpeedText.text = data.current.wind_kph.toString()
+                    precipText.text = unitManager.getPrecipitationUnit(data.current.precip_mm.toString(), data.current.precip_in.toString())
+                    windSpeedText.text = unitManager.getWindSpeedUnit(data.current.wind_kph.toString(), data.current.wind_mph.toString())
                     weatherCityNameText.text = data.location!!.name
-                    weatherTempText.text = "${data.current.temp_c}°C"
+                    weatherTempText.text = unitManager.getTemperatureUnit(data.current.temp_c.toString(), data.current.temp_f.toString())
                     lastUpdateText.text =
                         UtilityFunctions.calculateLastUpdateText(
                             data.current.system_last_update_epoch,
                             requireContext()
                         )
-                    airPressureText.text = data.current.pressure_mb.toString()
+                    airPressureText.text = unitManager.getPressureUnit(data.current.pressure_in.toString(), data.current.pressure_mb.toString())
 
                     detailsContainer.setOnClickListener { _ ->
                         val bundle = Bundle()

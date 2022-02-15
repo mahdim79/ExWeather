@@ -14,8 +14,11 @@ import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.ForecastMainRecyclerViewAdapter
 import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
+import com.dust.exweather.utils.Constants
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -29,7 +32,9 @@ import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.v
 class ForecastDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
     private val progressStateLiveData: LiveData<Boolean>,
-    private val position: Int
+    private val position: Int,
+    private val unitManager: UnitManager,
+    private val sharedPreferencesManager: SharedPreferencesManager
 ) :
     Fragment() {
 
@@ -50,6 +55,21 @@ class ForecastDetailsViewPagerFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeLiveData()
+        setupChartsTitles()
+    }
+
+    private fun setupChartsTitles() {
+        requireView().apply {
+            if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) != Constants.MM)
+                precipChartText.text = "نمودار پیش بینی میزان بارندگی روزانه(in)"
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) != Constants.C_PERCENTAGE)
+                tempChartText.text = "نمودار پیش بینی دمای روزانه(F°)"
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) != Constants.KPH)
+                windSpeedChartText.text = "نمودار پیش بینی سرعت باد(mph)"
+
+        }
     }
 
     private fun observeLiveData() {
@@ -104,13 +124,25 @@ class ForecastDetailsViewPagerFragment(
         requireView().apply {
             if (precipitationLineChart.data != null && precipitationLineChart.data.dataSetCount > 0) {
                 val dataList = arrayListOf<Entry>()
-                for (i in currentData.forecast.forecastday.indices)
-                    dataList.add(
-                        Entry(
-                            i.toFloat(),
-                            currentData.forecast.forecastday[i].day.totalprecip_mm.toFloat()
+
+                if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) == Constants.MM) {
+                    for (i in currentData.forecast.forecastday.indices)
+                        dataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.totalprecip_mm.toFloat()
+                            )
                         )
-                    )
+                } else {
+                    for (i in currentData.forecast.forecastday.indices)
+                        dataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.totalprecip_in.toFloat()
+                            )
+                        )
+                }
+
                 val dataSet = precipitationLineChart.data.getDataSetByIndex(0) as LineDataSet
                 dataSet.values = dataList
                 precipitationLineChart.apply {
@@ -121,51 +153,74 @@ class ForecastDetailsViewPagerFragment(
 
             if (temperatureLineChart.data != null && temperatureLineChart.data.dataSetCount > 0) {
                 val minTempDataList = arrayListOf<Entry>()
-                for (i in currentData.forecast.forecastday.indices)
-                    minTempDataList.add(
-                        Entry(
-                            i.toFloat(),
-                            currentData.forecast.forecastday[i].day.mintemp_c.toFloat()
-                        )
-                    )
-                val minDataSet = temperatureLineChart.data.getDataSetByIndex(0) as LineDataSet
-                minDataSet.values = minTempDataList
-                temperatureLineChart.apply {
-                    data.notifyDataChanged()
-                    notifyDataSetChanged()
-                }
-
                 val avgTempDataList = arrayListOf<Entry>()
-                for (i in currentData.forecast.forecastday.indices)
-                    avgTempDataList.add(
-                        Entry(
-                            i.toFloat(),
-                            currentData.forecast.forecastday[i].day.avgtemp_c.toFloat()
-                        )
-                    )
-                val avgDataSet = temperatureLineChart.data.getDataSetByIndex(1) as LineDataSet
-                avgDataSet.values = avgTempDataList
-                temperatureLineChart.apply {
-                    data.notifyDataChanged()
-                    notifyDataSetChanged()
-                }
-
-
                 val maxTempDataList = arrayListOf<Entry>()
-                for (i in currentData.forecast.forecastday.indices)
-                    maxTempDataList.add(
-                        Entry(
-                            i.toFloat(),
-                            currentData.forecast.forecastday[i].day.maxtemp_c.toFloat()
-                        )
-                    )
 
-                val maxDataSet = temperatureLineChart.data.getDataSetByIndex(2) as LineDataSet
-                maxDataSet.values = maxTempDataList
+                if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) == Constants.C_PERCENTAGE) {
+                    for (i in currentData.forecast.forecastday.indices)
+                        minTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.mintemp_c.toFloat()
+                            )
+                        )
+
+                    for (i in currentData.forecast.forecastday.indices)
+                        avgTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.avgtemp_c.toFloat()
+                            )
+                        )
+
+                    for (i in currentData.forecast.forecastday.indices)
+                        maxTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.maxtemp_c.toFloat()
+                            )
+                        )
+
+                } else {
+                    for (i in currentData.forecast.forecastday.indices)
+                        minTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.mintemp_f.toFloat()
+                            )
+                        )
+
+                    for (i in currentData.forecast.forecastday.indices)
+                        avgTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.avgtemp_f.toFloat()
+                            )
+                        )
+
+                    for (i in currentData.forecast.forecastday.indices)
+                        maxTempDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.maxtemp_f.toFloat()
+                            )
+                        )
+                }
+
+                (temperatureLineChart.data.getDataSetByIndex(0) as LineDataSet).values =
+                    minTempDataList
+
+                (temperatureLineChart.data.getDataSetByIndex(1) as LineDataSet).values =
+                    avgTempDataList
+
+                (temperatureLineChart.data.getDataSetByIndex(2) as LineDataSet).values =
+                    maxTempDataList
+
                 temperatureLineChart.apply {
                     data.notifyDataChanged()
                     notifyDataSetChanged()
                 }
+
             }
 
             if (humidityLineChart.data != null && humidityLineChart.data.dataSetCount > 0) {
@@ -187,13 +242,25 @@ class ForecastDetailsViewPagerFragment(
 
             if (windSpeedLineChart.data != null && windSpeedLineChart.data.dataSetCount > 0) {
                 val dataList = arrayListOf<Entry>()
-                for (i in currentData.forecast.forecastday.indices)
-                    dataList.add(
-                        Entry(
-                            i.toFloat(),
-                            currentData.forecast.forecastday[i].day.maxwind_kph.toFloat()
+
+                if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) == Constants.KPH) {
+                    for (i in currentData.forecast.forecastday.indices)
+                        dataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.maxwind_kph.toFloat()
+                            )
                         )
-                    )
+                } else {
+                    for (i in currentData.forecast.forecastday.indices)
+                        dataList.add(
+                            Entry(
+                                i.toFloat(),
+                                currentData.forecast.forecastday[i].day.maxwind_mph.toFloat()
+                            )
+                        )
+                }
+
                 val dataSet = windSpeedLineChart.data.getDataSetByIndex(0) as LineDataSet
                 dataSet.values = dataList
                 windSpeedLineChart.apply {
@@ -268,14 +335,26 @@ class ForecastDetailsViewPagerFragment(
             }
 
             val dataList = arrayListOf<Entry>()
-            for (i in currentData.forecast.forecastday.indices)
-                dataList.add(
-                    Entry(
-                        i.toFloat(),
-                        currentData.forecast.forecastday[i].day.totalprecip_mm.toFloat()
+            if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) == Constants.MM) {
+                for (i in currentData.forecast.forecastday.indices)
+                    dataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.totalprecip_mm.toFloat()
+                        )
                     )
-                )
-            val lineDataSet = LineDataSet(dataList, getString(R.string.dailyPrecipitation))
+            } else {
+                for (i in currentData.forecast.forecastday.indices)
+                    dataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.totalprecip_in.toFloat()
+                        )
+                    )
+            }
+
+
+            val lineDataSet = LineDataSet(dataList, "میزان بارندگی روزانه")
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -350,31 +429,58 @@ class ForecastDetailsViewPagerFragment(
             }
 
             val minTempDataList = arrayListOf<Entry>()
-            for (i in currentData.forecast.forecastday.indices)
-                minTempDataList.add(
-                    Entry(
-                        i.toFloat(),
-                        currentData.forecast.forecastday[i].day.mintemp_c.toFloat()
-                    )
-                )
-
             val avgTempDataList = arrayListOf<Entry>()
-            for (i in currentData.forecast.forecastday.indices)
-                avgTempDataList.add(
-                    Entry(
-                        i.toFloat(),
-                        currentData.forecast.forecastday[i].day.avgtemp_c.toFloat()
-                    )
-                )
-
             val maxTempDataList = arrayListOf<Entry>()
-            for (i in currentData.forecast.forecastday.indices)
-                maxTempDataList.add(
-                    Entry(
-                        i.toFloat(),
-                        currentData.forecast.forecastday[i].day.maxtemp_c.toFloat()
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) == Constants.C_PERCENTAGE) {
+                for (i in currentData.forecast.forecastday.indices)
+                    minTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.mintemp_c.toFloat()
+                        )
                     )
-                )
+
+                for (i in currentData.forecast.forecastday.indices)
+                    avgTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.avgtemp_c.toFloat()
+                        )
+                    )
+
+                for (i in currentData.forecast.forecastday.indices)
+                    maxTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.maxtemp_c.toFloat()
+                        )
+                    )
+            } else {
+                for (i in currentData.forecast.forecastday.indices)
+                    minTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.mintemp_f.toFloat()
+                        )
+                    )
+
+                for (i in currentData.forecast.forecastday.indices)
+                    avgTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.avgtemp_f.toFloat()
+                        )
+                    )
+
+                for (i in currentData.forecast.forecastday.indices)
+                    maxTempDataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.maxtemp_f.toFloat()
+                        )
+                    )
+            }
 
             val minTempDataSet = LineDataSet(minTempDataList, getString(R.string.minimum))
             val chartColor = ContextCompat.getColor(requireContext(), R.color.standardUiRed)
@@ -578,13 +684,25 @@ class ForecastDetailsViewPagerFragment(
             }
 
             val dataList = arrayListOf<Entry>()
-            for (i in currentData.forecast.forecastday.indices)
-                dataList.add(
-                    Entry(
-                        i.toFloat(),
-                        currentData.forecast.forecastday[i].day.maxwind_kph.toFloat()
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) == Constants.KPH) {
+                for (i in currentData.forecast.forecastday.indices)
+                    dataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.maxwind_kph.toFloat()
+                        )
                     )
-                )
+            } else {
+                for (i in currentData.forecast.forecastday.indices)
+                    dataList.add(
+                        Entry(
+                            i.toFloat(),
+                            currentData.forecast.forecastday[i].day.maxwind_mph.toFloat()
+                        )
+                    )
+            }
+
             val lineDataSet = LineDataSet(dataList, getString(R.string.windSpeed))
             val chartColor = ContextCompat.getColor(requireContext(), R.color.windSpeedColor)
             lineDataSet.apply {
@@ -629,7 +747,8 @@ class ForecastDetailsViewPagerFragment(
         todaysForecastRecyclerViewAdapter =
             TodaysForecastRecyclerViewAdapter(
                 arrayListOf(),
-                requireContext()
+                requireContext(),
+                unitManager
             )
 
         todaysHourlyForecastRecyclerView.adapter = todaysForecastRecyclerViewAdapter
@@ -640,7 +759,8 @@ class ForecastDetailsViewPagerFragment(
             arrayListOf(),
             requireContext(),
             requireActivity().findNavController(R.id.mainFragmentContainerView),
-            currentLocation
+            currentLocation,
+            unitManager
         )
         mainForecastRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

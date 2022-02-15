@@ -137,20 +137,20 @@ class CsvFactory @Inject constructor() {
                 createCell(7).setCellValue("gust_kph")
                 createCell(8).setCellValue("gust_mph")
                 createCell(9).setCellValue("heatindex_c")
-                createCell(10).setCellValue(".heatindex_f")
-                createCell(11).setCellValue(".precip_in")
-                createCell(12).setCellValue(".precip_mm")
-                createCell(13).setCellValue(".pressure_in")
-                createCell(14).setCellValue(".pressure_mb")
-                createCell(15).setCellValue(".temp_c")
-                createCell(16).setCellValue(".temp_f")
-                createCell(17).setCellValue(".vis_km")
-                createCell(18).setCellValue(".vis_miles")
-                createCell(19).setCellValue(".wind_dir")
-                createCell(20).setCellValue(".wind_kph")
-                createCell(21).setCellValue(".wind_mph")
-                createCell(22).setCellValue(".windchill_c")
-                createCell(23).setCellValue(".windchill_f")
+                createCell(10).setCellValue("heatindex_f")
+                createCell(11).setCellValue("precip_in")
+                createCell(12).setCellValue("precip_mm")
+                createCell(13).setCellValue("pressure_in")
+                createCell(14).setCellValue("pressure_mb")
+                createCell(15).setCellValue("temp_c")
+                createCell(16).setCellValue("temp_f")
+                createCell(17).setCellValue("vis_km")
+                createCell(18).setCellValue("vis_miles")
+                createCell(19).setCellValue("wind_dir")
+                createCell(20).setCellValue("wind_kph")
+                createCell(21).setCellValue("wind_mph")
+                createCell(22).setCellValue("windchill_c")
+                createCell(23).setCellValue("windchill_f")
             }
 
             for (i in data.hour.indices) {
@@ -191,7 +191,7 @@ class CsvFactory @Inject constructor() {
         val file2 = File(file, "$fileName.xls")
 
         if (file2.exists())
-            return DataWrapper( "duplicateFile", DataStatus.DATA_SAVE_FAILURE)
+            return DataWrapper("duplicateFile", DataStatus.DATA_SAVE_FAILURE)
 
         var fileOutputStream: FileOutputStream? = null
         try {

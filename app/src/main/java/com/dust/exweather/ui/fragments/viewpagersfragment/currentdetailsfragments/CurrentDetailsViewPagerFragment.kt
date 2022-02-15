@@ -15,6 +15,7 @@ import com.dust.exweather.model.dataclasses.currentweather.main.Current
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.fragment_current_details_viewpager.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_viewpager.view.*
@@ -24,7 +25,8 @@ class CurrentDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
     private val alphaAnimation: AlphaAnimation,
     private val location: String,
-    private val onClickListener: DayDetailsViewPagerOnClickListener
+    private val onClickListener: DayDetailsViewPagerOnClickListener,
+    private val unitManager: UnitManager
 ) : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,11 +70,21 @@ class CurrentDetailsViewPagerFragment(
 
             weatherStateText.text = currentData.current!!.condition.text
 
-            temperatureTextView.text =
-                "${String.format(Locale.ENGLISH, "%.0f", currentData.current.temp_c)}°C"
+            temperatureTextView.text = unitManager.getTemperatureUnit(
+                String.format(
+                    Locale.ENGLISH,
+                    "%.0f",
+                    currentData.current.temp_c
+                ), String.format(Locale.ENGLISH, "%.0f", currentData.current.temp_f)
+            )
 
             windSpeedTextView.text =
-                "${currentData.current.wind_kph} Kph | ${currentData.current.wind_dir}"
+                "${
+                    unitManager.getWindSpeedUnit(
+                        currentData.current.wind_kph.toString(),
+                        currentData.current.wind_mph.toString()
+                    )
+                } | ${currentData.current.wind_dir}"
 
             localDateTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
                 currentData.location!!.localtime_epoch,
@@ -110,13 +122,13 @@ class CurrentDetailsViewPagerFragment(
                     "${
                         requireActivity().resources.getString(
                             R.string.precipStatus,
-                            currentData.precip_mm.toString()
+                            unitManager.getPrecipitationUnit(currentData.precip_mm.toString(), currentData.precip_in.toString())
                         )
                     } \n" +
                     "${
                         requireActivity().resources.getString(
                             R.string.airPressureStatus,
-                            currentData.pressure_mb.toString()
+                            unitManager.getPressureUnit(currentData.pressure_in.toString(),currentData.pressure_mb.toString())
                         )
                     } \n" +
                     "${
@@ -128,7 +140,7 @@ class CurrentDetailsViewPagerFragment(
                     "${
                         requireActivity().resources.getString(
                             R.string.visibilityStatus,
-                            currentData.vis_km.toString()
+                            unitManager.getVisibilityUnit(currentData.vis_km.toString(),currentData.vis_miles.toString())
                         )
                     } \n"
         )

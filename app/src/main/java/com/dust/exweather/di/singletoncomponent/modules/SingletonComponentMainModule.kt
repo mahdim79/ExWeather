@@ -10,6 +10,7 @@ import com.dust.exweather.model.retrofit.TranslationApiRequests
 import com.dust.exweather.model.room.RoomManager
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -90,6 +91,12 @@ class SingletonComponentMainModule {
     @Provides
     fun provideSharedPreferencesManager(application: Application): SharedPreferencesManager =
         SharedPreferencesManager(application.applicationContext)
+
+    @Singleton
+    @Provides
+    fun provideUnitManager(sharedPreferencesManager: SharedPreferencesManager): UnitManager {
+        return UnitManager(sharedPreferencesManager)
+    }
 
     @Provides
     fun provideInputMethodManager(application: Application): InputMethodManager {

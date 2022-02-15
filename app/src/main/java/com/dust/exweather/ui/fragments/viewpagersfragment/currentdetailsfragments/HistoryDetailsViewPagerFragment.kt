@@ -13,6 +13,7 @@ import com.dust.exweather.interfaces.DayDetailsViewPagerOnClickListener
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
 import kotlinx.android.synthetic.main.fragment_forecast_details_viewpager.view.*
@@ -23,7 +24,8 @@ class HistoryDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
     private val alphaAnimation: AlphaAnimation,
     private val location:String,
-    private val onClickListener: DayDetailsViewPagerOnClickListener
+    private val onClickListener: DayDetailsViewPagerOnClickListener,
+    private val unitManager: UnitManager
 ) : Fragment() {
 
     private lateinit var recyclerViewAdapter:MainRecyclerViewAdapter
@@ -72,7 +74,7 @@ class HistoryDetailsViewPagerFragment(
     private fun setUpPrimaryRecyclerView() {
         requireView().apply {
             recyclerViewAdapter =
-                MainRecyclerViewAdapter(requireContext(), arrayListOf(), alphaAnimation)
+                MainRecyclerViewAdapter(requireContext(), arrayListOf(), alphaAnimation, unitManager)
             historyDetailsRecyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             historyDetailsRecyclerView.adapter = recyclerViewAdapter

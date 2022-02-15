@@ -66,11 +66,11 @@
     <string name="sendWith">ارسال با…</string>
     <string name="shareTitle">تاریخچه آب و هوای شهر %s %s %s</string>
     <string name="weatherState">شرایط آب و هوا: %s</string>
-    <string name="precipitationTextmm">میزان بارندگی: %smm</string>
-    <string name="avgTemperature">میانگین دمای روزانه: %s°C</string>
-    <string name="minTemp">کمینه دما: %s°C</string>
-    <string name="maxTemp">بیشینه دما: %s°C</string>
-    <string name="windSpeedkph">سرعت باد: %skph</string>
+    <string name="precipitationTextmm">میزان بارندگی: %s</string>
+    <string name="avgTemperature">میانگین دمای روزانه: %s</string>
+    <string name="minTemp">کمینه دما: %s</string>
+    <string name="maxTemp">بیشینه دما: %s</string>
+    <string name="windSpeedkph">سرعت باد: %s</string>
     <string name="day">روز</string>
     <string name="night">شب</string>
     <string name="dailyPrecipitation">میزان بارندگی روزانه</string>

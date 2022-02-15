@@ -13,7 +13,10 @@ import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.HistoryHourlyRecyclerViewAdapter
+import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.HistoryDetailsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.HistoryDetailsFragmentViewModel
@@ -33,6 +36,12 @@ class HistoryDetailsFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: HistoryDetailsViewModelFactory
 
+    @Inject
+    lateinit var unitManager: UnitManager
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
+
     private lateinit var viewModel: HistoryDetailsFragmentViewModel
 
     override fun onCreateView(
@@ -47,6 +56,20 @@ class HistoryDetailsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
         observeCacheData()
+        setUpChartsTitles()
+    }
+
+    private fun setUpChartsTitles() {
+        requireView().apply {
+            if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) != Constants.MM)
+                precipitationChartText.text = "نمودار میزان بارندگی 24 ساعته(In)"
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) != Constants.C_PERCENTAGE)
+                tempChartText.text = "نمودار دمای 24 ساعته(F°)"
+
+            if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) != Constants.KPH)
+                windSpeedChartText.text = "نمودار سرعت باد 24 ساعته(Mph)"
+        }
     }
 
     private fun observeCacheData() {
@@ -81,9 +104,9 @@ class HistoryDetailsFragment : DaggerFragment() {
                         "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
             weatherStateText.text = forecastDay.day.condition.text
             weatherCityNameText.text = requireArguments().getString("location")
-            weatherTempText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.avgtemp_c.toString()
+            weatherTempText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.avgtemp_c.toString(),
+                forecastDay.day.avgtemp_f.toString()
             )
             lastUpdateImage.setImageResource(R.drawable.ic_uv_index)
             lastUpdateText.text = forecastDay.day.uv.toString()
@@ -91,25 +114,25 @@ class HistoryDetailsFragment : DaggerFragment() {
                 R.string.humidityText,
                 forecastDay.day.avghumidity.toString()
             )
-            precipText.text = requireContext().resources.getString(
-                R.string.precipitationText,
-                forecastDay.day.totalprecip_mm.toString()
+            precipText.text = unitManager.getPrecipitationUnit(
+                forecastDay.day.totalprecip_mm.toString(),
+                forecastDay.day.totalprecip_in.toString()
             )
-            windSpeedText.text = requireContext().resources.getString(
-                R.string.windSpeedText,
-                forecastDay.day.maxwind_kph.toString()
+            windSpeedText.text = unitManager.getWindSpeedUnit(
+                forecastDay.day.maxwind_kph.toString(),
+                forecastDay.day.maxwind_mph.toString()
             )
-            visibilityTextView.text = requireContext().resources.getString(
-                R.string.visibilityText,
-                forecastDay.day.avgvis_km.toString()
+            visibilityTextView.text = unitManager.getVisibilityUnit(
+                forecastDay.day.avgvis_km.toString(),
+                forecastDay.day.avgvis_miles.toString()
             )
-            minTemperatureText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.mintemp_c.toString()
+            minTemperatureText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.mintemp_c.toString(),
+                forecastDay.day.mintemp_f.toString()
             )
-            maxTemperatureText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.maxtemp_c.toString()
+            maxTemperatureText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.maxtemp_c.toString(),
+                forecastDay.day.maxtemp_f.toString()
             )
 
             // setup details textview
@@ -120,7 +143,8 @@ class HistoryDetailsFragment : DaggerFragment() {
             // setup RecyclerView
             hourlyForecastRecyclerView.layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val adapter = HistoryHourlyRecyclerViewAdapter(arrayListOf(), requireContext())
+            val adapter =
+                HistoryHourlyRecyclerViewAdapter(arrayListOf(), requireContext(), unitManager)
             hourlyForecastRecyclerView.adapter = adapter
             adapter.setNewData(forecastDay.hour)
 
@@ -177,15 +201,26 @@ class HistoryDetailsFragment : DaggerFragment() {
                 }
 
                 val precipitationDataList = arrayListOf<Entry>()
-                for (i in forecastDay.hour.indices)
-                    precipitationDataList.add(
-                        Entry(
-                            i.toFloat(),
-                            forecastDay.hour[i].precip_mm.toFloat()
+                if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) == Constants.MM) {
+                    for (i in forecastDay.hour.indices)
+                        precipitationDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                forecastDay.hour[i].precip_mm.toFloat()
+                            )
                         )
-                    )
+                } else {
+                    for (i in forecastDay.hour.indices)
+                        precipitationDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                forecastDay.hour[i].precip_in.toFloat()
+                            )
+                        )
+                }
 
-                val lineDataSet = LineDataSet(precipitationDataList, getString(R.string.totalPrecipitation))
+                val lineDataSet =
+                    LineDataSet(precipitationDataList, getString(R.string.totalPrecipitation))
                 val chartColor = ContextCompat.getColor(
                     requireContext(),
                     R.color.standardUiBlue
@@ -264,8 +299,14 @@ class HistoryDetailsFragment : DaggerFragment() {
                 }
 
                 val tempDataList = arrayListOf<Entry>()
-                for (i in forecastDay.hour.indices)
-                    tempDataList.add(Entry(i.toFloat(), forecastDay.hour[i].temp_c.toFloat()))
+
+                if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) == Constants.C_PERCENTAGE) {
+                    for (i in forecastDay.hour.indices)
+                        tempDataList.add(Entry(i.toFloat(), forecastDay.hour[i].temp_c.toFloat()))
+                } else {
+                    for (i in forecastDay.hour.indices)
+                        tempDataList.add(Entry(i.toFloat(), forecastDay.hour[i].temp_f.toFloat()))
+                }
 
                 val lineDataSet = LineDataSet(tempDataList, getString(R.string.temperature))
                 val chartColor = ContextCompat.getColor(
@@ -346,13 +387,23 @@ class HistoryDetailsFragment : DaggerFragment() {
                 }
 
                 val windSpeedDataList = arrayListOf<Entry>()
-                for (i in forecastDay.hour.indices)
-                    windSpeedDataList.add(
-                        Entry(
-                            i.toFloat(),
-                            forecastDay.hour[i].wind_kph.toFloat()
+                if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) == Constants.KPH) {
+                    for (i in forecastDay.hour.indices)
+                        windSpeedDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                forecastDay.hour[i].wind_kph.toFloat()
+                            )
                         )
-                    )
+                } else {
+                    for (i in forecastDay.hour.indices)
+                        windSpeedDataList.add(
+                            Entry(
+                                i.toFloat(),
+                                forecastDay.hour[i].wind_mph.toFloat()
+                            )
+                        )
+                }
 
                 val lineDataSet = LineDataSet(windSpeedDataList, getString(R.string.windSpeed))
                 val chartColor = ContextCompat.getColor(

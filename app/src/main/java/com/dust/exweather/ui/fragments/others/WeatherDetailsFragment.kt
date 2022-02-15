@@ -14,6 +14,7 @@ import com.dust.exweather.interfaces.DayDetailsViewPagerOnClickListener
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.DayDetailsViewPagerAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
@@ -38,6 +39,9 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var alphaAnimation: AlphaAnimation
+
+    @Inject
+    lateinit var unitManager:UnitManager
 
     private lateinit var viewModel: CurrentFragmentViewModel
 
@@ -166,7 +170,8 @@ class WeatherDetailsFragment : DaggerFragment() {
                         weatherDetailsViewPager.currentItem = 2
                     }
 
-                }
+                },
+                unitManager
             )
             weatherDetailsViewPager.offscreenPageLimit = 2
             weatherDetailsViewPager.currentItem = 1

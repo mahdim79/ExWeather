@@ -12,6 +12,7 @@ import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 import java.util.*
@@ -19,7 +20,8 @@ import java.util.*
 class MainRecyclerViewAdapter(
     private val context: Context,
     private var listData: ArrayList<DataWrapper<Any>>,
-    private val alphaAnimation: AlphaAnimation
+    private val alphaAnimation: AlphaAnimation,
+    private val unitManager: UnitManager
 ) :
     RecyclerView.Adapter<MainRecyclerViewAdapter.MainViewHolder>() {
 
@@ -39,7 +41,7 @@ class MainRecyclerViewAdapter(
                 Glide.with(context).load(data.current!!.condition.icon.replace("//", ""))
                     .into(holder.itemStateImage)
                 holder.dayOfWeekText.text = context.getString(R.string.today)
-                holder.item_TempText.text = data.current.temp_c.toString()
+                holder.item_TempText.text = unitManager.getTemperatureUnit(data.current.temp_c.toString(), data.current.temp_f.toString())
                 holder.minTempText.visibility = View.INVISIBLE
                 holder.maxTempText.visibility = View.INVISIBLE
                 holder.weatherStateText.text =
@@ -54,8 +56,8 @@ class MainRecyclerViewAdapter(
                 Glide.with(context).load(data.day.condition.icon.replace("//", ""))
                     .into(holder.itemStateImage)
                 holder.dayOfWeekText.text = data.day.dayOfWeek
-                holder.minTempText.text = data.day.mintemp_c.toString()
-                holder.maxTempText.text = data.day.maxtemp_c.toString()
+                holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
+                holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
                 holder.weatherStateText.text = data.day.condition.text
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
@@ -66,8 +68,8 @@ class MainRecyclerViewAdapter(
                 Glide.with(context).load(data.day.condition.icon.replace("//", ""))
                     .into(holder.itemStateImage)
                 holder.dayOfWeekText.text = data.day.dayOfWeek
-                holder.minTempText.text = data.day.mintemp_c.toString()
-                holder.maxTempText.text = data.day.maxtemp_c.toString()
+                holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
+                holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
                 holder.weatherStateText.text = data.day.condition.text
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)

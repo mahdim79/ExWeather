@@ -480,11 +480,12 @@
                             android:orientation="vertical">
 
                             <com.dust.exweather.utils.customviews.CTextView
+                                android:id="@+id/precipitationChartText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="@string/hourlyPrecipitationChart"
+                                android:text="نمودار میزان بارندگی 24 ساعته(mm)"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 
@@ -516,11 +517,12 @@
                             android:orientation="vertical">
 
                             <com.dust.exweather.utils.customviews.CTextView
+                                android:id="@+id/tempChartText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="@string/hourlyTempChart"
+                                android:text="نمودار دمای 24 ساعته(C°)"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 
@@ -551,11 +553,12 @@
                             android:orientation="vertical">
 
                             <com.dust.exweather.utils.customviews.CTextView
+                                android:id="@+id/windSpeedChartText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/standardMargin"
                                 android:gravity="center"
-                                android:text="@string/hourlyWindSpeedChart"
+                                android:text="نمودار سرعت باد 24 ساعته(Kph)"
                                 android:textColor="@color/standardUiWhite"
                                 android:textSize="@dimen/TextSize3x" />
 

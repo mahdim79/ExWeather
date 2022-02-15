@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.CsvSaveBottomSheetDialogFragment
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
@@ -29,6 +30,9 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: HistoryFragmentViewModelFactory
+
+    @Inject
+    lateinit var unitManager: UnitManager
 
     private lateinit var viewModel: HistoryFragmentViewModel
 
@@ -137,35 +141,17 @@ class WeatherHistoryFragment : DaggerFragment() {
             weatherStateText.text = forecastDay.day.condition.text
             Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
             weatherCityNameText.text = locationName
-            visibilityTextView.text = requireContext().resources.getString(
-                R.string.visibilityText,
-                forecastDay.day.avgvis_km.toString()
-            )
+            visibilityTextView.text = unitManager.getVisibilityUnit(forecastDay.day.avgvis_km.toString(),forecastDay.day.avgvis_miles.toString())
             uvIndexTextView.text = forecastDay.day.uv.toString()
             weatherHumidityText.text = requireContext().resources.getString(
                 R.string.humidityText,
                 forecastDay.day.avghumidity.toString()
             )
-            precipText.text = requireContext().resources.getString(
-                R.string.precipitationText,
-                forecastDay.day.totalprecip_mm.toString()
-            )
-            windSpeedText.text = requireContext().resources.getString(
-                R.string.windSpeedText,
-                forecastDay.day.maxwind_kph.toString()
-            )
-            minTemperatureText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.mintemp_c.toString()
-            )
-            avgWeatherTempText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.avgtemp_c.toString()
-            )
-            maxTemperatureText.text = requireContext().resources.getString(
-                R.string.temperatureText,
-                forecastDay.day.maxtemp_c.toString()
-            )
+            precipText.text =unitManager.getPrecipitationUnit(forecastDay.day.totalprecip_mm.toString(),forecastDay.day.totalprecip_in.toString())
+            windSpeedText.text = unitManager.getWindSpeedUnit(forecastDay.day.maxwind_kph.toString(),forecastDay.day.maxwind_mph.toString())
+            minTemperatureText.text = unitManager.getTemperatureUnit(forecastDay.day.mintemp_c.toString(),forecastDay.day.mintemp_f.toString())
+            avgWeatherTempText.text = unitManager.getTemperatureUnit(forecastDay.day.avgtemp_c.toString(),forecastDay.day.avgtemp_f.toString())
+            maxTemperatureText.text = unitManager.getTemperatureUnit(forecastDay.day.maxtemp_c.toString(),forecastDay.day.maxtemp_f.toString())
 
             hourlyDetailsTextView.setOnClickListener {
                 navigateToDetailsFragment(latlong, forecastDay.date, locationName)
@@ -199,7 +185,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                     )
                     putExtra(
                         Intent.EXTRA_TEXT,
-                        viewModel.createShareSample(requireContext(), forecastDay, locationName)
+                        viewModel.createShareSample(requireContext(), forecastDay, locationName, unitManager)
                     )
                     requireActivity().startActivity(
                         Intent.createChooser(

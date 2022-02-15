@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.dust.exweather.R
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.ForecastViewPagerAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
@@ -34,6 +36,12 @@ class WeatherForecastFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+
+    @Inject
+    lateinit var unitManager :UnitManager
+
+    @Inject
+    lateinit var sharedPreferencesManager :SharedPreferencesManager
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -97,7 +105,9 @@ class WeatherForecastFragment : DaggerFragment() {
                         childFragmentManager,
                         viewModel.getLiveWeatherDataFromCache(),
                         viewModel.getDetailsViewPagerProgressStateLiveData(),
-                        data.size
+                        data.size,
+                        unitManager,
+                        sharedPreferencesManager
                     )
                     offscreenPageLimit = data.size - 1
                 }

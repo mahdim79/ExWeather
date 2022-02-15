@@ -26,6 +26,7 @@ import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.DetailsViewPagerAdapter
 import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
 import com.dust.exweather.utils.Constants
@@ -70,6 +71,9 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+
+    @Inject
+    lateinit var unitManager:UnitManager
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
@@ -208,7 +212,8 @@ class CurrentWeatherFragment : DaggerFragment() {
             MainRecyclerViewAdapter(
                 requireContext(),
                 listData,
-                alphaAnimation
+                alphaAnimation,
+                unitManager
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
     }
@@ -220,7 +225,8 @@ class CurrentWeatherFragment : DaggerFragment() {
             viewModel.getLiveWeatherDataFromCache(),
             fragmentCount,
             viewModel.getDetailsViewPagerProgressStateLiveData(),
-            Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView)
+            Navigation.findNavController(requireActivity(), R.id.mainFragmentContainerView),
+            unitManager
         )
         detailsViewPager.offscreenPageLimit = fragmentCount - 1
         detailsViewPagerDotsIndicator.setViewPager(detailsViewPager)
