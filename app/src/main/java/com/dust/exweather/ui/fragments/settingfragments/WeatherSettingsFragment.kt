@@ -100,7 +100,7 @@ class WeatherSettingsFragment : DaggerFragment() {
                                                 if (result.isEmpty()) {
                                                     Toast.makeText(
                                                         requireContext(),
-                                                        "با موفقیت اضافه شد",
+                                                        requireContext().getString(R.string.addedSuccessfully),
                                                         Toast.LENGTH_SHORT
                                                     )
                                                         .show()

@@ -47,6 +47,7 @@ class LocationsBottomSheetDialog(
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                 adapter = LocationsRecyclerViewAdapter(
+                    requireContext(),
                     locationList,
                     onDefaultLocationChanged
                 ) { latLong ->

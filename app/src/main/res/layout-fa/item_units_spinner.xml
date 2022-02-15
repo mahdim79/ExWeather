@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    android:background="?colorButtonNormal"
+    android:foreground="?attr/selectableItemBackground"
+    android:paddingHorizontal="@dimen/standardMargin"
+    android:paddingVertical="@dimen/standardMargin1.5x"
+    android:textColor="?android:textColor"
+    android:textSize="@dimen/TextSize3x"
+    android:textStyle="bold"
+    tools:text="درجه فارنهایت - F°" />

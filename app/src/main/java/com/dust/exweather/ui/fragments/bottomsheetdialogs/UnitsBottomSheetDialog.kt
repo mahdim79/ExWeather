@@ -135,34 +135,24 @@ class UnitsBottomSheetDialog(private val sharedPreferencesManager: SharedPrefere
 
     private fun setupSpinners() {
         requireView().apply {
-            precipitationSpinner.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                arrayOf("MM - میلیمتر", "IN - اینچ")
-            )
-            temperatureSpinner.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                arrayOf("°C - درجه سانتی گراد", "°F - درجه فارنهایت")
-            )
+            precipitationSpinner.adapter =
+                getSpinnerArrayAdapter(arrayOf(getString(R.string.milimeter), getString(R.string.inch)))
+            temperatureSpinner.adapter =
+                getSpinnerArrayAdapter(arrayOf(getString(R.string.cPercentage), getString(R.string.fPercentage)))
             windSpeedSpinner.adapter =
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    arrayOf("Kph - کیلومتر بر ساعت", "Mph - مایل بر ساعت")
-                )
+                getSpinnerArrayAdapter(arrayOf(getString(R.string.kph), getString(R.string.mph)))
             pressureSpinner.adapter =
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    arrayOf("In - پاسکال بر اینچ", "Mb - میلی بار")
-                )
+                getSpinnerArrayAdapter(arrayOf(getString(R.string.paPerInch), getString(R.string.milibar)))
             visibilitySpinner.adapter =
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_list_item_1,
-                    arrayOf("Km - کیلومتر", "Mile - مایل")
-                )
+                getSpinnerArrayAdapter(arrayOf(getString(R.string.km), getString(R.string.mile)))
         }
+    }
+
+    private fun getSpinnerArrayAdapter(array: Array<String>): ArrayAdapter<String> {
+        return ArrayAdapter(
+            requireContext(),
+            R.layout.item_units_spinner,
+            array
+        )
     }
 }

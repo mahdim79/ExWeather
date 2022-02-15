@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
     android:background="?colorPrimary"
+    android:layoutDirection="rtl"
     android:paddingBottom="@dimen/standardMargin1.5x">
 
     <ImageView
@@ -99,8 +99,8 @@
         android:text="@string/locationBottomSheetTip"
         android:textColor="@color/light_black"
         android:textSize="@dimen/TextSize2x"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locationsRecyclerView" />
 

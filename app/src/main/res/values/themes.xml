@@ -13,7 +13,7 @@
         <item name="colorSurface">@color/mainContainerWhiteTransparentBackground</item>
         <item name="drawerArrowStyle">@style/NavigationViewToggleStyle</item>
         <item name="colorOnSurface">@color/standardUiWhite</item>
-
+        <item name="colorButtonNormal">@color/white</item>
         <item name="android:textColor">@color/standardUiDark</item>
 
         <!-- Status bar color. -->
@@ -35,6 +35,8 @@
         <item name="drawerArrowStyle">@style/NavigationViewToggleStyle</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="colorOnSurface">@color/light_black3</item>
+        <item name="colorButtonNormal">@color/spinnerNight</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

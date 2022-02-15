@@ -53,10 +53,10 @@
         android:text="@string/precipitation"
         android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize3x"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/noteText"
         android:layout_marginTop="@dimen/standardMargin2x"
-        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginStart="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
 
     <Spinner
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/precipitationText"
         app:layout_constraintBottom_toBottomOf="@+id/precipitationText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:backgroundTint="?android:textColor"
         android:layout_height="wrap_content"/>
@@ -75,10 +75,10 @@
         android:text="@string/Temperature"
         android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize3x"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/precipitationText"
         android:layout_marginTop="@dimen/standardMargin3x"
-        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginStart="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
 
     <Spinner
@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/temperatureText"
         app:layout_constraintBottom_toBottomOf="@+id/temperatureText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:backgroundTint="?android:textColor"
         android:layout_height="wrap_content"/>
@@ -97,10 +97,10 @@
         android:text="@string/WindSpeed"
         android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize3x"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperatureText"
         android:layout_marginTop="@dimen/standardMargin3x"
-        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginStart="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
 
     <Spinner
@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/windSpeedText"
         app:layout_constraintBottom_toBottomOf="@+id/windSpeedText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:backgroundTint="?android:textColor"
         android:layout_height="wrap_content"/>
@@ -119,10 +119,10 @@
         android:text="@string/pressure"
         android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize3x"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/windSpeedText"
         android:layout_marginTop="@dimen/standardMargin3x"
-        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginStart="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
 
     <Spinner
@@ -130,7 +130,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/pressureText"
         app:layout_constraintBottom_toBottomOf="@+id/pressureText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="?android:textColor"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
@@ -141,10 +141,10 @@
         android:text="@string/visibilityAmount"
         android:textColor="?android:textColor"
         android:textSize="@dimen/TextSize3x"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pressureText"
         android:layout_marginTop="@dimen/standardMargin3x"
-        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginStart="@dimen/standardMargin2x"
         android:layout_height="wrap_content"/>
 
     <Spinner
@@ -152,7 +152,7 @@
         android:layout_width="wrap_content"
         app:layout_constraintTop_toTopOf="@+id/visibilityText"
         app:layout_constraintBottom_toBottomOf="@+id/visibilityText"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standardMargin2x"
         android:backgroundTint="?android:textColor"
         android:layout_height="wrap_content"/>

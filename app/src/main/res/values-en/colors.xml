@@ -50,4 +50,6 @@
     <color name="notificationBackgroundMainColor">#35bdd0</color>
     <color name="mainContainerWhiteTransparentBackground">#33181A1C</color>
     <color name="mainContainerBlackTransparentBackground">#66000000</color>
+    <color name="spinnerNight">#171717</color>
+
 </resources>

@@ -114,7 +114,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 }
                 R.id.addLocationFragment -> {
                     setBottomNavigationVisibility(false)
-                    titleText.text = "افزودن مکان جدید"
+                    titleText.text = getString(R.string.addNewLocation)
                 }
             }
         }

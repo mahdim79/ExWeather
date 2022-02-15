@@ -1,6 +1,7 @@
 package com.dust.exweather.ui.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import kotlinx.coroutines.*
 import java.util.*
 
 class LocationsRecyclerViewAdapter(
+    private val context:Context,
     private val dataList: ArrayList<LocationData>,
     private val onDefaultLocationChanged: (String) -> Unit,
     private val onLocationRemoved: (String) -> Unit
@@ -34,7 +36,7 @@ class LocationsRecyclerViewAdapter(
             locationNameText.text = dataList[position].locationName
             if (dataList[position].default) {
                 defaultRadioButton.isChecked = true
-                defaultRadioButton.text = "Default"
+                defaultRadioButton.text = context.getString(R.string.defaultText)
             }else{
                 defaultRadioButton.isChecked = false
                 defaultRadioButton.text = ""

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorPrimary"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/searchProgressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/standardMargin5x"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/standardUiDark"
+            android:visibility="invisible" />
+
+        <ListView
+            android:id="@+id/locationsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/standardMargin" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

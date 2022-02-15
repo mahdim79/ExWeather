@@ -115,5 +115,35 @@
     <string name="companyLocation">company location address</string>
     <string name="companyPhoneNumber">+98 905 499 4569</string>
     <string name="openWith">Open With…</string>
+    <string name="unitsSettings">Unit Settings</string>
+    <string name="unitSettingsTip">In This Section You Can Customize Weather Amounts Units.</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="Temperature">Temperature</string>
+    <string name="WindSpeed">Wind Speed</string>
+    <string name="pressure">Air Pressure</string>
+    <string name="visibilityAmount">Visibility</string>
+    <string name="locations">Locations</string>
+    <string name="myLocations">My Locations</string>
+    <string name="selectAndViewMyLocations">Review And See My Locations</string>
+    <string name="units">Units</string>
+    <string name="addedSuccessfully">Added Successfully</string>
+    <string name="amoutsUnits">Amounts Units</string>
+    <string name="unitSelectTip">Change Units Of Temperature, Humidity, Precipitation etc…</string>
+    <string name="enter_location">Enter Location</string>
+    <string name="locationBottomSheetTip">Default Location Is A Location Which Notifications Send For It.</string>
+    <string name="defaultText">Default</string>
+    <string name="addNewLocation">Add New Location</string>
+    <string name="addCurrentLocation">Add Current Location</string>
+    <string name="add">Add</string>
+    <string name="milimeter">Millimeter - mm</string>
+    <string name="inch">Inch - In</string>
+    <string name="cPercentage">Celsius Degree - °C</string>
+    <string name="fPercentage">Fahrenheit Degree - °F</string>
+    <string name="kph">Kilometer Per Hour - Kph</string>
+    <string name="mph">Mile Per Hour - Mph</string>
+    <string name="paPerInch">Pascal Per Inch - In</string>
+    <string name="milibar">Millibar - Mb</string>
+    <string name="km">Kilometer - Km</string>
+    <string name="mile">Mile</string>
 
 </resources>
