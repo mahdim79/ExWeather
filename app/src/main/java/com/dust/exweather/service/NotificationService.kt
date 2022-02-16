@@ -193,13 +193,16 @@ class NotificationService : DaggerService() {
     }
 
     private fun updateWidget(mainWeatherData: MainWeatherData) {
-        Intent("com.dust.exweather.APPWIDGET_UPDATE").apply {
+        Intent("android.appwidget.action.APPWIDGET_UPDATE").apply {
             putExtra(
                 "WeatherData",
                 Gson().toJson(
                     WidgetData(
                         mainWeatherData.current?.location?.name ?: "null",
-                        mainWeatherData.current?.current?.condition?.text ?: "null"
+                        mainWeatherData.current?.current?.condition?.text ?: "null",
+                        mainWeatherData.current?.current?.precip_mm?.toString() ?: "null",
+                        mainWeatherData.current?.current?.temp_c?.toString() ?: "null",
+                        mainWeatherData.current?.current?.system_last_update_epoch?.toString() ?: "null"
                     )
                 )
             )
