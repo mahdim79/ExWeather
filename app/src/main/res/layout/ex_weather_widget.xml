@@ -1,6 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/remoteViewContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Widget.ExWeather.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.ExWeather.AppWidgetContainer">
@@ -21,10 +22,10 @@
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:background="@color/standardUiDark"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:src="@drawable/day_bg"/>
 
     <ImageView
         android:id="@+id/cloudImage"
@@ -34,7 +35,7 @@
         android:layout_alignBottom="@+id/weatherStateText"
         android:layout_marginStart="@dimen/standardMargin"
         android:layout_marginEnd="@dimen/standardMargin1.5x"
-        android:src="@drawable/ic_cloud" />
+        tools:src="@drawable/ic_cloud" />
 
     <TextView
         android:id="@+id/weatherStateText"
@@ -42,6 +43,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standardMargin0.5x"
         android:layout_toEndOf="@+id/cloudImage"
+        android:shadowRadius="5"
+        android:shadowColor="@color/standardUiDark"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/TextSize5x"
         tools:text="Overcast" />
@@ -51,83 +55,101 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/standardMargin2x"
+        android:layout_marginTop="@dimen/standardMargin2x"
+        android:shadowRadius="5"
+        android:shadowColor="@color/standardUiDark"
+        android:layout_marginEnd="@dimen/standardMargin2x"
+        android:layout_marginBottom="@dimen/standardMargin2x"
         android:textColor="@color/mainTextColor"
-        android:layout_margin="@dimen/standardMargin2x"
         android:textSize="@dimen/TextSize5x"
         tools:text="40°C" />
 
-   <RelativeLayout
-       android:layout_width="match_parent"
-       android:layout_below="@+id/weatherStateText"
-       android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weatherStateText"
+        android:layout_marginStart="@dimen/standardMargin0.5x"
+        android:layout_marginTop="@dimen/standardMargin0.5x"
+        android:layout_marginEnd="@dimen/standardMargin0.5x"
+        android:layout_marginBottom="@dimen/standardMargin0.5x">
 
-       <ImageView
-           android:id="@+id/cityImage"
-           android:layout_width="@dimen/mainIconSize"
-           android:layout_height="@dimen/mainIconSize"
-           android:layout_marginStart="@dimen/standardMargin2x"
-           android:layout_marginTop="@dimen/standardMargin"
-           android:layout_marginEnd="@dimen/standardMargin0.5x"
-           android:src="@drawable/ic_country" />
+        <ImageView
+            android:id="@+id/cityImage"
+            android:layout_width="@dimen/mainIconSize"
+            android:layout_height="@dimen/mainIconSize"
+            android:layout_marginStart="@dimen/standardMargin2x"
+            android:layout_marginTop="@dimen/standardMargin"
+            android:layout_marginEnd="@dimen/standardMargin0.5x"
+            tools:src="@drawable/ic_country" />
 
-       <TextView
-           android:id="@+id/weatherCityNameText"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignTop="@+id/cityImage"
-           android:layout_alignBottom="@+id/cityImage"
-           android:layout_toEndOf="@+id/cityImage"
-           android:textColor="@color/mainTextColor"
-           android:textDirection="ltr"
-           android:textSize="@dimen/mainTextSize"
-           tools:text="London" />
+        <TextView
+            android:id="@+id/weatherCityNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/cityImage"
+            android:layout_alignBottom="@+id/cityImage"
+            android:layout_toEndOf="@+id/cityImage"
+            android:gravity="center"
+            android:shadowRadius="5"
+            android:shadowColor="@color/standardUiDark"
+            android:textColor="@color/mainTextColor"
+            android:textDirection="ltr"
+            android:textSize="@dimen/mainTextSize"
+            tools:text="London" />
 
-       <ImageView
-           android:id="@+id/lastUpdateImage"
-           android:layout_width="@dimen/mainIconSize"
-           android:layout_height="@dimen/mainIconSize"
-           android:layout_alignTop="@+id/precipText"
-           android:layout_marginStart="@dimen/standardMargin1.5x"
-           android:layout_marginEnd="@dimen/standardMargin0.5x"
-           android:layout_marginBottom="@dimen/standardMargin1.5x"
-           android:layout_toEndOf="@+id/precipText"
-           android:src="@drawable/ic_last_update" />
+        <ImageView
+            android:id="@+id/lastUpdateImage"
+            android:layout_width="@dimen/mainIconSize"
+            android:layout_height="@dimen/mainIconSize"
+            android:layout_alignTop="@+id/precipText"
+            android:layout_marginStart="@dimen/standardMargin1.5x"
+            android:layout_marginEnd="@dimen/standardMargin0.5x"
+            android:layout_marginBottom="@dimen/standardMargin1.5x"
+            android:layout_toEndOf="@+id/precipText"
+            tools:src="@drawable/ic_last_update"/>
 
-       <TextView
-           android:id="@+id/lastUpdateText"
-           android:layout_width="150dp"
-           android:layout_height="wrap_content"
-           android:layout_alignTop="@+id/lastUpdateImage"
-           android:layout_alignBottom="@+id/lastUpdateImage"
-           android:layout_toEndOf="@+id/lastUpdateImage"
-           android:textColor="@color/mainTextColor"
-           android:textSize="@dimen/mainTextSize"
-           tools:text="updated" />
+        <TextView
+            android:id="@+id/lastUpdateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/lastUpdateImage"
+            android:layout_alignBottom="@+id/lastUpdateImage"
+            android:layout_toEndOf="@+id/lastUpdateImage"
+            android:gravity="center"
+            android:shadowColor="@color/standardUiDark"
+            android:shadowRadius="5"
+            android:textColor="@color/mainTextColor"
+            android:textSize="@dimen/mainTextSize"
+            tools:text="updated" />
 
-       <ImageView
-           android:id="@+id/precipImage"
-           android:layout_width="@dimen/mainIconSize"
-           android:layout_height="@dimen/mainIconSize"
-           android:layout_alignTop="@+id/weatherCityNameText"
-           android:layout_marginStart="@dimen/standardMargin1.5x"
-           android:layout_marginEnd="@dimen/standardMargin0.5x"
-           android:layout_toEndOf="@+id/weatherCityNameText"
-           android:src="@drawable/ic_rain" />
-
-
-       <TextView
-           android:id="@+id/precipText"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_alignTop="@+id/precipImage"
-           android:layout_alignBottom="@+id/precipImage"
-           android:layout_toEndOf="@+id/precipImage"
-           android:textColor="@color/mainTextColor"
-           android:textSize="@dimen/mainTextSize"
-           tools:text="5mm" />
+        <ImageView
+            android:id="@+id/precipImage"
+            android:layout_width="@dimen/mainIconSize"
+            android:layout_height="@dimen/mainIconSize"
+            android:layout_alignTop="@+id/weatherCityNameText"
+            android:layout_marginStart="@dimen/standardMargin1.5x"
+            android:layout_marginEnd="@dimen/standardMargin0.5x"
+            android:layout_toEndOf="@+id/weatherCityNameText"
+            tools:src="@drawable/ic_rain" />
 
 
-   </RelativeLayout>
+        <TextView
+            android:id="@+id/precipText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/precipImage"
+            android:layout_alignBottom="@+id/precipImage"
+            android:layout_toEndOf="@+id/precipImage"
+            android:shadowRadius="5"
+            android:shadowColor="@color/standardUiDark"
+            android:gravity="center"
+            android:textColor="@color/mainTextColor"
+            android:textSize="@dimen/mainTextSize"
+            tools:text="5mm" />
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

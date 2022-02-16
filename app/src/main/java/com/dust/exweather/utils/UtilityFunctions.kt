@@ -7,7 +7,6 @@ import android.net.NetworkCapabilities
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
-import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.service.NotificationService
 import com.google.gson.Gson
 import dagger.android.support.DaggerAppCompatActivity
