@@ -66,11 +66,13 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/activity_splash.xml" value="0.15" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_add_current_location.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_check_for_update.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_csv_save.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_locations.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_units.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/bottom_sheet_units_settings.xml" value="0.33" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/choose_theme_language_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/ex_weather.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_aboutus.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_add_location.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_current_details_viewpager.xml" value="0.18032786885245902" />
@@ -97,6 +99,8 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/notification_big_layout.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/notification_normal_layout.xml" value="0.5" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/toolbar.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/weather_widget.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/weather_widget_configure.xml" value="0.33" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/menu/navigation_view_menu.xml" value="0.22" />
       </map>

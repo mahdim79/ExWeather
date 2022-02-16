@@ -15,6 +15,7 @@ import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
+import com.dust.exweather.model.dataclasses.weatherwidget.WidgetData
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.toDataClass
@@ -23,6 +24,7 @@ import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.activities.SplashActivity
 import com.dust.exweather.utils.Settings
 import com.dust.exweather.utils.UtilityFunctions
+import com.google.gson.Gson
 import dagger.android.DaggerService
 import kotlinx.coroutines.*
 import retrofit2.Response
@@ -51,7 +53,6 @@ class NotificationService : DaggerService() {
             if (timer == null)
                 startTimer()
         } catch (e: Exception) {
-            Log.i("TimerWorker", "catch Exception!")
             stopSelf()
         }
         return START_STICKY
@@ -63,7 +64,6 @@ class NotificationService : DaggerService() {
     }
 
     private fun cancelTimer() {
-        Log.i("TimerWorker", "timer canceled!")
         timer?.let {
             it.purge()
             it.cancel()
@@ -72,15 +72,17 @@ class NotificationService : DaggerService() {
 
     @UiThread
     private fun configureDataAndNotification() {
+        getWeatherDataFromApi(applicationContext)
+    }
+
+    private fun shouldSendNotification(): Boolean {
         val systemTimeEpoch = System.currentTimeMillis()
         var lastTimeEpoch = sharedPreferencesManager.getLastNotificationTimeEpoch()
         if (lastTimeEpoch == 0L)
             lastTimeEpoch = systemTimeEpoch
         val calendar = Calendar.getInstance()
         calendar.time = Date(systemTimeEpoch)
-        if (calendar.get(Calendar.HOUR_OF_DAY) == 12 || (systemTimeEpoch - lastTimeEpoch) > 86400000L) {
-            getWeatherDataFromApi(applicationContext)
-        }
+        return (systemTimeEpoch - lastTimeEpoch) > 86400000L
     }
 
     private fun getWeatherDataFromApi(context: Context) {
@@ -90,101 +92,118 @@ class NotificationService : DaggerService() {
             return
         }
 
-        Log.i("notificationServiceProcess", "stage1 done!")
-
         CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
             val cachedData = weatherDao.getDirectWeatherData()
-            val listNewData = arrayListOf<MainWeatherData>()
+            sharedPreferencesManager.getDefaultLocation()?.let { defLocation ->
+                cachedData.forEach { entity ->
+                    if (entity.toDataClass().location == defLocation) {
+                        var newData: MainWeatherData? = null
+                        async {
+                            launch {
+                                val weatherData = entity.toDataClass()
+                                val currentWeatherData: Response<CurrentData> =
+                                    mainApiRequests.getCurrentWeatherData(weatherData.location)
+                                var historyWeatherData: WeatherHistory? = null
+                                var forecastWeatherData: Response<WeatherForecast>? = null
 
-            Log.i("notificationServiceProcess", "stage2 done!")
+                                if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
+                                    val data = currentWeatherData.body()!!
 
-            async {
-                cachedData.forEach {
-                    launch {
-                        val weatherData = it.toDataClass()
-                        val currentWeatherData: Response<CurrentData> =
-                            mainApiRequests.getCurrentWeatherData(weatherData.location)
-                        var historyWeatherData: WeatherHistory? = null
-                        var forecastWeatherData: Response<WeatherForecast>? = null
+                                    async {
+                                        for (i in 1 until 6)
+                                            launch {
+                                                val historyData =
+                                                    mainApiRequests.getHistoryWeatherData(
+                                                        weatherData.location,
+                                                        UtilityFunctions.getDaysLeft(
+                                                            data.location!!.localtime_epoch,
+                                                            data.location.tz_id,
+                                                            i
+                                                        )
+                                                    )
+                                                val optimizedData =
+                                                    setUpHistoryFetchedData(
+                                                        historyWeatherData,
+                                                        historyData
+                                                    )
+                                                if (optimizedData != null)
+                                                    historyWeatherData = optimizedData
 
-                        if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
-                            val data = currentWeatherData.body()!!
+                                            }
+                                        launch {
+                                            forecastWeatherData =
+                                                mainApiRequests.getForecastWeatherData(weatherData.location)
+                                        }
+                                    }.await()
+                                    data.current!!.day_of_week =
+                                        UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                                            data.location!!.localtime_epoch,
+                                            applicationContext
+                                        )
 
-                            async {
-                                for (i in 1 until 6)
-                                    launch {
-                                        val historyData =
-                                            mainApiRequests.getHistoryWeatherData(
-                                                weatherData.location,
-                                                UtilityFunctions.getDaysLeft(
-                                                    data.location!!.localtime_epoch,
-                                                    data.location.tz_id,
-                                                    i
-                                                )
-                                            )
-                                        val optimizedData =
-                                            setUpHistoryFetchedData(historyWeatherData, historyData)
-                                        if (optimizedData != null)
-                                            historyWeatherData = optimizedData
-
-                                    }
-                                launch {
-                                    forecastWeatherData =
-                                        mainApiRequests.getForecastWeatherData(weatherData.location)
-                                }
-                            }.await()
-                            data.current!!.day_of_week =
-                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
-                                    data.location!!.localtime_epoch,
-                                    applicationContext
-                                )
-
-                            val mainWeatherData = MainWeatherData(
-                                data,
-                                null,
-                                null,
-                                weatherData.location,
-                                weatherData.id
-                            )
-
-                            // sort historical data
-                            if (historyWeatherData != null) {
-                                historyWeatherData!!.forecast.forecastday =
-                                    optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
-                                mainWeatherData.historyDetailsData = historyWeatherData
-                            }
-
-                            if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
-                                mainWeatherData.forecastDetailsData = forecastWeatherData!!.body()
-                                mainWeatherData.forecastDetailsData!!.forecast.forecastday =
-                                    optimizeForecastData(
-                                        mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                                        mainWeatherData.current!!.current!!.day_of_week
+                                    val mainWeatherData = MainWeatherData(
+                                        data,
+                                        null,
+                                        null,
+                                        weatherData.location,
+                                        weatherData.id
                                     )
+
+                                    // sort historical data
+                                    if (historyWeatherData != null) {
+                                        historyWeatherData!!.forecast.forecastday =
+                                            optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
+                                        mainWeatherData.historyDetailsData = historyWeatherData
+                                    }
+
+                                    if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
+                                        mainWeatherData.forecastDetailsData =
+                                            forecastWeatherData!!.body()
+                                        mainWeatherData.forecastDetailsData!!.forecast.forecastday =
+                                            optimizeForecastData(
+                                                mainWeatherData.forecastDetailsData!!.forecast.forecastday,
+                                                mainWeatherData.current!!.current!!.day_of_week
+                                            )
+                                    }
+
+                                    mainWeatherData.current!!.current!!.system_last_update_epoch =
+                                        System.currentTimeMillis()
+
+                                    newData = mainWeatherData
+                                }
                             }
+                        }.await()
 
-                            mainWeatherData.current!!.current!!.system_last_update_epoch =
-                                System.currentTimeMillis()
+                        newData?.let { newWeatherData ->
+                            weatherDao.insertWeatherData(arrayListOf(newWeatherData.toEntity()))
 
-                            listNewData.add(mainWeatherData)
+                            withContext(Dispatchers.Main) {
+                                // update widget
+                                updateWidget(newWeatherData)
+
+                                // send notification
+                                if (shouldSendNotification())
+                                    sendNotification(newWeatherData)
+                            }
                         }
                     }
                 }
-
-            }.await()
-
-            Log.i("notificationServiceProcess", "stage3 done!")
-
-
-            if (!listNewData.isNullOrEmpty()) {
-                weatherDao.insertWeatherData(listNewData.map { it.toEntity() })
-
-                withContext(Dispatchers.Main) {
-                    Log.i("notificationServiceProcess", "stage4 done!")
-
-                    sendNotification(listNewData[0])
-                }
             }
+        }
+    }
+
+    private fun updateWidget(mainWeatherData: MainWeatherData) {
+        Intent("com.dust.exweather.APPWIDGET_UPDATE").apply {
+            putExtra(
+                "WeatherData",
+                Gson().toJson(
+                    WidgetData(
+                        mainWeatherData.current?.location?.name ?: "null",
+                        mainWeatherData.current?.current?.condition?.text ?: "null"
+                    )
+                )
+            )
+            sendBroadcast(this)
         }
     }
 

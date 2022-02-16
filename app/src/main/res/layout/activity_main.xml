@@ -16,7 +16,7 @@
         app:headerLayout="@layout/navigation_view_header"
         app:itemIconTint="?android:textColor"
         app:itemTextColor="?android:textColor"
-        android:background="?colorPrimary"
+        android:background="?colorOnBackground"
         app:menu="@menu/navigation_view_menu" />
 
     <RelativeLayout

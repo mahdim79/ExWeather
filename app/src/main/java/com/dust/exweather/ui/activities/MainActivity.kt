@@ -1,8 +1,6 @@
 package com.dust.exweather.ui.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -13,11 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
-import com.dust.exweather.service.NotificationService
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
-import com.dust.exweather.utils.Constants
-import com.dust.exweather.utils.Settings
-import com.dust.exweather.utils.customviews.CTextView
 import com.koushikdutta.ion.Ion
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
