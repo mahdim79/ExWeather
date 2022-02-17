@@ -41,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/mainToolbar"
             android:text="@string/currentWeather"
             android:textStyle="bold"
-            android:shadowRadius="3"
+            android:shadowRadius="1"
             android:shadowColor="@color/standardUiDark"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

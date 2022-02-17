@@ -23,6 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_forecast_weather.*
 import kotlinx.android.synthetic.main.fragment_forecast_weather.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -104,13 +105,13 @@ class WeatherForecastFragment : DaggerFragment() {
                     adapter = ForecastViewPagerAdapter(
                         childFragmentManager,
                         viewModel.getLiveWeatherDataFromCache(),
-                        viewModel.getDetailsViewPagerProgressStateLiveData(),
                         data.size,
                         unitManager,
                         sharedPreferencesManager
                     )
                     offscreenPageLimit = data.size - 1
                 }
+                detailsViewPagerDotsIndicator.setViewPager(forecastMainViewPager)
             }
         }
         requireView().forecastFragmentSwipeRefreshLayout.apply {

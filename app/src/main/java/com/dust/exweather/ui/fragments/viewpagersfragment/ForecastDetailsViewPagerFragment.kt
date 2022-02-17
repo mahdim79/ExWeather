@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.v
 
 class ForecastDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
-    private val progressStateLiveData: LiveData<Boolean>,
     private val position: Int,
     private val unitManager: UnitManager,
     private val sharedPreferencesManager: SharedPreferencesManager
@@ -83,16 +82,6 @@ class ForecastDetailsViewPagerFragment(
             }
         }
 
-        progressStateLiveData.observe(viewLifecycleOwner) {
-            setLoadingState(it)
-        }
-
-    }
-
-    private fun setLoadingState(state: Boolean?) {
-        state?.let {
-            requireView().itemProgressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        }
     }
 
     private fun setUpUi(currentData: WeatherForecast, currentLocation: String) {

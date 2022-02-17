@@ -3,7 +3,6 @@ package com.dust.exweather.ui.activities
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
@@ -70,6 +69,7 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun setUpNaVController() {
         navController = findNavController(R.id.mainFragmentContainerView)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            appbarLayout.setExpanded(true, true)
             when (destination.id) {
                 R.id.currentWeatherFragment -> {
                     mainNavView.setCheckedItem(destination.id)
