@@ -51,8 +51,8 @@
     <color name="mainContainerWhiteTransparentBackground">#33181A1C</color>
     <color name="mainContainerBlackTransparentBackground">#66000000</color>
     <color name="spinnerNight">#171717</color>
-    <color name="lightNavigationViewBackgroundColor">#B2FFFFFF</color>
-    <color name="darkNavigationViewBackgroundColor">#B2000000</color>
+    <color name="lightNavigationViewBackgroundColor">#BFFFFFFF</color>
+    <color name="darkNavigationViewBackgroundColor">#80000000</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>

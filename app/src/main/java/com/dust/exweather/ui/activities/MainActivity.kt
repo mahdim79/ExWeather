@@ -12,7 +12,6 @@ import androidx.navigation.ui.NavigationUI
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
-import com.koushikdutta.ion.Ion
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -116,17 +115,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setUpNavigationView() {
         mainNavView.bringToFront()
-        setUpNavigationViewHeader()
-    }
-
-    private fun setUpNavigationViewHeader() {
-        val headerLayout = mainNavView.getHeaderView(0)
-        headerLayout.apply {
-            val headerImageView = findViewById<ImageView>(R.id.navigationViewHeaderImage)
-            Ion.with(context)
-                .load("http://www.montgomeryruritanclub.com/Site/images/annimated/lg.rainy-preloader.gif")
-                .intoImageView(headerImageView)
-        }
     }
 
     private fun setBottomNavigationVisibility(b: Boolean) {

@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
             android:layout_marginTop="@dimen/standardMargin6x"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher" />
 
         <com.dust.exweather.utils.customviews.CTextView
             android:id="@+id/aboutUsDescriptionText"

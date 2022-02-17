@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.*
+import com.dust.exweather.BuildConfig
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
 import com.dust.exweather.service.NotificationService
@@ -26,6 +27,11 @@ class SplashActivity : DaggerAppCompatActivity() {
         setUpTextAnimation()
         setUpTranslationHandler()
         startNotificationService()
+        setUpSplashTextView()
+    }
+
+    private fun setUpSplashTextView() {
+        splashText.text = BuildConfig.VERSION_NAME
     }
 
     private fun setCurrentLocaleConfiguration() {
