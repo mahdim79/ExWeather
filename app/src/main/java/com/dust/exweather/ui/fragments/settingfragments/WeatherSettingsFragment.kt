@@ -1,5 +1,6 @@
 package com.dust.exweather.ui.fragments.settingfragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dust.exweather.R
+import com.dust.exweather.service.NotificationService
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.AddCurrentLocationBottomSheetDialog
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.LocationsBottomSheetDialog
@@ -73,6 +75,10 @@ class WeatherSettingsFragment : DaggerFragment() {
                         locationList = viewModel.getLocationsData(),
                         onDefaultLocationChanged = { defaultLocation ->
                             viewModel.setDefaultLocation(defaultLocation)
+                            try {
+                                requireActivity().stopService(Intent(requireActivity(), NotificationService::class.java))
+                            }catch (e:Exception){}
+                            requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
                         },
                         onLocationRemoved = { latLong ->
                             lifecycleScope.launch(Dispatchers.IO) {

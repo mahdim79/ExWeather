@@ -48,6 +48,8 @@ class NotificationService : DaggerService() {
 
     private var timer: Timer? = null
 
+    private var coroutineJob: Job? = null
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
@@ -91,7 +93,8 @@ class NotificationService : DaggerService() {
 
     private fun getWeatherDataFromApi(context: Context) {
 
-        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+        coroutineJob?.cancel(CancellationException("NormalCancellation"))
+        coroutineJob = CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
             val cachedData = weatherDao.getDirectWeatherData()
             sharedPreferencesManager.getDefaultLocation()?.let { defLocation ->
                 cachedData.forEach { entity ->
@@ -99,84 +102,81 @@ class NotificationService : DaggerService() {
 
                         if (UtilityFunctions.isNetworkConnectionEnabled(context)) {
                             var newData: MainWeatherData? = null
-                            async {
-                                launch {
-                                    val weatherData = entity.toDataClass()
-                                    val currentWeatherData: Response<CurrentData> =
-                                        mainApiRequests.getCurrentWeatherData(weatherData.location)
-                                    var historyWeatherData: WeatherHistory? = null
-                                    var forecastWeatherData: Response<WeatherForecast>? = null
+                            launch {
+                                val weatherData = entity.toDataClass()
+                                val currentWeatherData: Response<CurrentData> =
+                                    mainApiRequests.getCurrentWeatherData(weatherData.location)
+                                var historyWeatherData: WeatherHistory? = null
+                                var forecastWeatherData: Response<WeatherForecast>? = null
 
-                                    if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
-                                        val data = currentWeatherData.body()!!
+                                if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
+                                    val data = currentWeatherData.body()!!
 
-                                        async {
-                                            for (i in 1 until 6)
-                                                launch {
-                                                    val historyData =
-                                                        mainApiRequests.getHistoryWeatherData(
-                                                            weatherData.location,
-                                                            UtilityFunctions.getDaysLeft(
-                                                                data.location!!.localtime_epoch,
-                                                                data.location.tz_id,
-                                                                i
-                                                            )
-                                                        )
-                                                    val optimizedData =
-                                                        setUpHistoryFetchedData(
-                                                            historyWeatherData,
-                                                            historyData
-                                                        )
-                                                    if (optimizedData != null)
-                                                        historyWeatherData = optimizedData
-
-                                                }
+                                    async {
+                                        for (i in 1 until 6)
                                             launch {
-                                                forecastWeatherData =
-                                                    mainApiRequests.getForecastWeatherData(
-                                                        weatherData.location
+                                                val historyData =
+                                                    mainApiRequests.getHistoryWeatherData(
+                                                        weatherData.location,
+                                                        UtilityFunctions.getDaysLeft(
+                                                            data.location!!.localtime_epoch,
+                                                            data.location.tz_id,
+                                                            i
+                                                        )
                                                     )
+                                                val optimizedData =
+                                                    setUpHistoryFetchedData(
+                                                        historyWeatherData,
+                                                        historyData
+                                                    )
+                                                if (optimizedData != null)
+                                                    historyWeatherData = optimizedData
+
                                             }
-                                        }.await()
-                                        data.current!!.day_of_week =
-                                            UtilityFunctions.getDayOfWeekByUnixTimeStamp(
-                                                data.location!!.localtime_epoch,
-                                                applicationContext
-                                            )
-
-                                        val mainWeatherData = MainWeatherData(
-                                            data,
-                                            null,
-                                            null,
-                                            weatherData.location,
-                                            weatherData.id
-                                        )
-
-                                        // sort historical data
-                                        if (historyWeatherData != null) {
-                                            historyWeatherData!!.forecast.forecastday =
-                                                optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
-                                            mainWeatherData.historyDetailsData = historyWeatherData
-                                        }
-
-                                        if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
-                                            mainWeatherData.forecastDetailsData =
-                                                forecastWeatherData!!.body()
-                                            mainWeatherData.forecastDetailsData!!.forecast.forecastday =
-                                                optimizeForecastData(
-                                                    mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                                                    mainWeatherData.current!!.current!!.day_of_week
+                                        launch {
+                                            forecastWeatherData =
+                                                mainApiRequests.getForecastWeatherData(
+                                                    weatherData.location
                                                 )
                                         }
+                                    }.await()
+                                    data.current!!.day_of_week =
+                                        UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                                            data.location!!.localtime_epoch,
+                                            applicationContext
+                                        )
 
-                                        mainWeatherData.current!!.current!!.system_last_update_epoch =
-                                            System.currentTimeMillis()
+                                    val mainWeatherData = MainWeatherData(
+                                        data,
+                                        null,
+                                        null,
+                                        weatherData.location,
+                                        weatherData.id
+                                    )
 
-                                        newData = mainWeatherData
+                                    // sort historical data
+                                    if (historyWeatherData != null) {
+                                        historyWeatherData!!.forecast.forecastday =
+                                            optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
+                                        mainWeatherData.historyDetailsData = historyWeatherData
                                     }
-                                }
-                            }.await()
 
+                                    if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
+                                        mainWeatherData.forecastDetailsData =
+                                            forecastWeatherData!!.body()
+                                        mainWeatherData.forecastDetailsData!!.forecast.forecastday =
+                                            optimizeForecastData(
+                                                mainWeatherData.forecastDetailsData!!.forecast.forecastday,
+                                                mainWeatherData.current!!.current!!.day_of_week
+                                            )
+                                    }
+
+                                    mainWeatherData.current!!.current!!.system_last_update_epoch =
+                                        System.currentTimeMillis()
+
+                                    newData = mainWeatherData
+                                }
+                            }.join()
                             newData?.let { newWeatherData ->
                                 weatherDao.insertWeatherData(arrayListOf(newWeatherData.toEntity()))
 
@@ -235,6 +235,8 @@ class NotificationService : DaggerService() {
                     }
                 }
             }
+            Log.i("ServiceJobJobStatus", "null")
+            coroutineJob = null
         }
     }
 
@@ -474,6 +476,7 @@ class NotificationService : DaggerService() {
 
     override fun onDestroy() {
         cancelTimer()
+        coroutineJob?.cancel(CancellationException("NormalCancellation"))
         super.onDestroy()
     }
 
