@@ -81,6 +81,7 @@ class MainActivity : DaggerAppCompatActivity() {
         navController = findNavController(R.id.mainFragmentContainerView)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             appbarLayout.setExpanded(true, true)
+            addLocationImageView.visibility = View.VISIBLE
             when (destination.id) {
                 R.id.currentWeatherFragment -> {
                     mainNavView.setCheckedItem(destination.id)
@@ -119,6 +120,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 R.id.addLocationFragment -> {
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.addNewLocation)
+                    addLocationImageView.visibility = View.GONE
                 }
             }
         }

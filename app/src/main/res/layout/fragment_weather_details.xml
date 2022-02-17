@@ -40,8 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_location_city"
-                    app:tint="@color/standardUiBlue"
-                    app:layout_constraintStart_toEndOf="@+id/locationTextView"
+                    app:tint="@color/standardUiDark"
+                    app:layout_constraintEnd_toStartOf="@+id/locationTextView"
                     app:layout_constraintTop_toTopOf="@+id/locationTextView"
                     app:layout_constraintBottom_toBottomOf="@+id/locationTextView"/>
 
@@ -57,7 +57,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="بیرجند" />
+                    tools:text="Birjand" />
 
                 <com.dust.exweather.utils.customviews.CTextView
                     android:id="@+id/weatherConditionTextView"
@@ -87,16 +87,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/weatherDetailsViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layoutDirection="ltr"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerContainerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

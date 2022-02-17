@@ -3,7 +3,6 @@ package com.dust.exweather.viewmodel.fragments
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,7 +48,8 @@ class WeatherSettingsViewModel(
             dataList.forEach { mainWeatherData ->
                 locationDataList.add(
                     LocationData(
-                        mainWeatherData.current?.location?.name ?: "null",
+                        mainWeatherData.current?.location?.name
+                            ?: mainWeatherData.historyDetailsData?.location?.name ?: "",
                         mainWeatherData.location,
                         mainWeatherData.location == defaultLocation
                     )

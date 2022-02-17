@@ -87,7 +87,7 @@ class SplashActivity : DaggerAppCompatActivity() {
         }
         val rotateAnimation = RotateAnimation(
             0f,
-            3600f,
+            360f,
             RotateAnimation.RELATIVE_TO_SELF,
             0.5f,
             RotateAnimation.RELATIVE_TO_SELF,

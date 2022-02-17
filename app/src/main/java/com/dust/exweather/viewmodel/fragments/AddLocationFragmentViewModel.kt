@@ -1,10 +1,10 @@
 package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.dust.exweather.model.dataclasses.currentweather.main.Location
+import com.dust.exweather.model.dataclasses.historyweather.Forecast
+import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.location.SearchLocation
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
@@ -14,6 +14,7 @@ import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
+import kotlinx.android.synthetic.main.fragment_add_location.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -94,26 +95,68 @@ class AddLocationFragmentViewModel(
         }
     }
 
-    suspend fun insertLocationToCache(location: String): String {
-        val currentData = getDirectCachedData()
-        currentData.forEach { data ->
-            if (data.location == location)
-                return "این مکان قبلا اضافه شده است!"
-        }
+    suspend fun insertLocationToCache(locationText: String): String {
 
-        if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty())
-            sharedPreferencesManager.setDefaultLocation(location)
-        addLocationRepository.addNewLocationToCache(
-            arrayListOf(
-                MainWeatherData(
-                    current = null,
-                    forecastDetailsData = null,
-                    historyDetailsData = null,
-                    location = location,
-                    id = null
-                ).toEntity()
+        try {
+            var calculatedLat =
+                locationText.substring(locationText.indexOf("|") + 1, locationText.indexOf(","))
+            var calculatedLon =
+                locationText.substring(locationText.indexOf(","), locationText.lastIndex)
+
+            if (calculatedLat.endsWith("."))
+                calculatedLat = calculatedLat.replace(".", "")
+
+            if (calculatedLat.contains(" "))
+                calculatedLat = calculatedLat.replace(" ", "")
+
+            if (calculatedLon.endsWith("."))
+                calculatedLon = calculatedLon.replace(".", "")
+
+            if (calculatedLat.contains(" "))
+                calculatedLat = calculatedLat.replace(" ", "")
+
+            if(calculatedLat.startsWith(","))
+                calculatedLat = calculatedLat.replace(",", "")
+
+            if(calculatedLon.startsWith(","))
+                calculatedLon = calculatedLon.replace(",", "")
+
+            var latLangString = "$calculatedLat,$calculatedLon"
+
+            val currentData = getDirectCachedData()
+            currentData.forEach { data ->
+                if (data.location == latLangString)
+                    return "این مکان قبلا اضافه شده است!"
+            }
+
+            if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty())
+                sharedPreferencesManager.setDefaultLocation(latLangString)
+            addLocationRepository.addNewLocationToCache(
+                arrayListOf(
+                    MainWeatherData(
+                        current = null,
+                        forecastDetailsData = null,
+                        WeatherHistory(
+                            Forecast(arrayListOf()),
+                            location = Location(
+                                "",
+                                calculatedLat.toDouble(),
+                                "",
+                                0,
+                                calculatedLon.toDouble(),
+                                locationText.substring(0, locationText.indexOf("|") - 1),
+                                "",
+                                ""
+                            )
+                        ),
+                        location = latLangString,
+                        id = null
+                    ).toEntity()
+                )
             )
-        )
+        } catch (e: Exception) {
+            return "لطفا مکان مورد نظر را از روی نقشه یا به صورت دستی از لیست انتخاب کنید"
+        }
         return ""
     }
 

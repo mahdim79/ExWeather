@@ -95,26 +95,8 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
     private fun setupFloatingActionButton() {
         floatingActionButton = requireActivity().findViewById(R.id.addLocationFloatButton)
         floatingActionButton.setOnClickListener {
-            try {
-                val locationText = locationEditText.text.toString()
-                val calculatedLat =
-                    locationText.substring(locationText.indexOf("|") + 1, locationText.indexOf(","))
-                val calculatedLon =
-                    locationText.substring(locationText.indexOf(","), locationText.lastIndex)
-
-                when {
-                    calculatedLat.endsWith(".") -> calculatedLat.replace(".", "")
-                    calculatedLat.contains(" ") -> calculatedLat.replace(" ", "")
-                    calculatedLon.endsWith(".") -> calculatedLon.replace(".", "")
-                    calculatedLat.contains(" ") -> calculatedLon.replace(" ", "")
-                }
-
-                var latLangString = "$calculatedLat,$calculatedLon"
-                latLangString = latLangString.substring(0, latLangString.lastIndexOf(","))
-                    .plus(latLangString.substring(latLangString.lastIndexOf(",") + 1))
-
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val result = viewModel.insertLocationToCache(latLangString)
+                    val result = viewModel.insertLocationToCache(locationEditText.text.toString())
                     if (result.isEmpty()) {
                         // that means the operation was successful
                         withContext(Dispatchers.Main) {
@@ -131,22 +113,13 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 requireContext(),
-                                "این مکان از قبل اضافه شده است",
+                                result,
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
                         }
                     }
                 }
-
-            } catch (e: Exception) {
-                Log.i("LatLangCalculateException", e.message.toString())
-                Toast.makeText(
-                    requireContext(),
-                    "لطفا مکان مورد نظر را از روی نقشه یا به صورت دستی از لیست انتخاب کنید",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 

@@ -10,12 +10,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.dust.exweather.R
-import com.dust.exweather.interfaces.DayDetailsViewPagerOnClickListener
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
-import com.dust.exweather.ui.adapters.DayDetailsViewPagerAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
@@ -67,7 +65,6 @@ class WeatherDetailsFragment : DaggerFragment() {
     }
 
     private fun setUpPrimaryUi() {
-        setUpPrimaryViewPager()
         observeForApiCallState()
         setUpSwipeRefreshLayout()
         observeRoomData()
@@ -83,26 +80,16 @@ class WeatherDetailsFragment : DaggerFragment() {
     private fun observeForApiCallState() {
         viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
-                DataStatus.DATA_RECEIVE_LOADING -> {
-                    setProgressMode(true)
-                }
-
                 DataStatus.DATA_RECEIVE_FAILURE -> {
-                    setProgressMode(false)
                     resetSwipeRefreshLayout()
                     Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                 }
 
                 DataStatus.DATA_RECEIVE_SUCCESS -> {
-                    setProgressMode(false)
                     resetSwipeRefreshLayout()
                 }
             }
         }
-    }
-
-    private fun setProgressMode(b: Boolean) {
-
     }
 
     private fun resetSwipeRefreshLayout() {
@@ -150,53 +137,21 @@ class WeatherDetailsFragment : DaggerFragment() {
         }
     }
 
-    private fun setUpPrimaryViewPager() {
-        requireView().apply {
-            weatherDetailsViewPager.adapter = DayDetailsViewPagerAdapter(
-                childFragmentManager,
-                viewModel.getLiveWeatherDataFromCache(),
-                alphaAnimation,
-                requireArguments().getString("location")!!,
-                object : DayDetailsViewPagerOnClickListener {
-                    override fun goToCurrentWeatherPage() {
-                        weatherDetailsViewPager.currentItem = 1
-                    }
-
-                    override fun goToHistoryWeatherPage() {
-                        weatherDetailsViewPager.currentItem = 0
-                    }
-
-                    override fun goToForecastWeatherPage() {
-                        weatherDetailsViewPager.currentItem = 2
-                    }
-
-                },
-                unitManager
-            )
-            weatherDetailsViewPager.offscreenPageLimit = 2
-            weatherDetailsViewPager.currentItem = 1
-        }
-    }
-
     private fun calculateAndSetUpUi(data: List<WeatherEntity>) {
-        var locationData: MainWeatherData? = null
-
         data.forEach {
             if (it.toDataClass().location == requireArguments().getString("location"))
-                locationData = it.toDataClass()
+                setUpUi(it.toDataClass())
         }
-
-        locationData?.let { setUpUi(it) }
-
     }
 
     private fun setUpUi(data: MainWeatherData) {
+
         requireView().apply {
-            locationTextView.text = data.current!!.location!!.name
-            weatherConditionTextView.text = data.current!!.current!!.condition.text
+            locationTextView.text = data.current?.location?.name ?: "null"
+            weatherConditionTextView.text = data.current?.current?.condition?.text ?: "null"
             timeTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
-                data.current!!.location!!.localtime_epoch,
-                data.current!!.location!!.tz_id
+                data.current?.location?.localtime_epoch ?: 0,
+                data.current?.location?.tz_id ?: "Asia/tehran"
             )
         }
     }
