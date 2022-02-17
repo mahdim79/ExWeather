@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/standardMargin3x"
         tools:text="1.0.0"
-        android:textColor="?android:textColor"
+        android:textColor="@color/light_black2"
         android:textSize="@dimen/TextSize4x" />
 
 </RelativeLayout>

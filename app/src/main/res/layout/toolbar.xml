@@ -44,6 +44,21 @@
             android:shadowRadius="1"
             android:shadowColor="@color/standardUiDark"
             />
+
+        <ImageView
+            android:id="@+id/addLocationImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mainToolbar"
+            android:layout_marginHorizontal="@dimen/standardMargin0.5x"
+            app:layout_constraintBottom_toBottomOf="@+id/mainToolbar"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_add_location_alt_24"
+            app:tint="?android:textColor" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -3,10 +3,12 @@ package com.dust.exweather.ui.activities
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
@@ -21,6 +23,7 @@ class MainActivity : DaggerAppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var toolbar: Toolbar
     private lateinit var titleText: TextView
+    private lateinit var addLocationImageView: ImageView
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -50,6 +53,7 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun setUpPrimaryUiStuff() {
         setUpViews()
         setUpNaVController()
+        setUpAddLocationButton()
         setUpActionBar()
         setUpStatusBar()
         setUpNavigationComponent()
@@ -57,9 +61,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
     }
 
+    private fun setUpAddLocationButton() {
+        addLocationImageView.setOnClickListener {
+            navController.navigate(R.id.addLocationFragment)
+        }
+    }
+
     private fun setUpViews() {
         toolbar = findViewById(R.id.mainToolbar)
         titleText = findViewById(R.id.toolbarTitle)
+        addLocationImageView = findViewById(R.id.addLocationImageView)
     }
 
     private fun setUpStatusBar() {

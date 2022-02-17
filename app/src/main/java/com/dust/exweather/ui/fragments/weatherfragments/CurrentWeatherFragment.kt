@@ -159,15 +159,8 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun setUpUiView() {
         instantiateBackgroundImageView()
-        setUpAddLocationButton()
         observeForApiCallState()
         observeCacheLiveData()
-    }
-
-    private fun setUpAddLocationButton() {
-        requireView().addLocationImageView.setOnClickListener {
-            findNavController().navigate(R.id.action_currentWeatherFragment_to_addLocationFragment)
-        }
     }
 
     private fun instantiateBackgroundImageView() {
