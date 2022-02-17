@@ -278,7 +278,7 @@ class NotificationService : DaggerService() {
         val notification = NotificationCompat.Builder(applicationContext, "someId")
             .setCustomContentView(RemoteViews(packageName, R.layout.notification_normal_layout))
             .setCustomBigContentView(RemoteViews(packageName, R.layout.notification_big_layout))
-            .setSmallIcon(R.drawable.ic_cloud)
+            .setSmallIcon(R.drawable.ic_launcher)
             .setContentTitle("ExWeather")
             .setOngoing(false)
             .setContentIntent(

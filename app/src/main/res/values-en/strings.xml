@@ -148,5 +148,6 @@
     <string name="appwidget_text">LOADING</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+    <string name="default_notification_channel_id">FirebaseNotificationChannelId</string>
 
 </resources>
