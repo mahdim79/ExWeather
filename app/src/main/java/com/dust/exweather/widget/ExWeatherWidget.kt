@@ -54,39 +54,57 @@ class ExWeatherWidget : AppWidgetProvider() {
 internal fun updateCustomWidget(context: Context, data: WidgetData) {
     val widgetText = context.getString(R.string.appwidget_text)
     // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.ex_weather_widget)
-    views.setTextViewText(R.id.appwidget_text, widgetText)
-    views.setTextViewText(R.id.weatherStateText, data.weatherState)
-    views.setTextViewText(R.id.weatherCityNameText, data.location)
-    views.setTextViewText(R.id.precipText, data.precipitation)
-    views.setTextViewText(R.id.lastUpdateText, data.lastUpdate)
-    views.setTextViewText(R.id.weatherTempText, data.temp)
-
-    views.setImageViewResource(R.id.cloudImage, R.drawable.ic_cloud)
-    views.setImageViewResource(R.id.cityImage, R.drawable.ic_country)
-    views.setImageViewResource(R.id.precipImage, R.drawable.ic_rain)
-    views.setImageViewResource(R.id.lastUpdateImage, R.drawable.ic_last_update)
-
-    if (data.isDay)
-        views.setImageViewResource(R.id.backgroundImage, R.drawable.day_bg)
-    else
-        views.setImageViewResource(R.id.backgroundImage, R.drawable.night_bg)
-
-    val intent = Intent(context, SplashActivity::class.java)
-    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-    views.setOnClickPendingIntent(
-        R.id.remoteViewContainer,
-        PendingIntent.getActivity(context, 200, intent, 0)
-    )
-
     val appWidgetManager = AppWidgetManager.getInstance(context)
     val appWidgetIds =
         appWidgetManager.getAppWidgetIds(ComponentName(context, ExWeatherWidget::class.java))
 
-    // Instruct the widget manager to update the widget
-    for (i in appWidgetIds)
-        appWidgetManager.updateAppWidget(i, views)
+    if (data.location == "null"){
+        val views = RemoteViews(context.packageName, R.layout.ex_weather_widget_no_data)
+
+        val intent = Intent(context, SplashActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        views.setOnClickPendingIntent(
+            R.id.remoteViewContainer,
+            PendingIntent.getActivity(context, 200, intent, 0)
+        )
+
+        // Instruct the widget manager to update the widget
+        for (i in appWidgetIds)
+            appWidgetManager.updateAppWidget(i, views)
+
+    }else{
+        val views = RemoteViews(context.packageName, R.layout.ex_weather_widget)
+        views.setTextViewText(R.id.appwidget_text, widgetText)
+        views.setTextViewText(R.id.weatherStateText, data.weatherState)
+        views.setTextViewText(R.id.weatherCityNameText, data.location)
+        views.setTextViewText(R.id.precipText, data.precipitation)
+        views.setTextViewText(R.id.lastUpdateText, data.lastUpdate)
+        views.setTextViewText(R.id.weatherTempText, data.temp)
+
+        views.setImageViewResource(R.id.cloudImage, R.drawable.ic_cloud)
+        views.setImageViewResource(R.id.cityImage, R.drawable.ic_country)
+        views.setImageViewResource(R.id.precipImage, R.drawable.ic_rain)
+        views.setImageViewResource(R.id.lastUpdateImage, R.drawable.ic_last_update)
+
+        if (data.isDay)
+            views.setImageViewResource(R.id.backgroundImage, R.drawable.day_bg)
+        else
+            views.setImageViewResource(R.id.backgroundImage, R.drawable.night_bg)
+
+        val intent = Intent(context, SplashActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        views.setOnClickPendingIntent(
+            R.id.remoteViewContainer,
+            PendingIntent.getActivity(context, 200, intent, 0)
+        )
+
+        // Instruct the widget manager to update the widget
+        for (i in appWidgetIds)
+            appWidgetManager.updateAppWidget(i, views)
+    }
+
 }
 
 internal fun updateAppWidget(
