@@ -14,6 +14,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/temperature_pole_shape.xml" value="0.20615384615384616" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/temperature_rectangle_shape.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/toolbar_background_gradient.xml" value="0.209375" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/yellow_gradient.xml" value="0.209375" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/drawable/yellow_to_gray_gradient.xml" value="0.209375" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-en/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-en/activity_splash.xml" value="0.19322916666666667" />
@@ -56,9 +57,10 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_current_weather.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_forecast_details.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_forecast_details_main_viewpager.xml" value="0.25" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_forecast_weather.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_forecast_weather.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_general_settings.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_history_weather.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_weather_details.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/fragment_weather_settings.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/item_location_recycler_view.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout-fa/item_main_forecast_recyclerview.xml" value="0.19322916666666667" />
@@ -93,7 +95,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_history_weather.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_manual_location_pick.xml" value="0.22" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_viewpager_details.xml" value="0.25" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_weather_details.xml" value="0.22" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_weather_details.xml" value="0.33" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/fragment_weather_settings.xml" value="0.33" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/item_location_recycler_view.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/ExWeather/app/src/main/res/layout/item_main_forecast_recyclerview.xml" value="0.5" />

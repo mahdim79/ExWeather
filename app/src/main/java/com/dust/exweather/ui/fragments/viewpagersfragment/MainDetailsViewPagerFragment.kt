@@ -41,7 +41,7 @@ class MainDetailsViewPagerFragment(
                 val data = it[position].toDataClass().current!!
                 requireView().apply {
                     weatherStateText.text = data.current!!.condition.text
-                    weatherHumidityText.text = data.current.humidity.toString()
+                    weatherHumidityText.text = getString(R.string.humidityText, data.current.humidity.toString())
                     weatherIsDayText.text =
                         if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
                     precipText.text = unitManager.getPrecipitationUnit(data.current.precip_mm.toString(), data.current.precip_in.toString())

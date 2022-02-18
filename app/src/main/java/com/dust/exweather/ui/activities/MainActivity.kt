@@ -114,7 +114,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     titleText.text = getString(R.string.aboutUs)
                 }
                 R.id.weatherDetailsFragment -> {
-                    setBottomNavigationVisibility(false)
+                    setBottomNavigationVisibility(true)
                     titleText.text = getString(R.string.weatherDetails)
                 }
                 R.id.addLocationFragment -> {

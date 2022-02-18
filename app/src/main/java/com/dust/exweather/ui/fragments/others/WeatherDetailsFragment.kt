@@ -9,11 +9,16 @@ import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
+import com.dust.exweather.ui.adapters.ForecastMainRecyclerViewAdapter
+import com.dust.exweather.ui.adapters.HistoryMainRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
@@ -26,6 +31,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_weather_details.*
 import kotlinx.android.synthetic.main.fragment_weather_details.view.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -39,7 +45,11 @@ class WeatherDetailsFragment : DaggerFragment() {
     lateinit var alphaAnimation: AlphaAnimation
 
     @Inject
-    lateinit var unitManager:UnitManager
+    lateinit var unitManager: UnitManager
+
+    private lateinit var forecastMainRecyclerViewAdapter: ForecastMainRecyclerViewAdapter
+
+    private lateinit var historyMainRecyclerViewAdapter: HistoryMainRecyclerViewAdapter
 
     private lateinit var viewModel: CurrentFragmentViewModel
 
@@ -65,15 +75,48 @@ class WeatherDetailsFragment : DaggerFragment() {
     }
 
     private fun setUpPrimaryUi() {
-        observeForApiCallState()
-        setUpSwipeRefreshLayout()
-        observeRoomData()
-        viewModel.getWeatherDataFromApi(requireContext())
+        requireArguments().getString("location")?.let { location ->
+            observeForApiCallState()
+            setUpSwipeRefreshLayout()
+            setupPrimaryRecyclerViews(location)
+            observeRoomData(location)
+            viewModel.getWeatherDataFromApi(requireContext())
+        }
     }
 
-    private fun observeRoomData() {
+    private fun setupPrimaryRecyclerViews(location: String) {
+        forecastMainRecyclerViewAdapter = ForecastMainRecyclerViewAdapter(
+            arrayListOf(),
+            requireContext(),
+            findNavController(),
+            location,
+            unitManager
+        )
+
+        historyMainRecyclerViewAdapter = HistoryMainRecyclerViewAdapter(
+            arrayListOf(),
+            requireContext(),
+            unitManager
+        )
+
+        overallWeatherPredictionRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = forecastMainRecyclerViewAdapter
+        }
+
+        weatherHistoryRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = historyMainRecyclerViewAdapter
+        }
+
+
+    }
+
+    private fun observeRoomData(location: String) {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
-            calculateAndSetUpUi(it)
+            calculateAndSetUpUi(it, location)
         }
     }
 
@@ -137,22 +180,75 @@ class WeatherDetailsFragment : DaggerFragment() {
         }
     }
 
-    private fun calculateAndSetUpUi(data: List<WeatherEntity>) {
+    private fun calculateAndSetUpUi(data: List<WeatherEntity>, location: String) {
         data.forEach {
-            if (it.toDataClass().location == requireArguments().getString("location"))
-                setUpUi(it.toDataClass())
+            if (it.toDataClass().location == location) {
+                updateUi(it.toDataClass())
+            }
         }
     }
 
-    private fun setUpUi(data: MainWeatherData) {
-
+    private fun updateUi(data: MainWeatherData) {
         requireView().apply {
-            locationTextView.text = data.current?.location?.name ?: "null"
-            weatherConditionTextView.text = data.current?.current?.condition?.text ?: "null"
-            timeTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
-                data.current?.location?.localtime_epoch ?: 0,
-                data.current?.location?.tz_id ?: "Asia/tehran"
-            )
+
+            // update current location data
+            data.current?.location?.let { location ->
+                locationTextView.text = location.name
+                timeTextView.text = UtilityFunctions.calculateCurrentTimeByTimeEpoch(
+                    location.localtime_epoch,
+                    location.tz_id
+                )
+                dateTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
+                    location.localtime_epoch,
+                    location.tz_id
+                ).plus(" ").plus(
+                    UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                        location.localtime_epoch,
+                        requireContext()
+                    )
+                )
+                countryTextView.text = location.country
+                regionTextView.text = location.region
+            }
+
+            // update current status
+            data.current?.current?.let { current ->
+                weatherConditionTextView.text = current.condition.text
+                Glide.with(requireContext()).load(current.condition.icon).into(weatherStateImage)
+                Glide.with(requireContext()).load(current.condition.icon)
+                    .into(weatherStateImageLocation)
+                precipText.text = unitManager.getPrecipitationUnit(
+                    current.precip_mm.toString(),
+                    current.precip_in.toString()
+                )
+                weatherHumidityText.text =
+                    getString(R.string.humidityText, current.humidity.toString())
+                averageTempTextView.text = unitManager.getTemperatureUnit(
+                    current.temp_c.toString(),
+                    current.temp_f.toString()
+                )
+                visibilityTextView.text = unitManager.getVisibilityUnit(
+                    current.vis_km.toString(),
+                    current.vis_miles.toString()
+                )
+                windSpeedRangeTextView.text = unitManager.getWindSpeedUnit(
+                    current.wind_kph.toString(),
+                    current.wind_mph.toString()
+                )
+                uvIndexTextView.text = current.uv.toString()
+
+            }
+
+            // update forecast weather recyclerView
+            data.forecastDetailsData?.forecast?.forecastday?.let {
+                forecastMainRecyclerViewAdapter.setNewList(it)
+            }
+
+            // update history weather recyclerView
+            data.historyDetailsData?.forecast?.forecastday?.let {
+                historyMainRecyclerViewAdapter.setNewList(it.reversed())
+            }
+
         }
     }
 
