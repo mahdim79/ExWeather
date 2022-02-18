@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/full_transparent">
+
+    <ImageView
+        android:id="@+id/noLocationImageView"
+        android:layout_width="170dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/standardMargin2x"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_not_listed_location_24"
+        android:layout_height="170dp"/>
+
+    <com.dust.exweather.utils.customviews.CButton
+        android:id="@+id/addNewLocationButton"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/main_button_shape"
+        android:paddingHorizontal="@dimen/standardMargin2x"
+        android:text="@string/addNewLocation"
+        android:textSize="11dp"
+        android:textColor="@color/standardUiWhite"
+        android:layout_marginTop="@dimen/standardMargin2x"
+        app:layout_constraintTop_toBottomOf="@+id/noLocationImageView"
+        android:layout_height="40dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

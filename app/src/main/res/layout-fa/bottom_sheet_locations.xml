@@ -31,7 +31,7 @@
     <TextView
         android:id="@+id/maxTextView"
         android:layout_width="30dp"
-        android:text="max"
+        android:text="@string/max"
         android:textColor="@color/standardUiRed"
         android:textSize="@dimen/TextSize3x"
         android:textStyle="bold"

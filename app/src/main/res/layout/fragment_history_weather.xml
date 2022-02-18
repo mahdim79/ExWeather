@@ -6,8 +6,15 @@
     android:layoutDirection="ltr"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/noDataLayout"
+        android:visibility="gone"
+        layout="@layout/layout_no_data"/>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/historyNestedScrollView"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:overScrollMode="never"
         android:layout_height="match_parent">
 
@@ -100,9 +107,8 @@
 
             </androidx.cardview.widget.CardView>
 
-
-
             <androidx.cardview.widget.CardView
+                android:id="@+id/historyDetailsContainer"
                 android:layout_width="match_parent"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="0dp"

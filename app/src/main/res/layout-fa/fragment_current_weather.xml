@@ -7,76 +7,92 @@
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/currentFragmentNestedScrollView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants"
-        android:overScrollMode="never">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/noDataLayout"
+            android:visibility="gone"
+            layout="@layout/layout_no_data"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/currentFragmentNestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/full_transparent"
+            android:visibility="gone"
             android:descendantFocusability="blocksDescendants"
-            android:layoutDirection="ltr"
-            android:orientation="vertical">
+            android:overScrollMode="never">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/full_transparent">
+                android:layout_height="match_parent"
+                android:background="@color/full_transparent"
+                android:descendantFocusability="blocksDescendants"
+                android:layoutDirection="ltr"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/weatherStateImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop" />
-
-                <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-                    android:id="@+id/detailsViewPagerDotsIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/standardMargin"
-                    app:dotsColor="@color/standardUiWhite"
-                    app:dotsSize="@dimen/standardMargin0.5x"
-                    app:dotsStrokeWidth="1dp" />
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/detailsViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="260dp"
-                    android:layout_below="@+id/detailsViewPagerDotsIndicator"
-                    android:layout_marginTop="@dimen/standardMargin2x"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="@dimen/standardMargin"
-                    android:paddingBottom="@dimen/standardMargin2x" />
-
-                <androidx.cardview.widget.CardView
+                <RelativeLayout
+                    android:id="@+id/currentMainContainerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/detailsViewPager"
-                    android:layout_margin="@dimen/standardMargin"
-                    android:backgroundTint="?colorSurface"
-                    app:cardCornerRadius="@dimen/standardMargin0.5x"
-                    app:cardElevation="0dp">
+                    android:background="@color/full_transparent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/mainWeatherRecyclerView"
+                    <ImageView
+                        android:id="@+id/weatherStateImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                    <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+                        android:id="@+id/detailsViewPagerDotsIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/standardMargin"
+                        app:dotsColor="@color/standardUiWhite"
+                        app:dotsSize="@dimen/standardMargin0.5x"
+                        app:dotsStrokeWidth="1dp" />
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/detailsViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="260dp"
+                        android:layout_below="@+id/detailsViewPagerDotsIndicator"
+                        android:layout_marginTop="@dimen/standardMargin2x"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="@dimen/standardMargin"
+                        android:paddingBottom="@dimen/standardMargin2x" />
+
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layoutDirection="rtl"
-                        android:overScrollMode="never"
-                        android:nestedScrollingEnabled="false"
-                        android:padding="@dimen/standardMargin1.5x"
-                        tools:itemCount="5"
-                        tools:listitem="@layout/item_main_recyclerview" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_below="@+id/detailsViewPager"
+                        android:layout_margin="@dimen/standardMargin"
+                        android:backgroundTint="?colorSurface"
+                        app:cardCornerRadius="@dimen/standardMargin0.5x"
+                        app:cardElevation="0dp">
 
-            </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/mainWeatherRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layoutDirection="rtl"
+                            android:overScrollMode="never"
+                            android:nestedScrollingEnabled="false"
+                            android:padding="@dimen/standardMargin1.5x"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/item_main_recyclerview" />
+                    </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

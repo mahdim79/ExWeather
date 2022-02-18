@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.dust.exweather.R
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
@@ -25,6 +27,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_forecast_weather.*
 import kotlinx.android.synthetic.main.fragment_forecast_weather.view.*
+import kotlinx.android.synthetic.main.layout_no_data.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,10 +42,10 @@ class WeatherForecastFragment : DaggerFragment() {
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
 
     @Inject
-    lateinit var unitManager :UnitManager
+    lateinit var unitManager: UnitManager
 
     @Inject
-    lateinit var sharedPreferencesManager :SharedPreferencesManager
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -98,23 +101,38 @@ class WeatherForecastFragment : DaggerFragment() {
     }
 
     private fun setUpPrimaryUi() {
+        forecastFragmentSwipeRefreshLayout.isEnabled = false
         lifecycleScope.launch(Dispatchers.IO) {
             val data = viewModel.getDirectWeatherDataFromCache().map { item -> item.toDataClass() }
             withContext(Dispatchers.Main) {
-                requireView().forecastMainViewPager.apply {
-                    adapter = ForecastViewPagerAdapter(
-                        childFragmentManager,
-                        viewModel.getLiveWeatherDataFromCache(),
-                        data.size,
-                        unitManager,
-                        sharedPreferencesManager
-                    )
-                    offscreenPageLimit = data.size - 1
+                if (data.isNullOrEmpty()) {
+                    requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
+                    noDataLayout.visibility = View.VISIBLE
+                    noDataLayout.addNewLocationButton.setOnClickListener {
+                        findNavController().navigate(R.id.addLocationFragment)
+                    }
+                } else {
+                    mainContainerView.visibility = View.VISIBLE
+                    requireView().forecastMainViewPager.apply {
+                        adapter = ForecastViewPagerAdapter(
+                            childFragmentManager,
+                            viewModel.getLiveWeatherDataFromCache(),
+                            data.size,
+                            unitManager,
+                            sharedPreferencesManager
+                        )
+                        offscreenPageLimit = data.size - 1
+                    }
+                    detailsViewPagerDotsIndicator.setViewPager(forecastMainViewPager)
+                    setupSwipeRefreshLayout()
                 }
-                detailsViewPagerDotsIndicator.setViewPager(forecastMainViewPager)
             }
         }
+    }
+
+    private fun setupSwipeRefreshLayout() {
         requireView().forecastFragmentSwipeRefreshLayout.apply {
+            isEnabled = true
             setColorSchemeColors(
                 ContextCompat.getColor(requireContext(), R.color.standardUiYellow),
                 ContextCompat.getColor(requireContext(), R.color.standardUiGreen),

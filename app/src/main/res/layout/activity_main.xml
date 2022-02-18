@@ -13,15 +13,17 @@
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="?colorOnBackground"
+        android:paddingBottom="@dimen/standardMargin"
         app:headerLayout="@layout/navigation_view_header"
         app:itemIconTint="?android:textColor"
         app:itemTextColor="?android:textColor"
-        android:background="?colorOnBackground"
         app:menu="@menu/navigation_view_menu" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?colorPrimary"
         android:orientation="vertical">
 
         <ImageView
@@ -62,12 +64,12 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addLocationFloatButton"
                 android:layout_width="wrap_content"
-                app:fabSize="normal"
-                android:src="@drawable/ic_baseline_done_24"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|start"
-                android:visibility="gone"
                 android:layout_margin="@dimen/standardMargin3x"
-                android:layout_height="wrap_content"/>
+                android:src="@drawable/ic_baseline_done_24"
+                android:visibility="gone"
+                app:fabSize="normal" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -16,11 +16,13 @@
         app:headerLayout="@layout/navigation_view_header"
         app:itemIconTint="?android:textColor"
         app:itemTextColor="?android:textColor"
+        android:paddingBottom="@dimen/standardMargin"
         android:background="?colorOnBackground"
         app:menu="@menu/navigation_view_menu" />
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="?colorPrimary"
         android:layout_height="match_parent"
         android:orientation="vertical">
 

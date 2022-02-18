@@ -44,6 +44,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_current_weather.*
 import kotlinx.android.synthetic.main.fragment_current_weather.view.*
+import kotlinx.android.synthetic.main.layout_no_data.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -102,9 +103,6 @@ class CurrentWeatherFragment : DaggerFragment() {
         // initialize View Model
         setUpViewModel()
 
-        // set Up SwipeRefreshLayout
-        setUpSwipeRefreshLayout()
-
         addSomeLocations()
 
     }
@@ -138,8 +136,18 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun observeCacheLiveData() {
+        swipeRefreshLayout.isEnabled = false
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
+            if (it.isNullOrEmpty()) {
+                backgroundImage.setImageDrawable(null)
+                currentFragmentNestedScrollView.visibility = View.GONE
+                noDataLayout.visibility = View.VISIBLE
+                noDataLayout.addNewLocationButton.setOnClickListener {
+                    findNavController().navigate(R.id.addLocationFragment)
+                }
+            }else{
+                currentFragmentNestedScrollView.visibility = View.VISIBLE
+                noDataLayout.visibility = View.GONE
                 val dataList = it.map { data -> data.toDataClass() }
                 if (firstData)
                     managePrimaryUi(dataList)
@@ -168,6 +176,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun managePrimaryUi(listData: List<MainWeatherData>) {
+        setUpSwipeRefreshLayout()
         setUpPrimaryViewPager(listData.size)
         setUpPrimaryRecyclerView(listData[0])
         listData[0].current?.let { setBackground(if (it.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL) }
@@ -266,14 +275,10 @@ class CurrentWeatherFragment : DaggerFragment() {
             })
     }
 
-    private fun instantiateWeatherStateDetailsObject() {
-        weatherStatesDetails = UtilityFunctions.getWeatherStatesDetailsObject(requireContext())
-    }
-
     @SuppressLint("CheckResult")
     private fun setUpSwipeRefreshLayout() {
         requireView().apply {
-
+            swipeRefreshLayout.isEnabled = true
             // setup Swipe Refresh Colors
             swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(

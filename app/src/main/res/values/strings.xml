@@ -151,5 +151,6 @@
     <string name="default_notification_channel_id">FirebaseNotificationChannelId</string>
     <string name="currentWeatherStatus">وضعیت فعلی آب و هوا</string>
     <string name="overallWeatherPrediction">پیش بینی کلی آب و هوا</string>
+    <string name="max">حداکثر</string>
 
 </resources>

@@ -3,13 +3,16 @@ package com.dust.exweather.ui.fragments.weatherfragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
@@ -23,6 +26,7 @@ import com.dust.exweather.viewmodel.fragments.HistoryFragmentViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_history_weather.*
 import kotlinx.android.synthetic.main.fragment_history_weather.view.*
+import kotlinx.android.synthetic.main.layout_no_data.view.*
 import java.util.*
 import javax.inject.Inject
 
@@ -69,11 +73,18 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     private fun setUpPrimaryUi() {
         viewModel.getHistoryDataList().also {
-            if (!it.isNullOrEmpty()) {
+            if (it.isNullOrEmpty()) {
+                requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
+                noDataLayout.visibility = View.VISIBLE
+                noDataLayout.addNewLocationButton.setOnClickListener {
+                    findNavController().navigate(R.id.addLocationFragment)
+                }
+            }else{
                 updateLocationData()
                 setUpLocationSwitcherButtons(it.lastIndex)
                 setUpPrimaryCalendarView()
                 setUpFirstData()
+                historyNestedScrollView.visibility = View.VISIBLE
             }
         }
     }
