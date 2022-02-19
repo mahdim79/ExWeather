@@ -26,25 +26,12 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class CurrentFragmentViewModel(
-    private val currentWeatherRepository: CurrentWeatherRepository,
-    private val locationManager: LocationManager
+    private val currentWeatherRepository: CurrentWeatherRepository
 ) : ViewModel() {
 
     private val weatherApiCallStateLiveData = MutableLiveData<DataWrapper<String>>()
 
     private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
-
-    /* @SuppressLint("MissingPermission")
-     fun getWeatherDataByUserLocation(context: Context) {
-         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-         ) {
-             val location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-             if (location != null)
-                 getWeatherDataFromApi("${location.latitude},${location.longitude}", context)
-         } else {
-             emitFailureState("لطفا موقعیت یاب دستگاه را روشن کنید")
-         }
-     }*/
 
     fun getWeatherDataFromApi(context: Context) {
         emitLoadingState()

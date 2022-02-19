@@ -29,6 +29,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.DetailsViewPagerAdapter
 import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
@@ -58,17 +59,9 @@ class CurrentWeatherFragment : DaggerFragment() {
     private val compositeDisposable = CompositeDisposable()
 
     // viewModel Factory Dependencies
-    @Inject
-    lateinit var repository: CurrentWeatherRepository
 
     @Inject
-    lateinit var locationManager: LocationManager
-
-    @Inject
-    lateinit var alphaAnimation: AlphaAnimation
-
-    @Inject
-    lateinit var backgroundAlphaAnimation: AlphaAnimation
+    lateinit var animationFactory:AnimationFactory
 
     @Inject
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
@@ -77,8 +70,6 @@ class CurrentWeatherFragment : DaggerFragment() {
     lateinit var unitManager:UnitManager
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
-
-    private lateinit var weatherStatesDetails: WeatherStatesDetails
 
     private lateinit var backgroundImage: ImageView
 
@@ -190,7 +181,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun setBackground(backgroundUrl: String) {
         Glide.with(requireContext()).load(backgroundUrl)
             .into(backgroundImage)
-        backgroundImage.startAnimation(backgroundAlphaAnimation)
+        backgroundImage.startAnimation(animationFactory.getAlphaAnimation(0f,1f,800))
     }
 
     private fun updateRecyclerViewContent(data: MainWeatherData) {
@@ -214,7 +205,7 @@ class CurrentWeatherFragment : DaggerFragment() {
             MainRecyclerViewAdapter(
                 requireContext(),
                 listData,
-                alphaAnimation,
+                animationFactory.getAlphaAnimation(0f,1f,800),
                 unitManager
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter

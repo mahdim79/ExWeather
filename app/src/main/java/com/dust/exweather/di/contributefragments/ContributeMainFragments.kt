@@ -19,7 +19,7 @@ abstract class ContributeMainFragments {
     @ContributesAndroidInjector
     abstract fun contributeCurrentWeatherFragment(): CurrentWeatherFragment
 
-    @ContributesAndroidInjector(modules = [HistoryFragmentModule::class])
+    @ContributesAndroidInjector
     @WeatherHistoryScope
     abstract fun contributeHistoryWeatherFragment(): WeatherHistoryFragment
 
@@ -41,10 +41,10 @@ abstract class ContributeMainFragments {
     @ContributesAndroidInjector
     abstract fun contributeForecastDetailsFragment(): ForecastDetailsFragment
 
-    @ContributesAndroidInjector(modules = [HistoryDetailsFragmentModule::class])
+    @ContributesAndroidInjector
     abstract fun contributeHistoryDetailsFragment(): HistoryDetailsFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeAddLocationFragment():AddLocationFragment
+    abstract fun contributeAddLocationFragment(): AddLocationFragment
 
 }

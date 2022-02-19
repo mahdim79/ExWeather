@@ -42,9 +42,6 @@ class WeatherDetailsFragment : DaggerFragment() {
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
 
     @Inject
-    lateinit var alphaAnimation: AlphaAnimation
-
-    @Inject
     lateinit var unitManager: UnitManager
 
     private lateinit var forecastMainRecyclerViewAdapter: ForecastMainRecyclerViewAdapter

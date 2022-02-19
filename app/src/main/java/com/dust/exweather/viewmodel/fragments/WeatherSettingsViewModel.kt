@@ -26,7 +26,8 @@ import java.util.concurrent.CancellationException
 
 class WeatherSettingsViewModel(
     private val weatherSettingsRepository: WeatherSettingsRepository,
-    private val sharedPreferencesManager: SharedPreferencesManager
+    private val sharedPreferencesManager: SharedPreferencesManager,
+    private val locationManager: LocationManager
 ) :
     ViewModel() {
 
@@ -74,9 +75,6 @@ class WeatherSettingsViewModel(
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             var currentUserLocation = ""
-
-            val locationManager =
-                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(
