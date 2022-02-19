@@ -1,15 +1,7 @@
-package com.dust.exweather.service
+package com.dust.exweather.widget
 
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.IBinder
-import android.util.Log
-import android.widget.RemoteViews
-import androidx.annotation.UiThread
-import androidx.core.app.NotificationCompat
-import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -22,84 +14,31 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
-import com.dust.exweather.ui.activities.SplashActivity
-import com.dust.exweather.utils.Settings
 import com.dust.exweather.utils.UtilityFunctions
 import com.google.gson.Gson
-import dagger.android.DaggerService
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.util.*
-import javax.inject.Inject
 
-class NotificationService : DaggerService() {
-
-    @Inject
-    lateinit var weatherDao: WeatherDao
-
-    @Inject
-    lateinit var mainApiRequests: MainApiRequests
-
-    @Inject
-    lateinit var sharedPreferencesManager: SharedPreferencesManager
-
-    @Inject
-    lateinit var unitManager: UnitManager
-
-    private var timer: Timer? = null
+class WidgetUpdater(
+    private val weatherDao: WeatherDao,
+    private val mainApiRequests: MainApiRequests,
+    private val context: Context,
+    private val sharedPreferencesManager: SharedPreferencesManager,
+    private val unitManager: UnitManager
+) {
 
     private var coroutineJob: Job? = null
 
-    override fun onBind(p0: Intent?): IBinder? {
-        return null
-    }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        try {
-            if (timer == null)
-                startTimer()
-        } catch (e: Exception) {
-            stopSelf()
-        }
-        return START_STICKY
-    }
-
-    private fun startTimer() {
-        timer = Timer()
-        timer!!.schedule(NotificationTimerTask(), 0L, 1800000L)
-    }
-
-    private fun cancelTimer() {
-        timer?.let {
-            it.purge()
-            it.cancel()
-        }
-    }
-
-    @UiThread
-    private fun configureDataAndNotification() {
-        getWeatherDataFromApi(applicationContext)
-    }
-
-    private fun shouldSendNotification(): Boolean {
-        val systemTimeEpoch = System.currentTimeMillis()
-        var lastTimeEpoch = sharedPreferencesManager.getLastNotificationTimeEpoch()
-        if (lastTimeEpoch == 0L)
-            lastTimeEpoch = systemTimeEpoch
-        val calendar = Calendar.getInstance()
-        calendar.time = Date(systemTimeEpoch)
-        return (systemTimeEpoch - lastTimeEpoch) > 86400000L && sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON
-    }
-
-    private fun getWeatherDataFromApi(context: Context) {
-
+    fun updateWidget() {
         coroutineJob?.cancel(CancellationException("NormalCancellation"))
-        coroutineJob = CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+        coroutineJob = CoroutineScope(Dispatchers.IO).launch {
             val cachedData = weatherDao.getDirectWeatherData()
             sharedPreferencesManager.getDefaultLocation()?.let { defLocation ->
-                if (cachedData.isNullOrEmpty()){
+                if (cachedData.isNullOrEmpty()) {
                     updateWidget(null, "")
-                }else{
+                } else {
                     cachedData.forEach { entity ->
                         if (entity.toDataClass().location == defLocation) {
 
@@ -146,7 +85,7 @@ class NotificationService : DaggerService() {
                                         data.current!!.day_of_week =
                                             UtilityFunctions.getDayOfWeekByUnixTimeStamp(
                                                 data.location!!.localtime_epoch,
-                                                applicationContext
+                                                context
                                             )
 
                                         val mainWeatherData = MainWeatherData(
@@ -203,9 +142,6 @@ class NotificationService : DaggerService() {
                                             }"
                                         )
 
-                                        // send notification
-                                        if (shouldSendNotification())
-                                            sendNotification(newWeatherData)
                                     }
                                 }
 
@@ -239,7 +175,6 @@ class NotificationService : DaggerService() {
                     }
                 }
             }
-            Log.i("ServiceJobJobStatus", "null")
             coroutineJob = null
         }
     }
@@ -265,136 +200,7 @@ class NotificationService : DaggerService() {
                     )
                 )
             )
-            sendBroadcast(this)
-        }
-    }
-
-    private fun sendNotification(data: MainWeatherData) {
-
-        val contentIntent = Intent(this, SplashActivity::class.java)
-        contentIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-        sharedPreferencesManager.setLastNotificationTimeEpoch(System.currentTimeMillis())
-        val notification = NotificationCompat.Builder(applicationContext, "someId")
-            .setCustomContentView(RemoteViews(packageName, R.layout.notification_normal_layout))
-            .setCustomBigContentView(RemoteViews(packageName, R.layout.notification_big_layout))
-            .setSmallIcon(R.drawable.ic_launcher)
-            .setContentTitle("ExWeather")
-            .setOngoing(false)
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    applicationContext,
-                    201,
-                    contentIntent,
-                    0
-                )
-            )
-            .setVibrate(LongArray(3) { 200L })
-            .build()
-
-        data.current?.let { current ->
-            current.current?.let { currentData ->
-
-                notification.contentView.apply {
-
-                    current.location?.let { locaiton ->
-                        setTextViewText(R.id.locationTextView, locaiton.name)
-                    }
-
-                    setTextViewText(
-                        R.id.temperatureText,
-                        applicationContext.resources.getString(
-                            R.string.temperatureText,
-                            currentData.temp_c.toString()
-                        )
-                    )
-
-                    setTextViewText(
-                        R.id.precipitationText,
-                        applicationContext.resources.getString(
-                            R.string.precipitationText,
-                            currentData.precip_mm.toString()
-                        )
-                    )
-
-                    setTextViewText(R.id.weatherStateText, currentData.condition.text)
-
-                }
-
-                notification.bigContentView.apply {
-                    setTextViewText(
-                        R.id.temperatureTextView,
-                        applicationContext.resources.getString(
-                            R.string.temperatureText,
-                            currentData.temp_c.toString()
-                        )
-                    )
-
-                    setTextViewText(
-                        R.id.windSpeedTextView,
-                        (applicationContext.resources.getString(
-                            R.string.windSpeedText,
-                            currentData.wind_kph.toString()
-                        ).plus(" ").plus(currentData.wind_dir)
-                                )
-                    )
-
-                    setTextViewText(
-                        R.id.weatherStateText,
-                        currentData.condition.text
-                    )
-
-                    current.location?.let { location ->
-                        setTextViewText(
-                            R.id.localTimeTextView,
-                            UtilityFunctions.calculateCurrentTimeByTimeEpoch(
-                                location.localtime_epoch,
-                                location.tz_id
-                            )
-                        )
-
-                        setTextViewText(
-                            R.id.localDateTextView,
-                            currentData.day_of_week.plus(" ").plus(
-                                UtilityFunctions.calculateCurrentDateByTimeEpoch(
-                                    location.localtime_epoch,
-                                    location.tz_id
-                                )
-                            )
-                        )
-
-                        setTextViewText(R.id.locationNameTextView, location.name)
-                    }
-
-                    setTextViewText(
-                        R.id.airPressureText,
-                        applicationContext.resources.getString(
-                            R.string.airPressureText,
-                            currentData.pressure_mb.toString()
-                        )
-                    )
-
-                    setTextViewText(
-                        R.id.precipitationText,
-                        applicationContext.resources.getString(
-                            R.string.precipitationText,
-                            currentData.precip_mm.toString()
-                        )
-                    )
-                    setTextViewText(
-                        R.id.humidityText,
-                        applicationContext.resources.getString(
-                            R.string.humidityText,
-                            currentData.humidity.toString()
-                        )
-                    )
-
-                }
-
-                val notificationManager =
-                    applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.notify(101, notification)
-            }
+            context.sendBroadcast(this)
         }
     }
 
@@ -432,7 +238,7 @@ class NotificationService : DaggerService() {
             listDays[i].day.dayOfWeek =
                 UtilityFunctions.getDayOfWeekByUnixTimeStamp(
                     listDays[i].date_epoch,
-                    applicationContext
+                    context
                 )
 
         // find duplicate data and delete it from list
@@ -464,26 +270,12 @@ class NotificationService : DaggerService() {
             historyTempList[i].day.dayOfWeek =
                 UtilityFunctions.getDayOfWeekByUnixTimeStamp(
                     forecastDay.date_epoch,
-                    applicationContext
+                    context
                 )
         }
 
         return historyTempList
     }
 
-
-    override fun onDestroy() {
-        cancelTimer()
-        coroutineJob?.cancel(CancellationException("NormalCancellation"))
-        super.onDestroy()
-    }
-
-    inner class NotificationTimerTask : TimerTask() {
-        override fun run() {
-            configureDataAndNotification()
-            Log.i("TimerWorker", "Loop")
-        }
-
-    }
 
 }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.dust.exweather.R
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.viewmodel.factories.AddLocationFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.AddLocationFragmentViewModel
+import com.dust.exweather.widget.WidgetUpdater
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -52,6 +52,9 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
 
     @Inject
     lateinit var inputMethodManager: InputMethodManager
+
+    @Inject
+    lateinit var widgetUpdater: WidgetUpdater
 
     private lateinit var viewModel: AddLocationFragmentViewModel
 
@@ -95,31 +98,34 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
     private fun setupFloatingActionButton() {
         floatingActionButton = requireActivity().findViewById(R.id.addLocationFloatButton)
         floatingActionButton.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val result = viewModel.insertLocationToCache(locationEditText.text.toString())
-                    if (result.isEmpty()) {
-                        // that means the operation was successful
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                requireContext(),
-                                "با موفقیت انجام شد",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                            findNavController().popBackStack()
-                        }
-                    } else {
-                        // that means the operation was not successful
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(
-                                requireContext(),
-                                result,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
+            lifecycleScope.launch(Dispatchers.IO) {
+                val result = viewModel.insertLocationToCache(
+                    locationEditText.text.toString(),
+                    widgetUpdater
+                )
+                if (result.isEmpty()) {
+                    // that means the operation was successful
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            requireContext(),
+                            "با موفقیت انجام شد",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        findNavController().popBackStack()
+                    }
+                } else {
+                    // that means the operation was not successful
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            requireContext(),
+                            result,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
                     }
                 }
+            }
         }
     }
 
@@ -236,7 +242,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                     floatingActionButton.visibility = View.VISIBLE
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
-                    Toast.makeText(requireContext(), "خطایی پیش آمده است", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), "خطایی رخ داده است. لطفا از اتصال دستگاه به اینترنت مطمن شوید", Toast.LENGTH_SHORT)
                         .show()
                     locationEditText.setText("")
                     floatingActionButton.visibility = View.GONE

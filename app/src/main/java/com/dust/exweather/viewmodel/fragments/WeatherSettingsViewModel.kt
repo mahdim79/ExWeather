@@ -60,8 +60,8 @@ class WeatherSettingsViewModel(
         return locationDataList
     }
 
-    suspend fun removeLocation(latLong: String) {
-        weatherSettingsRepository.removeLocation(latLong)
+    suspend fun removeLocation(latLong: String, context: Context) {
+        weatherSettingsRepository.removeLocation(latLong,context)
     }
 
     fun setDefaultLocation(latLong: String) {

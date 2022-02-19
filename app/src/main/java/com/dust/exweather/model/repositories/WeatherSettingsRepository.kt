@@ -1,11 +1,14 @@
 package com.dust.exweather.model.repositories
 
+import android.content.Context
+import android.content.Intent
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
+import com.dust.exweather.service.NotificationService
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -15,13 +18,13 @@ class WeatherSettingsRepository @Inject constructor() {
     lateinit var weatherDao: WeatherDao
 
     @Inject
-    lateinit var mainApiRequests:MainApiRequests
+    lateinit var mainApiRequests: MainApiRequests
 
     suspend fun getAllWeatherData(): List<WeatherEntity> =
         weatherDao.getDirectWeatherData()
 
 
-    suspend fun removeLocation(latLong: String) {
+    suspend fun removeLocation(latLong: String, context: Context) {
         val currentData = getAllWeatherData()
         for (i in currentData.indices) {
             if (currentData[i].toDataClass().location == latLong)

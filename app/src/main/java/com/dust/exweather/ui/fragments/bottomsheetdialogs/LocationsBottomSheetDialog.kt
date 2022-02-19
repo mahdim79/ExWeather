@@ -16,7 +16,7 @@ import java.util.*
 
 class LocationsBottomSheetDialog(
     private val locationList: ArrayList<LocationData>,
-    private val onLocationRemoved: (String) -> Unit,
+    private val onLocationRemoved: (String, String?) -> Unit,
     private val onDefaultLocationChanged: (String) -> Unit,
     private val onAddLocationButtonClicked: () -> Unit,
     private val onAddCurrentLocationButtonClicked: () -> Unit
@@ -50,8 +50,8 @@ class LocationsBottomSheetDialog(
                     requireContext(),
                     locationList,
                     onDefaultLocationChanged
-                ) { latLong ->
-                    onLocationRemoved(latLong)
+                ) { latLong, defLocation ->
+                    onLocationRemoved(latLong, defLocation)
                     enableAddLocationButton()
                 }
             }

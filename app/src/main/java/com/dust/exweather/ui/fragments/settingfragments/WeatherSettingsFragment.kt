@@ -1,6 +1,5 @@
 package com.dust.exweather.ui.fragments.settingfragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.dust.exweather.R
-import com.dust.exweather.service.NotificationService
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.AddCurrentLocationBottomSheetDialog
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.LocationsBottomSheetDialog
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.UnitsBottomSheetDialog
 import com.dust.exweather.viewmodel.factories.WeatherSettingsViewModelFactory
 import com.dust.exweather.viewmodel.fragments.WeatherSettingsViewModel
+import com.dust.exweather.widget.WidgetUpdater
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +34,9 @@ class WeatherSettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    @Inject
+    lateinit var widgetUpdater: WidgetUpdater
 
     private lateinit var viewModel: WeatherSettingsViewModel
 
@@ -75,14 +77,15 @@ class WeatherSettingsFragment : DaggerFragment() {
                         locationList = viewModel.getLocationsData(),
                         onDefaultLocationChanged = { defaultLocation ->
                             viewModel.setDefaultLocation(defaultLocation)
-                            try {
-                                requireActivity().stopService(Intent(requireActivity(), NotificationService::class.java))
-                            }catch (e:Exception){}
-                            requireActivity().startService(Intent(requireActivity(), NotificationService::class.java))
+                            widgetUpdater.updateWidget()
                         },
-                        onLocationRemoved = { latLong ->
+                        onLocationRemoved = { latLong, defLocation ->
                             lifecycleScope.launch(Dispatchers.IO) {
-                                viewModel.removeLocation(latLong)
+                                viewModel.removeLocation(latLong, requireContext())
+                                defLocation?.let {
+                                    viewModel.setDefaultLocation(it)
+                                    widgetUpdater.updateWidget()
+                                }
                             }
                         },
                         onAddLocationButtonClicked = {
@@ -135,7 +138,10 @@ class WeatherSettingsFragment : DaggerFragment() {
             }
 
             UnitsSettings.setOnClickListener {
-                UnitsBottomSheetDialog(sharedPreferencesManager).show(childFragmentManager, "UnitsBottomSheetDialog")
+                UnitsBottomSheetDialog(sharedPreferencesManager).show(
+                    childFragmentManager,
+                    "UnitsBottomSheetDialog"
+                )
             }
         }
     }

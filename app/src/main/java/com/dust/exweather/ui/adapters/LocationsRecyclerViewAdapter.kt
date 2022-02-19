@@ -18,7 +18,7 @@ class LocationsRecyclerViewAdapter(
     private val context:Context,
     private val dataList: ArrayList<LocationData>,
     private val onDefaultLocationChanged: (String) -> Unit,
-    private val onLocationRemoved: (String) -> Unit
+    private val onLocationRemoved: (String, String?) -> Unit
 
 ) :
     RecyclerView.Adapter<LocationsRecyclerViewAdapter.MainViewHolder>() {
@@ -42,22 +42,27 @@ class LocationsRecyclerViewAdapter(
                 defaultRadioButton.text = ""
             }
 
-            removeImage.setOnClickListener { image ->
+            removeImage.setOnClickListener {
                 if (dataList[position].redRemoveState) {
                     resetAllRemoveStates()
-                    onLocationRemoved(dataList[position].latlong)
+
+                    var defLocation:String? = null
+                    val targetDeleteLocation:String = dataList[position].latlong
+
                     if (dataList[position].default){
                         if (dataList.size == 1){
-                            onDefaultLocationChanged("")
+                            defLocation = ""
                             dataList.removeAt(position)
                         } else{
                             dataList.removeAt(position)
-                            onDefaultLocationChanged(dataList[0].latlong)
+                            defLocation = dataList[0].latlong
                             setNewDefaultLocation(0)
                         }
                     }else{
                         dataList.removeAt(position)
                     }
+
+                    onLocationRemoved(targetDeleteLocation, defLocation)
                     notifyDataSetChanged()
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {

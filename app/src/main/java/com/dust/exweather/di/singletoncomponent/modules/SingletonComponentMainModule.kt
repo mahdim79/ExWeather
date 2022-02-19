@@ -12,6 +12,7 @@ import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.Constants
+import com.dust.exweather.widget.WidgetUpdater
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -101,5 +102,23 @@ class SingletonComponentMainModule {
     @Provides
     fun provideInputMethodManager(application: Application): InputMethodManager {
         return application.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    @Singleton
+    @Provides
+    fun provideWidgetUpdater(
+        weatherDao: WeatherDao,
+        sharedPreferencesManager: SharedPreferencesManager,
+        application: Application,
+        unitManager: UnitManager,
+        mainApiRequests: MainApiRequests
+    ): WidgetUpdater {
+        return WidgetUpdater(
+            weatherDao,
+            mainApiRequests,
+            application.applicationContext,
+            sharedPreferencesManager,
+            unitManager
+        )
     }
 }
