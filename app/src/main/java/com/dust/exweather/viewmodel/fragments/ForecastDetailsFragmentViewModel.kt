@@ -1,7 +1,6 @@
 package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
-import android.location.LocationManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,13 +24,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class CurrentFragmentViewModel(
+class ForecastDetailsFragmentViewModel(
     private val currentWeatherRepository: CurrentWeatherRepository
-) : ViewModel() {
-
+):ViewModel() {
     private val weatherApiCallStateLiveData = MutableLiveData<DataWrapper<String>>()
-
-    private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
 
     fun getWeatherDataFromApi(context: Context) {
         emitLoadingState()
@@ -210,26 +206,6 @@ class CurrentFragmentViewModel(
         return null
     }
 
-    fun calculateMainRecyclerViewDataList(data: MainWeatherData): List<DataWrapper<Any>> {
-        val list = arrayListOf<DataWrapper<Any>>()
-        data.forecastDetailsData!!.forecast.forecastday.forEach {
-            list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
-        }
-
-        list.reverse()
-
-        list.add(DataWrapper(data.current!!, DataStatus.DATA_RECEIVE_SUCCESS))
-
-        data.historyDetailsData!!.forecast.forecastday.forEach {
-            list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
-        }
-
-        return list
-    }
-
-    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
-        currentWeatherRepository.getDirectWeatherDataFromCache()
-
     fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
         currentWeatherRepository.getLiveWeatherDataFromCache()
 
@@ -252,11 +228,68 @@ class CurrentFragmentViewModel(
     fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
         weatherApiCallStateLiveData
 
-    fun getDetailsViewPagerProgressStateLiveData(): LiveData<Boolean> =
-        detailsViewPagerProgressStateLiveData
-
-    fun setDetailsViewPagerProgressState(b: Boolean) {
-        detailsViewPagerProgressStateLiveData.value = b
+    fun calculateForecastWeatherDetailsData(context: Context, forecastDay: Forecastday):String{
+        val stringBuilder = StringBuilder()
+        context.apply {
+            stringBuilder.apply {
+                append(
+                    getString(
+                        R.string.sunrise,
+                        forecastDay.astro.sunrise.convertAmPm(context)
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.sunset,
+                        forecastDay.astro.sunset.convertAmPm(context)
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonrise,
+                        forecastDay.astro.moonrise.convertAmPm(context)
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonset,
+                        forecastDay.astro.moonset.convertAmPm(context)
+                    ).plus("\n")
+                )
+                append(
+                    getString(
+                        R.string.moonIllumination,
+                        forecastDay.astro.moon_illumination.convertAmPm(context)
+                    ).plus("\n")
+                )
+                append(
+                    getString(R.string.moonPhase, forecastDay.astro.moon_phase.convertAmPm(context)).plus(
+                        "\n"
+                    )
+                )
+                append(getString(R.string.uvIndex, forecastDay.day.uv.toString()))
+            }
+        }
+        return stringBuilder.toString()
     }
 
+    fun calculateCurrentData(listData: List<MainWeatherData>, location:String?, date:String?): MainWeatherData? {
+        if (!location.isNullOrEmpty() && !date.isNullOrEmpty()) {
+            listData.forEach { mainWeatherData ->
+                if (mainWeatherData.location == location)
+                    return mainWeatherData
+            }
+        }
+        return null
+    }
+
+    fun calculateData(data: MainWeatherData, date:String?): Forecastday? {
+        data.forecastDetailsData?.let { weatherForecast ->
+            weatherForecast.forecast.forecastday.forEach { forecastDay ->
+                if (forecastDay.date == date)
+                    return forecastDay
+            }
+        }
+        return null
+    }
 }

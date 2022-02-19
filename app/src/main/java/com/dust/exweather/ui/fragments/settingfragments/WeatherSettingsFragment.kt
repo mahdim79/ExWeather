@@ -50,8 +50,8 @@ class WeatherSettingsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideKeyboard()
         setUpViewModel()
+        hideKeyboard()
         setUpView()
     }
 

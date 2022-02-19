@@ -2,6 +2,7 @@ package com.dust.exweather.viewmodel.factories
 
 import android.app.Application
 import android.location.LocationManager
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dust.exweather.model.repositories.WeatherSettingsRepository

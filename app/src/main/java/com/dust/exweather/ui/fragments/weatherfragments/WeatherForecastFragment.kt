@@ -15,8 +15,8 @@ import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.ForecastViewPagerAdapter
 import com.dust.exweather.utils.DataStatus
-import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
-import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
+import com.dust.exweather.viewmodel.factories.ForecastFragmentViewModelFactory
+import com.dust.exweather.viewmodel.fragments.ForecastFragmentViewModel
 import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -36,10 +36,10 @@ import javax.inject.Inject
 
 class WeatherForecastFragment : DaggerFragment() {
 
-    private lateinit var viewModel: CurrentFragmentViewModel
+    private lateinit var viewModel: ForecastFragmentViewModel
 
     @Inject
-    lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+    lateinit var viewModelFactory: ForecastFragmentViewModelFactory
 
     @Inject
     lateinit var unitManager: UnitManager
@@ -64,7 +64,7 @@ class WeatherForecastFragment : DaggerFragment() {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory)[CurrentFragmentViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ForecastFragmentViewModel::class.java]
     }
 
     private fun setUpUi() {
@@ -106,7 +106,8 @@ class WeatherForecastFragment : DaggerFragment() {
             val data = viewModel.getDirectWeatherDataFromCache().map { item -> item.toDataClass() }
             withContext(Dispatchers.Main) {
                 if (data.isNullOrEmpty()) {
-                    requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
+                    requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView)
+                        .setImageDrawable(null)
                     noDataLayout.visibility = View.VISIBLE
                     noDataLayout.addNewLocationButton.setOnClickListener {
                         findNavController().navigate(R.id.addLocationFragment)

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
-import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
@@ -76,7 +75,12 @@ class HistoryDetailsFragment : DaggerFragment() {
         viewModel.getWeatherLiveDataFromCache().observe(viewLifecycleOwner) { cacheData ->
             cacheData?.let { list ->
 
-                val data = calculateCurrentData(list.map { it.toDataClass() })
+                val data = viewModel.calculateCurrentData(
+                    list.map { it.toDataClass() }, requireArguments().getString(
+                        "latlong"
+                    ),
+                    requireArguments().getString("date")
+                )
 
                 data?.let { forecastDay ->
                     setUpUi(forecastDay)
@@ -441,21 +445,6 @@ class HistoryDetailsFragment : DaggerFragment() {
         }
     }
 
-    private fun calculateCurrentData(map: List<MainWeatherData>): Forecastday? {
-        map.forEach { mainWeatherData ->
-            if (UtilityFunctions.createLatLongPattern(mainWeatherData.historyDetailsData!!.location) == requireArguments().getString(
-                    "latlong"
-                )
-            )
-                mainWeatherData.historyDetailsData?.let { weatherHistory ->
-                    weatherHistory.forecast.forecastday.forEach { forecastDay ->
-                        if (requireArguments().getString("date") == forecastDay.date)
-                            return forecastDay
-                    }
-                }
-        }
-        return null
-    }
 
     private fun setUpViewModel() {
         viewModel =

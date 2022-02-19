@@ -1,7 +1,6 @@
 package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
-import android.location.LocationManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,20 +17,31 @@ import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.utils.convertAmPm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-class CurrentFragmentViewModel(
+class ForecastFragmentViewModel (
     private val currentWeatherRepository: CurrentWeatherRepository
 ) : ViewModel() {
-
+    private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
     private val weatherApiCallStateLiveData = MutableLiveData<DataWrapper<String>>()
 
-    private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
+
+    fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
+        weatherApiCallStateLiveData
+
+    fun setDetailsViewPagerProgressState(b: Boolean) {
+        detailsViewPagerProgressStateLiveData.value = b
+    }
+
+    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
+        currentWeatherRepository.getDirectWeatherDataFromCache()
+
+    fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
+        currentWeatherRepository.getLiveWeatherDataFromCache()
 
     fun getWeatherDataFromApi(context: Context) {
         emitLoadingState()
@@ -210,29 +220,6 @@ class CurrentFragmentViewModel(
         return null
     }
 
-    fun calculateMainRecyclerViewDataList(data: MainWeatherData): List<DataWrapper<Any>> {
-        val list = arrayListOf<DataWrapper<Any>>()
-        data.forecastDetailsData!!.forecast.forecastday.forEach {
-            list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
-        }
-
-        list.reverse()
-
-        list.add(DataWrapper(data.current!!, DataStatus.DATA_RECEIVE_SUCCESS))
-
-        data.historyDetailsData!!.forecast.forecastday.forEach {
-            list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
-        }
-
-        return list
-    }
-
-    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
-        currentWeatherRepository.getDirectWeatherDataFromCache()
-
-    fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
-        currentWeatherRepository.getLiveWeatherDataFromCache()
-
     private fun emitLoadingState() {
         weatherApiCallStateLiveData.value = DataWrapper(null, DataStatus.DATA_RECEIVE_LOADING)
     }
@@ -247,16 +234,6 @@ class CurrentFragmentViewModel(
                 e,
                 DataStatus.DATA_RECEIVE_FAILURE
             )
-    }
-
-    fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
-        weatherApiCallStateLiveData
-
-    fun getDetailsViewPagerProgressStateLiveData(): LiveData<Boolean> =
-        detailsViewPagerProgressStateLiveData
-
-    fun setDetailsViewPagerProgressState(b: Boolean) {
-        detailsViewPagerProgressStateLiveData.value = b
     }
 
 }

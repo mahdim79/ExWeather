@@ -5,8 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
+import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.model.room.WeatherEntity
+import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.utils.convertAmPm
 
 class HistoryDetailsFragmentViewModel(private val repository: CurrentWeatherRepository) :
@@ -59,5 +61,17 @@ class HistoryDetailsFragmentViewModel(private val repository: CurrentWeatherRepo
         return stringBuilder.toString()
     }
 
-
+    fun calculateCurrentData(map: List<MainWeatherData>, latLong:String?, date:String?): Forecastday? {
+        map.forEach { mainWeatherData ->
+            if (UtilityFunctions.createLatLongPattern(mainWeatherData.historyDetailsData!!.location) == latLong
+            )
+                mainWeatherData.historyDetailsData?.let { weatherHistory ->
+                    weatherHistory.forecast.forecastday.forEach { forecastDay ->
+                        if (date == forecastDay.date)
+                            return forecastDay
+                    }
+                }
+        }
+        return null
+    }
 }

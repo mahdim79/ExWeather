@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.dust.exweather.BuildConfig
 import com.dust.exweather.R
@@ -12,6 +13,8 @@ import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.activities.SplashActivity
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.ChooseLanguageThemeBottomSheetDialog
 import com.dust.exweather.utils.Settings
+import com.dust.exweather.viewmodel.factories.GeneralSettingsViewModelFactory
+import com.dust.exweather.viewmodel.fragments.GeneralSettingsViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_general_settings.view.*
 import javax.inject.Inject
@@ -19,7 +22,9 @@ import javax.inject.Inject
 class GeneralSettingsFragment : DaggerFragment() {
 
     @Inject
-    lateinit var sharedPreferencesManager: SharedPreferencesManager
+    lateinit var generalSettingsViewModelFactory:GeneralSettingsViewModelFactory
+
+    private lateinit var viewModel:GeneralSettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,27 +36,24 @@ class GeneralSettingsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpViewModel()
         setUpUi()
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(this, generalSettingsViewModelFactory)[GeneralSettingsViewModel::class.java]
     }
 
     private fun setUpUi() {
         requireView().apply {
 
-            currentLanguageText.text =
-                if (sharedPreferencesManager.getLanguageSettings() == Settings.LANGUAGE_PERSIAN) getString(
-                    R.string.persian
-                ) else getString(R.string.english)
-            nightModeSwitchCompat.isChecked =
-                sharedPreferencesManager.getThemeSettings() == Settings.THEME_DARK
-            currentNotificationText.text =
-                if (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON) getString(
-                    R.string.enable
-                ) else getString(R.string.disable)
-
+            currentLanguageText.text = viewModel.calculateLanguageText(requireContext())
+            nightModeSwitchCompat.isChecked = viewModel.calculateNightModeCheckedButton()
+            currentNotificationText.text = viewModel.calculateNotificationText(requireContext())
             versionText.text = BuildConfig.VERSION_NAME
 
             languageSettings.setOnClickListener {
-                val currentLanguageSettings = sharedPreferencesManager.getLanguageSettings()
+                val currentLanguageSettings = viewModel.getCurrentLanguageSetting()
                 ChooseLanguageThemeBottomSheetDialog(
                     positiveButtonChecked = (currentLanguageSettings == Settings.LANGUAGE_PERSIAN),
                     title = getString(R.string.chooseLang),
@@ -62,7 +64,7 @@ class GeneralSettingsFragment : DaggerFragment() {
                         if (positiveChecked) Settings.LANGUAGE_PERSIAN else Settings.LANGUAGE_ENGLISH
 
                     if (!((currentLanguageSettings == Settings.LANGUAGE_ENGLISH && settings == Settings.LANGUAGE_ENGLISH) || (currentLanguageSettings == Settings.LANGUAGE_PERSIAN && settings == Settings.LANGUAGE_PERSIAN))) {
-                        sharedPreferencesManager.setLanguageSettings(settings)
+                        viewModel.setLanguageSettings(settings)
                         restartApplication()
                     }
 
@@ -70,12 +72,12 @@ class GeneralSettingsFragment : DaggerFragment() {
             }
 
             nightModeSwitchCompat.setOnCheckedChangeListener { _, b ->
-                sharedPreferencesManager.setThemeSettings(if (b) Settings.THEME_DARK else Settings.THEME_LIGHT)
+                viewModel.setThemeSettings(if (b) Settings.THEME_DARK else Settings.THEME_LIGHT)
                 restartApplication()
             }
 
             notificationsSettings.setOnClickListener {
-                val currentNotificationSettings = sharedPreferencesManager.getNotificationSettings()
+                val currentNotificationSettings = viewModel.getNotificationSettings()
 
                 ChooseLanguageThemeBottomSheetDialog(
                     positiveButtonChecked = (currentNotificationSettings == Settings.NOTIFICATION_ON),
@@ -84,7 +86,7 @@ class GeneralSettingsFragment : DaggerFragment() {
                     negativeText = getString(R.string.disable)
                 ) { positiveChecked ->
 
-                    sharedPreferencesManager.setNotificationSettings(if (positiveChecked) Settings.NOTIFICATION_ON else Settings.NOTIFICATION_OFF)
+                    viewModel.setNotificationSettings(if (positiveChecked) Settings.NOTIFICATION_ON else Settings.NOTIFICATION_OFF)
 
                     requireView().currentNotificationText.text =
                         getString(if (positiveChecked) R.string.enable else R.string.disable)

@@ -2,9 +2,11 @@ package com.dust.exweather.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
@@ -17,9 +19,13 @@ import java.util.*
 class HistoryMainRecyclerViewAdapter(
     private val listData: ArrayList<Forecastday>,
     private val context: Context,
-    private val unitManager: UnitManager
+    private val unitManager: UnitManager,
+    private val navController:NavController
 ) :
     RecyclerView.Adapter<HistoryMainRecyclerViewAdapter.MainViewHolder>() {
+
+    private var location = ""
+    private var latLng = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         return MainViewHolder(
@@ -76,10 +82,30 @@ class HistoryMainRecyclerViewAdapter(
 
             uvIndexTextView.text = currentData.day.uv.toString()
 
+            if (location.isNotEmpty()){
+                itemView.setOnClickListener {
+                    val args = Bundle()
+                    args.apply {
+                        putString("latlong", latLng)
+                        putString("date", listData[position].date)
+                        putString("location", location)
+                    }
+                    navController.navigate(
+                        R.id.historyDetailsFragment,
+                        args
+                    )
+                }
+            }
+
         }
     }
 
     override fun getItemCount(): Int = listData.size
+
+    fun setLocationAndLatLng(location:String, latLng:String){
+        this.location = location
+        this.latLng = latLng
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setNewList(newList: List<Forecastday>) {

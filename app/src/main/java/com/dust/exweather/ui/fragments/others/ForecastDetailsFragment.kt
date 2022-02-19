@@ -20,8 +20,8 @@ import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
-import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
+import com.dust.exweather.viewmodel.factories.ForecastDetailsViewModelFactory
+import com.dust.exweather.viewmodel.fragments.ForecastDetailsFragmentViewModel
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -45,10 +45,10 @@ import javax.inject.Inject
 
 class ForecastDetailsFragment : DaggerFragment() {
 
-    private lateinit var viewModel: CurrentFragmentViewModel
+    private lateinit var viewModel: ForecastDetailsFragmentViewModel
 
     @Inject
-    lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+    lateinit var viewModelFactory: ForecastDetailsViewModelFactory
 
     @Inject
     lateinit var unitManager: UnitManager
@@ -97,8 +97,8 @@ class ForecastDetailsFragment : DaggerFragment() {
     private fun observeForCacheData() {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) { data ->
             if (!data.isNullOrEmpty())
-                calculateCurrentData(data.map { it.toDataClass() })?.let { mainWeatherData ->
-                    calculateData(mainWeatherData)?.let { forecastDay ->
+                viewModel.calculateCurrentData(data.map { it.toDataClass() },requireArguments().getString("location"),requireArguments().getString("date"))?.let { mainWeatherData ->
+                    viewModel.calculateData(mainWeatherData, requireArguments().getString("date"))?.let { forecastDay ->
                         if (firstData)
                             setUpPrimaryUi(forecastDay)
 
@@ -165,17 +165,6 @@ class ForecastDetailsFragment : DaggerFragment() {
 
     private fun resetSwipeRefreshLayout() {
         requireView().forecastDetailsSwipeRefreshLayout.isRefreshing = false
-    }
-
-    private fun calculateData(data: MainWeatherData): Forecastday? {
-        val date = requireArguments().getString("date")
-        data.forecastDetailsData?.let { weatherForecast ->
-            weatherForecast.forecast.forecastday.forEach { forecastDay ->
-                if (forecastDay.date == date)
-                    return forecastDay
-            }
-        }
-        return null
     }
 
     private fun updateUi(forecastDay: Forecastday, locationName: String, lastUpdateTime: String) {
@@ -614,20 +603,11 @@ class ForecastDetailsFragment : DaggerFragment() {
         viewModel.getWeatherDataFromApi(requireContext())
     }
 
-    private fun calculateCurrentData(listData: List<MainWeatherData>): MainWeatherData? {
-        val location = requireArguments().getString("location")
-        val date = requireArguments().getString("date")
-        if (!location.isNullOrEmpty() && !date.isNullOrEmpty()) {
-            listData.forEach { mainWeatherData ->
-                if (mainWeatherData.location == location)
-                    return mainWeatherData
-            }
-        }
-        return null
-    }
+
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(this, viewModelFactory)[CurrentFragmentViewModel::class.java]
+        viewModel =
+            ViewModelProvider(this, viewModelFactory)[ForecastDetailsFragmentViewModel::class.java]
     }
 
     override fun onDestroyView() {

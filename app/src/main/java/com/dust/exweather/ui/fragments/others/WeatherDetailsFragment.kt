@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -21,8 +20,8 @@ import com.dust.exweather.ui.adapters.ForecastMainRecyclerViewAdapter
 import com.dust.exweather.ui.adapters.HistoryMainRecyclerViewAdapter
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
-import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
-import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
+import com.dust.exweather.viewmodel.factories.CurrentDetailsViewModelFactory
+import com.dust.exweather.viewmodel.fragments.CurrentDetailsFragmentViewModel
 import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -39,7 +38,7 @@ import javax.inject.Inject
 class WeatherDetailsFragment : DaggerFragment() {
 
     @Inject
-    lateinit var viewModelFactory: CurrentFragmentViewModelFactory
+    lateinit var viewModelFactory: CurrentDetailsViewModelFactory
 
     @Inject
     lateinit var unitManager: UnitManager
@@ -48,7 +47,7 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     private lateinit var historyMainRecyclerViewAdapter: HistoryMainRecyclerViewAdapter
 
-    private lateinit var viewModel: CurrentFragmentViewModel
+    private lateinit var viewModel: CurrentDetailsFragmentViewModel
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -68,7 +67,7 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     private fun setUpViewModel() {
         viewModel =
-            ViewModelProvider(this, viewModelFactory)[CurrentFragmentViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[CurrentDetailsFragmentViewModel::class.java]
     }
 
     private fun setUpPrimaryUi() {
@@ -93,7 +92,8 @@ class WeatherDetailsFragment : DaggerFragment() {
         historyMainRecyclerViewAdapter = HistoryMainRecyclerViewAdapter(
             arrayListOf(),
             requireContext(),
-            unitManager
+            unitManager,
+            findNavController()
         )
 
         overallWeatherPredictionRecyclerView.apply {
@@ -242,8 +242,11 @@ class WeatherDetailsFragment : DaggerFragment() {
             }
 
             // update history weather recyclerView
-            data.historyDetailsData?.forecast?.forecastday?.let {
-                historyMainRecyclerViewAdapter.setNewList(it.reversed())
+            data.historyDetailsData?.let {
+                historyMainRecyclerViewAdapter.apply {
+                    setLocationAndLatLng(it.location.name, UtilityFunctions.createLatLongPattern(it.location))
+                    setNewList(it.forecast.forecastday.reversed())
+                }
             }
 
         }

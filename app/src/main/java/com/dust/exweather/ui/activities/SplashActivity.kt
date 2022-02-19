@@ -3,35 +3,36 @@ package com.dust.exweather.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.animation.*
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AlphaAnimation
+import androidx.lifecycle.ViewModelProvider
 import com.dust.exweather.BuildConfig
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
-import com.dust.exweather.service.NotificationService
-import com.dust.exweather.sharedpreferences.SharedPreferencesManager
-import com.dust.exweather.utils.Settings
-import com.dust.exweather.utils.UtilityFunctions
+import com.dust.exweather.ui.anim.AnimationFactory
+import com.dust.exweather.viewmodel.activities.SplashActivityViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.util.*
 import javax.inject.Inject
 
 class SplashActivity : DaggerAppCompatActivity() {
+    private lateinit var viewModel: SplashActivityViewModel
+
+    @Inject
+    lateinit var animationFactory: AnimationFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setCurrentTheme()
+        setupViewModel()
+        setTheme(viewModel.getCurrentTheme(applicationContext))
         setCurrentLocaleConfiguration()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         setUpImageAnimation()
         setUpTextAnimation()
         setUpTranslationHandler()
-        startNotificationService()
+        viewModel.startNotificationService(applicationContext)
         setUpSplashTextView()
-    }
-
-    private fun setUpSplashTextView() {
-        splashText.text = BuildConfig.VERSION_NAME
     }
 
     private fun setCurrentLocaleConfiguration() {
@@ -43,13 +44,12 @@ class SplashActivity : DaggerAppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
-    private fun startNotificationService() {
-        if (!UtilityFunctions.checkNotificationServiceRunning(applicationContext))
-            startService(Intent(this, NotificationService::class.java))
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[SplashActivityViewModel::class.java]
     }
 
-    private fun setCurrentTheme() {
-        setTheme((applicationContext as MyApplication).getCurrentThemeResId())
+    private fun setUpSplashTextView() {
+        splashText.text = BuildConfig.VERSION_NAME
     }
 
     private fun setUpTranslationHandler() {
@@ -60,50 +60,10 @@ class SplashActivity : DaggerAppCompatActivity() {
     }
 
     private fun setUpTextAnimation() {
-        val alphaAnimation = AlphaAnimation(0f, 1f)
-        alphaAnimation.apply {
-            duration = 1000
-            interpolator = AccelerateDecelerateInterpolator()
-            fillAfter = true
-        }
-        splashText.startAnimation(alphaAnimation)
+        splashText.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
     }
 
     private fun setUpImageAnimation() {
-        val scaleAnimation = ScaleAnimation(
-            1.5f,
-            1f,
-            1.5f,
-            1f,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            0.5f,
-            ScaleAnimation.RELATIVE_TO_SELF,
-            0.5f
-        )
-
-        scaleAnimation.apply {
-            duration = 1000
-            interpolator = OvershootInterpolator(2f)
-        }
-        val rotateAnimation = RotateAnimation(
-            0f,
-            360f,
-            RotateAnimation.RELATIVE_TO_SELF,
-            0.5f,
-            RotateAnimation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateAnimation.apply {
-            duration = 1000
-            fillAfter = true
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-        val animationSet = AnimationSet(false)
-        animationSet.apply {
-            addAnimation(scaleAnimation)
-            addAnimation(rotateAnimation)
-        }
-
-        splashImage.startAnimation(animationSet)
+        splashImage.startAnimation(animationFactory.getSplashScreenImageAnimation())
     }
 }

@@ -3,6 +3,7 @@ package com.dust.exweather.viewmodel.fragments
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
+import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

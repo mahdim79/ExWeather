@@ -1,11 +1,13 @@
 package com.dust.exweather.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,7 @@ import androidx.navigation.ui.NavigationUI
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.viewmodel.activities.MainActivityViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
@@ -28,13 +31,20 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
+    private lateinit var viewModel:MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setCurrentTheme()
+        setupViewModel()
+        setTheme(viewModel.getCurrentTheme(applicationContext))
         setCurrentLocaleConfiguration()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
         setUpPrimaryUiStuff()
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
     }
 
     private fun setCurrentLocaleConfiguration() {
@@ -46,10 +56,6 @@ class MainActivity : DaggerAppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
     }
 
-    private fun setCurrentTheme() {
-        setTheme((applicationContext as MyApplication).getCurrentThemeResId())
-    }
-
     private fun setUpPrimaryUiStuff() {
         setUpViews()
         setUpNaVController()
@@ -58,7 +64,6 @@ class MainActivity : DaggerAppCompatActivity() {
         setUpStatusBar()
         setUpNavigationComponent()
         setUpNavigationView()
-
     }
 
     private fun setUpAddLocationButton() {
