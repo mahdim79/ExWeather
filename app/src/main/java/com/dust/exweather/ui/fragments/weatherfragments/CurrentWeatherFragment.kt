@@ -184,7 +184,7 @@ class CurrentWeatherFragment : DaggerFragment() {
             mainRecyclerViewAdapter.setNewData(
                 viewModel.calculateMainRecyclerViewDataList(data)
             )
-            recyclerViewContainer.startAnimation(animationFactory.getMainScaleAnimation())
+            recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
         }
     }
 
@@ -202,7 +202,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                 unitManager
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-        recyclerViewContainer.startAnimation(animationFactory.getMainScaleAnimation())
+        recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
     }
 
     @SuppressLint("CheckResult")
@@ -259,7 +259,7 @@ class CurrentWeatherFragment : DaggerFragment() {
 
             })
 
-        detailsViewPager.startAnimation(animationFactory.getMainScaleAnimation())
+        detailsViewPager.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
     }
 
     @SuppressLint("CheckResult")

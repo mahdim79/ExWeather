@@ -1,5 +1,6 @@
 package com.dust.exweather.ui.adapters
 
+import android.view.animation.AlphaAnimation
 import android.view.animation.ScaleAnimation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -16,9 +17,9 @@ class ForecastViewPagerAdapter(
     private val itemCount: Int,
     private val unitManager: UnitManager,
     private val sharedPreferencesManager: SharedPreferencesManager,
-    private val scaleAnimation: ScaleAnimation
+    private val alphaAnimation: AlphaAnimation
 ) : FragmentPagerAdapter(fragmentManager) {
     override fun getCount(): Int = itemCount
 
-    override fun getItem(position: Int): Fragment = ForecastDetailsViewPagerFragment(data, position, unitManager,sharedPreferencesManager,scaleAnimation)
+    override fun getItem(position: Int): Fragment = ForecastDetailsViewPagerFragment(data, position, unitManager,sharedPreferencesManager,alphaAnimation)
 }

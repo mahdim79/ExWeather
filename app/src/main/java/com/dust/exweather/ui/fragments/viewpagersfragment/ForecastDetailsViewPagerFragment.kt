@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.view.animation.ScaleAnimation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -36,7 +37,7 @@ class ForecastDetailsViewPagerFragment(
     private val position: Int,
     private val unitManager: UnitManager,
     private val sharedPreferencesManager: SharedPreferencesManager,
-    private val scaleAnimation: ScaleAnimation
+    private val alphaAnimation: AlphaAnimation
 ) :
     Fragment() {
 
@@ -100,7 +101,7 @@ class ForecastDetailsViewPagerFragment(
 
     private fun showAnimation() {
         requireParentFragment().mainContainerView.visibility = View.VISIBLE
-        requireParentFragment().mainContainerView.startAnimation(scaleAnimation)
+        requireParentFragment().mainContainerView.startAnimation(alphaAnimation)
     }
 
     private fun updateCurrentUi(currentData: WeatherForecast) {

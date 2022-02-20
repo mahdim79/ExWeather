@@ -114,7 +114,7 @@ class WeatherForecastFragment : DaggerFragment() {
                             itemCount = data.size,
                             unitManager = unitManager,
                             sharedPreferencesManager = sharedPreferencesManager,
-                            scaleAnimation = animationFactory.getMainScaleAnimation()
+                            alphaAnimation = animationFactory.getAlphaAnimation(0f,1f,1000)
                         )
                         offscreenPageLimit = data.size - 1
                     }

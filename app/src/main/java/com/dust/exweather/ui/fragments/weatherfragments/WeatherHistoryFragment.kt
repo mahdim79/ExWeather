@@ -98,7 +98,7 @@ class WeatherHistoryFragment : DaggerFragment() {
     }
 
     private fun startAnimations() {
-        animationFactory.getMainScaleAnimation().also {
+        animationFactory.getAlphaAnimation(0f,1f,1000).also {
             historyCalendarView.startAnimation(it)
             historyDetailsContainer.startAnimation(it)
         }
@@ -159,7 +159,7 @@ class WeatherHistoryFragment : DaggerFragment() {
         locationName: String,
         latlong: String
     ) {
-        historyDetailsContainer.startAnimation(animationFactory.getMainScaleAnimation())
+        historyDetailsContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
         requireView().apply {
             historyDetailsMainContainer.visibility = View.VISIBLE
             noDataTextView.visibility = View.GONE

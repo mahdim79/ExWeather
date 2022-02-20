@@ -162,7 +162,7 @@ class HistoryDetailsFragment : DaggerFragment() {
 
             // start animations
             detailsContainerCardView.visibility = View.VISIBLE
-            detailsContainerCardView.startAnimation(animationFactory.getMainScaleAnimation())
+            detailsContainerCardView.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
 
         }
     }

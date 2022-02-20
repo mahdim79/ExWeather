@@ -45,7 +45,7 @@ class WeatherDetailsFragment : DaggerFragment() {
     lateinit var unitManager: UnitManager
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private lateinit var forecastMainRecyclerViewAdapter: ForecastMainRecyclerViewAdapter
 
@@ -215,7 +215,7 @@ class WeatherDetailsFragment : DaggerFragment() {
             // update current status
             data.current?.current?.let { current ->
                 weatherConditionTextView.text = current.condition.text
-                Glide.with(requireContext()).load(current.condition.icon).into(weatherStateImage)
+
                 Glide.with(requireContext()).load(current.condition.icon)
                     .into(weatherStateImageLocation)
                 precipText.text = unitManager.getPrecipitationUnit(
@@ -236,7 +236,6 @@ class WeatherDetailsFragment : DaggerFragment() {
                     current.wind_kph.toString(),
                     current.wind_mph.toString()
                 )
-                uvIndexTextView.text = current.uv.toString()
 
             }
 
@@ -248,23 +247,18 @@ class WeatherDetailsFragment : DaggerFragment() {
             // update history weather recyclerView
             data.historyDetailsData?.let {
                 historyMainRecyclerViewAdapter.apply {
-                    setLocationAndLatLng(it.location.name, UtilityFunctions.createLatLongPattern(it.location))
+                    setLocationAndLatLng(
+                        it.location.name,
+                        UtilityFunctions.createLatLongPattern(it.location)
+                    )
                     setNewList(it.forecast.forecastday.reversed())
                 }
             }
 
             // start animations
-            headerContainerView.visibility = View.VISIBLE
-            currentWeatherContainer.visibility = View.VISIBLE
-            weatherPredictionContainer.visibility = View.VISIBLE
-            weatherHistoryContainer.visibility = View.VISIBLE
+            ContainerView.visibility = View.VISIBLE
+            ContainerView.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 1000))
 
-            animationFactory.getMainScaleAnimation().also {
-                headerContainerView.startAnimation(it)
-                currentWeatherContainer.startAnimation(it)
-                weatherPredictionContainer.startAnimation(it)
-                weatherHistoryContainer.startAnimation(it)
-            }
 
         }
     }

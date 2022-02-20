@@ -273,7 +273,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
         loadingProgressbar.visibility = View.GONE
         locationFragmentContainer.visibility = View.VISIBLE
         editTextContainer.visibility = View.VISIBLE
-        locationFragmentContainer.startAnimation(animationFactory.getMainScaleAnimation())
+        locationFragmentContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
         editTextContainer.startAnimation(animationFactory.getMainScaleAnimation())
     }
 
