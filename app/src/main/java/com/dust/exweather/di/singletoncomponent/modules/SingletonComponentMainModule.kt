@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 import androidx.room.Room
+import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.RoomManager
 import com.dust.exweather.model.room.WeatherDao

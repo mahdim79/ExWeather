@@ -4,15 +4,17 @@ import android.app.Application
 import android.location.LocationManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
 import javax.inject.Inject
 
 class CurrentFragmentViewModelFactory @Inject constructor(
     application: Application,
-    val currentWeatherRepository: CurrentWeatherRepository
+    private val currentWeatherRepository: CurrentWeatherRepository,
+    private val dataOptimizer:DataOptimizer
 ) : AndroidViewModelFactory(application) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return CurrentFragmentViewModel(currentWeatherRepository) as T
+        return CurrentFragmentViewModel(currentWeatherRepository,dataOptimizer) as T
     }
 }

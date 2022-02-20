@@ -1,7 +1,6 @@
 package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
-import android.content.Intent
 import androidx.lifecycle.*
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.historyweather.Forecast
@@ -12,12 +11,10 @@ import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.model.repositories.AddLocationRepository
 import com.dust.exweather.model.toEntity
-import com.dust.exweather.service.NotificationService
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.widget.WidgetUpdater
-import kotlinx.android.synthetic.main.fragment_add_location.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

@@ -37,7 +37,7 @@ class WidgetUpdater(
             val cachedData = weatherDao.getDirectWeatherData()
             sharedPreferencesManager.getDefaultLocation()?.let { defLocation ->
                 if (cachedData.isNullOrEmpty()) {
-                    updateWidget(null, "")
+                    updateWidgetWithData(null, "")
                 } else {
                     cachedData.forEach { entity ->
                         if (entity.toDataClass().location == defLocation) {
@@ -125,7 +125,7 @@ class WidgetUpdater(
                                     withContext(Dispatchers.Main) {
                                         // update widget
                                         val calendar = Calendar.getInstance()
-                                        updateWidget(
+                                        updateWidgetWithData(
                                             newWeatherData,
                                             "${
                                                 String.format(
@@ -152,7 +152,7 @@ class WidgetUpdater(
                                     val calendar = Calendar.getInstance()
                                     offlineData.current?.current?.system_last_update_epoch?.let {
                                         calendar.time = Date(it)
-                                        updateWidget(
+                                        updateWidgetWithData(
                                             offlineData,
                                             "${
                                                 String.format(
@@ -179,7 +179,7 @@ class WidgetUpdater(
         }
     }
 
-    private fun updateWidget(mainWeatherData: MainWeatherData?, lastUpdate: String) {
+    fun updateWidgetWithData(mainWeatherData: MainWeatherData?, lastUpdate: String) {
         Intent("android.appwidget.action.APPWIDGET_UPDATE").apply {
             putExtra(
                 "WeatherData",

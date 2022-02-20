@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dust.exweather.R
+import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -24,7 +25,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 class ForecastFragmentViewModel (
-    private val currentWeatherRepository: CurrentWeatherRepository
+    private val currentWeatherRepository: CurrentWeatherRepository,
+    private val dataOptimizer: DataOptimizer
 ) : ViewModel() {
     private val detailsViewPagerProgressStateLiveData = MutableLiveData<Boolean>()
     private val weatherApiCallStateLiveData = MutableLiveData<DataWrapper<String>>()
@@ -55,7 +57,7 @@ class ForecastFragmentViewModel (
             val cachedData = currentWeatherRepository.getDirectWeatherDataFromCache()
             val listNewData = arrayListOf<MainWeatherData>()
 
-            async {
+            launch {
                 cachedData.forEach {
                     launch {
                         val weatherData = it.toDataClass()
@@ -67,7 +69,7 @@ class ForecastFragmentViewModel (
                         if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
                             val data = currentWeatherData.body()!!
 
-                            async {
+                            launch {
                                 for (i in 1 until 6)
                                     launch {
                                         val historyData =
@@ -80,7 +82,7 @@ class ForecastFragmentViewModel (
                                                 )
                                             )
                                         val optimizedData =
-                                            setUpHistoryFetchedData(historyWeatherData, historyData)
+                                            dataOptimizer.setUpHistoryFetchedData(historyWeatherData, historyData)
                                         if (optimizedData != null)
                                             historyWeatherData = optimizedData
 
@@ -89,12 +91,7 @@ class ForecastFragmentViewModel (
                                     forecastWeatherData =
                                         currentWeatherRepository.getForecastWeatherData(weatherData.location)
                                 }
-                            }.await()
-
-                            /*val persianTextResponse =
-                                currentWeatherRepository.translateWord(data.current!!.condition.text)
-                            if (persianTextResponse.isSuccessful && persianTextResponse.body() != null && persianTextResponse.body()!!.ok)
-                                data.current.condition.weatherPersianText = persianTextResponse.body()!!.result*/
+                            }.join()
 
                             data.current!!.day_of_week =
                                 UtilityFunctions.getDayOfWeekByUnixTimeStamp(
@@ -113,7 +110,7 @@ class ForecastFragmentViewModel (
                             // sort historical data
                             if (historyWeatherData != null) {
                                 historyWeatherData!!.forecast.forecastday =
-                                    optimizeHistoryData(
+                                    dataOptimizer.optimizeHistoryData(
                                         historyWeatherData!!.forecast.forecastday,
                                         context
                                     )
@@ -123,7 +120,7 @@ class ForecastFragmentViewModel (
                             if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
                                 mainWeatherData.forecastDetailsData = forecastWeatherData!!.body()
                                 mainWeatherData.forecastDetailsData!!.forecast.forecastday =
-                                    optimizeForecastData(
+                                    dataOptimizer.optimizeForecastData(
                                         mainWeatherData.forecastDetailsData!!.forecast.forecastday,
                                         mainWeatherData.current!!.current!!.day_of_week,
                                         context
@@ -138,7 +135,7 @@ class ForecastFragmentViewModel (
                     }
                 }
 
-            }.await()
+            }.join()
 
             if (!listNewData.isNullOrEmpty()) {
                 currentWeatherRepository.insertWeatherDataToRoom(listNewData)
@@ -148,76 +145,6 @@ class ForecastFragmentViewModel (
                 }
             }
         }
-    }
-
-    private fun optimizeForecastData(
-        forecastday: List<Forecastday>,
-        currentDayOfWeek: String,
-        context: Context
-    ): List<Forecastday> {
-        val listDays = arrayListOf<Forecastday>()
-        listDays.addAll(forecastday)
-
-        // calculate day of week
-        for (i in listDays.indices)
-            listDays[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(listDays[i].date_epoch, context)
-
-        // find duplicate data and delete it from list
-        if (!listDays.isNullOrEmpty())
-            if (listDays[0].day.dayOfWeek == currentDayOfWeek)
-                listDays.removeAt(0)
-        return listDays
-    }
-
-    private fun optimizeHistoryData(
-        forecastday: List<com.dust.exweather.model.dataclasses.historyweather.Forecastday>,
-        context: Context
-    ): List<com.dust.exweather.model.dataclasses.historyweather.Forecastday> {
-
-        // sort data by time epoch because its fetched by parallel method
-        val historyTempList =
-            arrayListOf<com.dust.exweather.model.dataclasses.historyweather.Forecastday>()
-        historyTempList.addAll(forecastday)
-        historyTempList.sortWith { p0, p1 ->
-            if (p0.date_epoch > p1.date_epoch)
-                -1
-            else
-                1
-        }
-
-        // calculate day of week
-        for (i in historyTempList.indices) {
-            val forecastDay =
-                historyTempList[i]
-            historyTempList[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch, context)
-        }
-
-        return historyTempList
-    }
-
-
-    @Synchronized
-    private fun setUpHistoryFetchedData(
-        staticData: WeatherHistory?,
-        response: Response<WeatherHistory>?
-    ): WeatherHistory? {
-
-        if (response!!.isSuccessful && response.body() != null) {
-            val tempData = response.body()
-            return if (staticData == null) {
-                tempData
-            } else {
-                val tempArray =
-                    arrayListOf<com.dust.exweather.model.dataclasses.historyweather.Forecastday>()
-                tempArray.addAll(staticData.forecast.forecastday)
-                tempArray.addAll(tempData!!.forecast.forecastday)
-                staticData.forecast.forecastday = tempArray
-                staticData
-            }
-        }
-        return null
     }
 
     private fun emitLoadingState() {
