@@ -18,6 +18,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.ForecastMainRecyclerViewAdapter
 import com.dust.exweather.ui.adapters.HistoryMainRecyclerViewAdapter
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentDetailsViewModelFactory
@@ -42,6 +43,9 @@ class WeatherDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var unitManager: UnitManager
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private lateinit var forecastMainRecyclerViewAdapter: ForecastMainRecyclerViewAdapter
 
@@ -247,6 +251,19 @@ class WeatherDetailsFragment : DaggerFragment() {
                     setLocationAndLatLng(it.location.name, UtilityFunctions.createLatLongPattern(it.location))
                     setNewList(it.forecast.forecastday.reversed())
                 }
+            }
+
+            // start animations
+            headerContainerView.visibility = View.VISIBLE
+            currentWeatherContainer.visibility = View.VISIBLE
+            weatherPredictionContainer.visibility = View.VISIBLE
+            weatherHistoryContainer.visibility = View.VISIBLE
+
+            animationFactory.getMainScaleAnimation().also {
+                headerContainerView.startAnimation(it)
+                currentWeatherContainer.startAnimation(it)
+                weatherPredictionContainer.startAnimation(it)
+                weatherHistoryContainer.startAnimation(it)
             }
 
         }

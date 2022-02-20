@@ -13,6 +13,7 @@
         android:background="@color/full_transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/forecastDetailsContainer"
             android:layout_width="match_parent"
             android:paddingBottom="@dimen/standardMargin1.5x"
             android:layout_height="match_parent">

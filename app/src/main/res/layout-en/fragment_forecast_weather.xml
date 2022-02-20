@@ -18,7 +18,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mainContainerView"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="?colorSurface"

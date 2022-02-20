@@ -24,7 +24,16 @@
 
             </FrameLayout>
 
+            <ProgressBar
+                android:id="@+id/loadingProgressbar"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/standardUiBlue"
+                android:layout_height="wrap_content"/>
+
             <androidx.cardview.widget.CardView
+                android:id="@+id/editTextContainer"
                 android:layout_width="match_parent"
                 app:cardElevation="@dimen/standardMargin"
                 app:cardCornerRadius="17dp"

@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class AnimationFactory @Inject constructor() {
 
-    fun getAlphaAnimation(form:Float, to:Float, duration:Long): AlphaAnimation {
+    fun getAlphaAnimation(form: Float, to: Float, duration: Long): AlphaAnimation {
         val alphaAnimation = AlphaAnimation(form, to)
         alphaAnimation.duration = duration
         alphaAnimation.interpolator = AccelerateDecelerateInterpolator()
@@ -13,7 +13,7 @@ class AnimationFactory @Inject constructor() {
         return alphaAnimation
     }
 
-    fun getSplashScreenImageAnimation():AnimationSet{
+    fun getSplashScreenImageAnimation(): AnimationSet {
         val scaleAnimation = ScaleAnimation(
             1.5f,
             1f,
@@ -49,4 +49,23 @@ class AnimationFactory @Inject constructor() {
         }
         return animationSet
     }
+
+    fun getMainScaleAnimation(): ScaleAnimation {
+        ScaleAnimation(
+            0f,
+            1f,
+            0f,
+            1f,
+            ScaleAnimation.RELATIVE_TO_SELF,
+            0.5f,
+            ScaleAnimation.RELATIVE_TO_SELF,
+            0.5f
+        ).apply {
+            duration = 500
+            interpolator = AccelerateDecelerateInterpolator()
+            fillAfter = true
+            return this
+        }
+    }
+
 }

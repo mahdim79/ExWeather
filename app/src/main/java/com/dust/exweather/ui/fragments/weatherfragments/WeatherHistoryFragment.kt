@@ -3,7 +3,6 @@ package com.dust.exweather.ui.fragments.weatherfragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.sharedpreferences.UnitManager
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.CsvSaveBottomSheetDialogFragment
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
@@ -37,6 +37,9 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     @Inject
     lateinit var unitManager: UnitManager
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private lateinit var viewModel: HistoryFragmentViewModel
 
@@ -71,21 +74,33 @@ class WeatherHistoryFragment : DaggerFragment() {
         }
     }
 
+    private fun showNoDataScreen(){
+        requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
+        noDataLayout.visibility = View.VISIBLE
+        noDataLayout.addNewLocationButton.setOnClickListener {
+            findNavController().navigate(R.id.addLocationFragment)
+        }
+    }
+
     private fun setUpPrimaryUi() {
         viewModel.getHistoryDataList().also {
             if (it.isNullOrEmpty()) {
-                requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
-                noDataLayout.visibility = View.VISIBLE
-                noDataLayout.addNewLocationButton.setOnClickListener {
-                    findNavController().navigate(R.id.addLocationFragment)
-                }
+               showNoDataScreen()
             }else{
                 updateLocationData()
                 setUpLocationSwitcherButtons(it.lastIndex)
                 setUpPrimaryCalendarView()
                 setUpFirstData()
                 historyNestedScrollView.visibility = View.VISIBLE
+                startAnimations()
             }
+        }
+    }
+
+    private fun startAnimations() {
+        animationFactory.getMainScaleAnimation().also {
+            historyCalendarView.startAnimation(it)
+            historyDetailsContainer.startAnimation(it)
         }
     }
 
@@ -144,6 +159,7 @@ class WeatherHistoryFragment : DaggerFragment() {
         locationName: String,
         latlong: String
     ) {
+        historyDetailsContainer.startAnimation(animationFactory.getMainScaleAnimation())
         requireView().apply {
             historyDetailsMainContainer.visibility = View.VISIBLE
             noDataTextView.visibility = View.GONE

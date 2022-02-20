@@ -1,18 +1,12 @@
 package com.dust.exweather.ui.fragments.weatherfragments
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -21,10 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
-import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
-import com.dust.exweather.model.repositories.CurrentWeatherRepository
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.DetailsViewPagerAdapter
@@ -32,7 +24,6 @@ import com.dust.exweather.ui.adapters.MainRecyclerViewAdapter
 import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
-import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.CurrentFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.CurrentFragmentViewModel
 import dagger.android.support.DaggerFragment
@@ -61,13 +52,13 @@ class CurrentWeatherFragment : DaggerFragment() {
     // viewModel Factory Dependencies
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     @Inject
     lateinit var viewModelFactory: CurrentFragmentViewModelFactory
 
     @Inject
-    lateinit var unitManager:UnitManager
+    lateinit var unitManager: UnitManager
 
     private lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
@@ -126,17 +117,21 @@ class CurrentWeatherFragment : DaggerFragment() {
         }
     }
 
+    private fun showNoDataScreen() {
+        backgroundImage.setImageDrawable(null)
+        currentFragmentNestedScrollView.visibility = View.GONE
+        noDataLayout.visibility = View.VISIBLE
+        noDataLayout.addNewLocationButton.setOnClickListener {
+            findNavController().navigate(R.id.addLocationFragment)
+        }
+    }
+
     private fun observeCacheLiveData() {
         swipeRefreshLayout.isEnabled = false
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
-                backgroundImage.setImageDrawable(null)
-                currentFragmentNestedScrollView.visibility = View.GONE
-                noDataLayout.visibility = View.VISIBLE
-                noDataLayout.addNewLocationButton.setOnClickListener {
-                    findNavController().navigate(R.id.addLocationFragment)
-                }
-            }else{
+                showNoDataScreen()
+            } else {
                 currentFragmentNestedScrollView.visibility = View.VISIBLE
                 noDataLayout.visibility = View.GONE
                 val dataList = it.map { data -> data.toDataClass() }
@@ -169,7 +164,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun managePrimaryUi(listData: List<MainWeatherData>) {
         setUpSwipeRefreshLayout()
         setUpPrimaryViewPager(listData.size)
-        setUpPrimaryRecyclerView(listData[0])
+        setUpPrimaryMainRecyclerView(listData[0])
         listData[0].current?.let { setBackground(if (it.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL) }
         doApiCall()
     }
@@ -181,18 +176,16 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun setBackground(backgroundUrl: String) {
         Glide.with(requireContext()).load(backgroundUrl)
             .into(backgroundImage)
-        backgroundImage.startAnimation(animationFactory.getAlphaAnimation(0f,1f,800))
+        backgroundImage.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 800))
     }
 
     private fun updateRecyclerViewContent(data: MainWeatherData) {
-        if (data.current != null)
+        if (data.current != null){
             mainRecyclerViewAdapter.setNewData(
                 viewModel.calculateMainRecyclerViewDataList(data)
             )
-    }
-
-    private fun setUpPrimaryRecyclerView(data: MainWeatherData) {
-        setUpPrimaryMainRecyclerView(data)
+            recyclerViewContainer.startAnimation(animationFactory.getMainScaleAnimation())
+        }
     }
 
     private fun setUpPrimaryMainRecyclerView(data: MainWeatherData) {
@@ -205,10 +198,11 @@ class CurrentWeatherFragment : DaggerFragment() {
             MainRecyclerViewAdapter(
                 requireContext(),
                 listData,
-                animationFactory.getAlphaAnimation(0f,1f,800),
+                animationFactory.getAlphaAnimation(0f, 1f, 800),
                 unitManager
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
+        recyclerViewContainer.startAnimation(animationFactory.getMainScaleAnimation())
     }
 
     @SuppressLint("CheckResult")
@@ -264,6 +258,8 @@ class CurrentWeatherFragment : DaggerFragment() {
                 override fun onComplete() {}
 
             })
+
+        detailsViewPager.startAnimation(animationFactory.getMainScaleAnimation())
     }
 
     @SuppressLint("CheckResult")

@@ -17,6 +17,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.TodaysForecastRecyclerViewAdapter
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
@@ -36,6 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_forecast_details.*
 import kotlinx.android.synthetic.main.fragment_forecast_details.view.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.precipitationLineChart
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.temperatureLineChart
@@ -55,6 +57,9 @@ class ForecastDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private lateinit var hourlyForecastRecyclerViewAdapter: TodaysForecastRecyclerViewAdapter
 
@@ -112,6 +117,10 @@ class ForecastDetailsFragment : DaggerFragment() {
                         )
 
                         firstData = false
+
+                        // start animations
+                        detailsContainerCardView.visibility = View.VISIBLE
+                        detailsContainerCardView.startAnimation(animationFactory.getMainScaleAnimation())
                     }
                 }
         }

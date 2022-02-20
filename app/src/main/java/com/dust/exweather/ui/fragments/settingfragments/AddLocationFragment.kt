@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.dust.exweather.R
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.viewmodel.factories.AddLocationFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.AddLocationFragmentViewModel
@@ -55,6 +56,9 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
 
     @Inject
     lateinit var widgetUpdater: WidgetUpdater
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private lateinit var viewModel: AddLocationFragmentViewModel
 
@@ -255,12 +259,22 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
 
         googleMap = p0
         googleMap?.let { map ->
+            startAnimations()
+
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(32.4279, 53.6880), 4.8f))
             map.setOnMapClickListener { latLng ->
                 addMarkerAndZoomToLocation(lat = latLng.latitude, lon = latLng.longitude)
                 getLatLangDetails("${latLng.latitude},${latLng.longitude}")
             }
         }
+    }
+
+    private fun startAnimations() {
+        loadingProgressbar.visibility = View.GONE
+        locationFragmentContainer.visibility = View.VISIBLE
+        editTextContainer.visibility = View.VISIBLE
+        locationFragmentContainer.startAnimation(animationFactory.getMainScaleAnimation())
+        editTextContainer.startAnimation(animationFactory.getMainScaleAnimation())
     }
 
     private fun addMarkerAndZoomToLocation(lat: Double, lon: Double) {

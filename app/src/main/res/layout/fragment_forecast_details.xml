@@ -18,8 +18,10 @@
             android:background="@color/full_transparent">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/detailsContainerCardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="invisible"
                 android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                 android:layout_marginVertical="@dimen/standardMargin"
                 android:backgroundTint="?colorSurface"

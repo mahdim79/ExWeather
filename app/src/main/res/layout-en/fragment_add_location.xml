@@ -7,68 +7,77 @@
     android:layoutDirection="ltr"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/locationFragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/locationFragmentContainer"
+            <fragment
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"/>
 
-                <fragment
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:id="@+id/map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+        </FrameLayout>
 
-            </FrameLayout>
+        <ProgressBar
+            android:id="@+id/loadingProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/standardUiBlue"
+            android:layout_height="wrap_content"/>
 
-            <androidx.cardview.widget.CardView
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editTextContainer"
+            android:layout_width="match_parent"
+            app:cardElevation="@dimen/standardMargin"
+            app:cardCornerRadius="17dp"
+            android:layout_margin="@dimen/standardMargin1.5x"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                app:cardElevation="@dimen/standardMargin"
-                app:cardCornerRadius="17dp"
-                android:layout_margin="@dimen/standardMargin1.5x"
+                android:gravity="center_vertical"
+                android:background="@color/white_bottom_navigation"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    app:tint="@color/light_black2"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/standardMargin"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/removeTextButton"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_baseline_close_24"
+                    app:tint="@color/light_black2"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/standardMargin"
+                    android:layout_height="wrap_content"/>
+
+                <EditText
+                    android:id="@+id/locationEditText"
                     android:layout_width="match_parent"
-                    android:gravity="center_vertical"
-                    android:background="@color/white_bottom_navigation"
-                    android:layout_height="wrap_content">
+                    android:padding="@dimen/standardMargin0.5x"
+                    android:hint="@string/enter_location"
+                    android:textSize="@dimen/TextSize3x"
+                    android:layout_marginStart="@dimen/standardMargin"
+                    android:background="@drawable/location_edit_text_selector"
+                    android:layout_height="35dp"/>
 
-                    <ImageView
-                        android:id="@+id/backButton"
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/ic_baseline_arrow_back_24"
-                        app:tint="@color/light_black2"
-                        android:visibility="gone"
-                        android:layout_marginStart="@dimen/standardMargin"
-                        android:layout_height="wrap_content"/>
+            </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/removeTextButton"
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/ic_baseline_close_24"
-                        app:tint="@color/light_black2"
-                        android:visibility="gone"
-                        android:layout_marginStart="@dimen/standardMargin"
-                        android:layout_height="wrap_content"/>
+        </androidx.cardview.widget.CardView>
 
-                    <EditText
-                        android:id="@+id/locationEditText"
-                        android:layout_width="match_parent"
-                        android:padding="@dimen/standardMargin0.5x"
-                        android:hint="@string/enter_location"
-                        android:textSize="@dimen/TextSize3x"
-                        android:layout_marginStart="@dimen/standardMargin"
-                        android:background="@drawable/location_edit_text_selector"
-                        android:layout_height="35dp"/>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </RelativeLayout>
+    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

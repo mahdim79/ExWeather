@@ -15,6 +15,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.HistoryHourlyRecyclerViewAdapter
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.factories.HistoryDetailsViewModelFactory
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_forecast_details.*
 import kotlinx.android.synthetic.main.fragment_forecast_details.view.*
 import javax.inject.Inject
 
@@ -40,6 +42,9 @@ class HistoryDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private lateinit var viewModel: HistoryDetailsFragmentViewModel
 
@@ -154,6 +159,11 @@ class HistoryDetailsFragment : DaggerFragment() {
 
             // setup charts
             setupChartsData(forecastDay)
+
+            // start animations
+            detailsContainerCardView.visibility = View.VISIBLE
+            detailsContainerCardView.startAnimation(animationFactory.getMainScaleAnimation())
+
         }
     }
 

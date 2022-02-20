@@ -14,6 +14,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.ui.adapters.ForecastViewPagerAdapter
+import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.viewmodel.factories.ForecastFragmentViewModelFactory
 import com.dust.exweather.viewmodel.fragments.ForecastFragmentViewModel
@@ -46,6 +47,9 @@ class WeatherForecastFragment : DaggerFragment() {
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    @Inject
+    lateinit var animationFactory:AnimationFactory
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -100,27 +104,31 @@ class WeatherForecastFragment : DaggerFragment() {
         viewModel.setDetailsViewPagerProgressState(progressMode)
     }
 
+    private fun showNoDataScreen() {
+        requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView)
+            .setImageDrawable(null)
+        noDataLayout.visibility = View.VISIBLE
+        noDataLayout.addNewLocationButton.setOnClickListener {
+            findNavController().navigate(R.id.addLocationFragment)
+        }
+    }
+
     private fun setUpPrimaryUi() {
         forecastFragmentSwipeRefreshLayout.isEnabled = false
         lifecycleScope.launch(Dispatchers.IO) {
             val data = viewModel.getDirectWeatherDataFromCache().map { item -> item.toDataClass() }
             withContext(Dispatchers.Main) {
                 if (data.isNullOrEmpty()) {
-                    requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView)
-                        .setImageDrawable(null)
-                    noDataLayout.visibility = View.VISIBLE
-                    noDataLayout.addNewLocationButton.setOnClickListener {
-                        findNavController().navigate(R.id.addLocationFragment)
-                    }
+                    showNoDataScreen()
                 } else {
-                    mainContainerView.visibility = View.VISIBLE
                     requireView().forecastMainViewPager.apply {
                         adapter = ForecastViewPagerAdapter(
-                            childFragmentManager,
-                            viewModel.getLiveWeatherDataFromCache(),
-                            data.size,
-                            unitManager,
-                            sharedPreferencesManager
+                            fragmentManager = childFragmentManager,
+                            data = viewModel.getLiveWeatherDataFromCache(),
+                            itemCount = data.size,
+                            unitManager = unitManager,
+                            sharedPreferencesManager = sharedPreferencesManager,
+                            scaleAnimation = animationFactory.getMainScaleAnimation()
                         )
                         offscreenPageLimit = data.size - 1
                     }

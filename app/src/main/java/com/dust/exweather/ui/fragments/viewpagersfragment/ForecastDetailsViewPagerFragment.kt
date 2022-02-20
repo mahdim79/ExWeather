@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.ScaleAnimation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -28,12 +29,14 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.*
 import kotlinx.android.synthetic.main.fragment_forecast_details_main_viewpager.view.*
+import kotlinx.android.synthetic.main.fragment_forecast_weather.*
 
 class ForecastDetailsViewPagerFragment(
     private val data: LiveData<List<WeatherEntity>>,
     private val position: Int,
     private val unitManager: UnitManager,
-    private val sharedPreferencesManager: SharedPreferencesManager
+    private val sharedPreferencesManager: SharedPreferencesManager,
+    private val scaleAnimation: ScaleAnimation
 ) :
     Fragment() {
 
@@ -90,7 +93,14 @@ class ForecastDetailsViewPagerFragment(
         else
             updateCurrentUi(currentData)
         firstData = false
+        forecastDetailsContainer.visibility = View.VISIBLE
+        showAnimation()
 
+    }
+
+    private fun showAnimation() {
+        requireParentFragment().mainContainerView.visibility = View.VISIBLE
+        requireParentFragment().mainContainerView.startAnimation(scaleAnimation)
     }
 
     private fun updateCurrentUi(currentData: WeatherForecast) {
@@ -261,13 +271,11 @@ class ForecastDetailsViewPagerFragment(
     }
 
     private fun setUpPrimaryUi(currentData: WeatherForecast, currentLocation: String) {
-        requireView().apply {
-            setUpPrimaryMainRecyclerView(currentLocation)
-            setUpPrimaryTodayHourlyForecastRecyclerView()
-            setUpCharts(currentData)
-            setUpPrimaryUiStuff()
-            updateCurrentUi(currentData)
-        }
+        setUpPrimaryMainRecyclerView(currentLocation)
+        setUpPrimaryTodayHourlyForecastRecyclerView()
+        setUpCharts(currentData)
+        setUpPrimaryUiStuff()
+        updateCurrentUi(currentData)
     }
 
     private fun setUpCharts(currentData: WeatherForecast) {
