@@ -14,7 +14,6 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/historyNestedScrollView"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:overScrollMode="never"
         android:layout_height="match_parent">
 
@@ -41,24 +40,16 @@
                     android:layout_width="match_parent"
                     android:padding="@dimen/standardMargin1.5x"
                     android:layout_height="wrap_content">
-                    <androidx.cardview.widget.CardView
+                    <ImageView
                         android:id="@+id/arrowRightIcon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="@dimen/standardMargin1.5x"
-                        android:background="?attr/selectableItemBackground"
-                        android:backgroundTint="?colorSurface"
-                        app:cardCornerRadius="25dp"
-                        app:cardElevation="0dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="@dimen/standardMargin0.5x"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="@dimen/standardMargin0.5x"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
-                    </androidx.cardview.widget.CardView>
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <com.dust.exweather.utils.customviews.CTextView
                         android:id="@+id/locationTextView"
@@ -73,24 +64,16 @@
                         app:layout_constraintTop_toTopOf="@+id/arrowRightIcon"
                         tools:text="متن ساختگی" />
 
-                    <androidx.cardview.widget.CardView
+                    <ImageView
                         android:id="@+id/arrowLeftIcon"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="@dimen/standardMargin1.5x"
                         android:background="?attr/selectableItemBackground"
-                        android:backgroundTint="?colorSurface"
-                        app:cardCornerRadius="25dp"
-                        app:cardElevation="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="@dimen/standardMargin0.5x"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
-                    </androidx.cardview.widget.CardView>
+                        android:padding="@dimen/standardMargin0.5x"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <CalendarView
                         android:id="@+id/historyCalendarView"
@@ -144,7 +127,7 @@
                             android:id="@+id/shareImageView"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:layout_margin="@dimen/standardMargin0.5x"
+                            android:layout_marginHorizontal="@dimen/standardMargin"
                             android:src="@drawable/ic_baseline_share_24"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -167,7 +150,6 @@
                             android:id="@+id/dividerView1"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginHorizontal="@dimen/standardMargin6x"
                             android:layout_marginTop="@dimen/standardMargin"
                             android:background="?colorSurface"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -416,6 +398,7 @@
                             android:layout_height="22dp"
                             android:src="@drawable/ic_export_to_cvs"
                             app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="@dimen/standardMargin"
                             app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
 
                         <com.dust.exweather.utils.customviews.CTextView

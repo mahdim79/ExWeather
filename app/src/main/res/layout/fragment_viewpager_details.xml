@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="260dp"
+    android:layout_height="150dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="@dimen/standardMargin"
@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/detailsContainer"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="150dp"
             android:layout_marginTop="@dimen/standardMargin"
             android:paddingBottom="@dimen/standardMargin2x">
 
@@ -69,38 +69,38 @@
                     android:layout_weight="50">
 
                     <ImageView
-                        android:id="@+id/humidityImage"
+                        android:id="@+id/tempImage"
                         android:layout_width="@dimen/mainIconSize"
                         android:layout_height="@dimen/mainIconSize"
                         android:layout_marginHorizontal="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_humidity"
+                        android:src="@drawable/ic_temperature"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ProgressBar
-                        android:id="@+id/progressBarNum6"
+                        android:id="@+id/progressBarNum3"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:indeterminate="true"
                         android:indeterminateTint="@color/black_transparent"
                         android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/weatherHumidityText"
-                        app:layout_constraintEnd_toEndOf="@id/weatherHumidityText"
-                        app:layout_constraintStart_toStartOf="@id/weatherHumidityText"
-                        app:layout_constraintTop_toTopOf="@id/weatherHumidityText" />
+                        app:layout_constraintBottom_toBottomOf="@id/weatherTempText"
+                        app:layout_constraintEnd_toEndOf="@id/weatherTempText"
+                        app:layout_constraintStart_toStartOf="@id/weatherTempText"
+                        app:layout_constraintTop_toTopOf="@id/weatherTempText" />
 
                     <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/weatherHumidityText"
+                        android:id="@+id/weatherTempText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/standardMargin"
                         android:textColor="@color/mainTextColor"
                         android:textSize="@dimen/mainTextSize"
-                        app:layout_constraintBottom_toBottomOf="@id/humidityImage"
-                        app:layout_constraintEnd_toStartOf="@id/humidityImage"
-                        app:layout_constraintTop_toTopOf="@id/humidityImage"
-                        tools:text="2g.m3" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tempImage"
+                        app:layout_constraintEnd_toStartOf="@id/tempImage"
+                        app:layout_constraintTop_toTopOf="@id/tempImage"
+                        tools:text="40°C" />
 
                     <ImageView
                         android:id="@+id/isDayImage"
@@ -109,7 +109,7 @@
                         android:layout_margin="@dimen/standardMargin1.5x"
                         android:src="@drawable/ic_day"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/humidityImage" />
+                        app:layout_constraintTop_toBottomOf="@id/tempImage" />
 
                     <ProgressBar
                         android:id="@+id/progressBarNum7"
@@ -136,73 +136,6 @@
                         app:layout_constraintTop_toTopOf="@id/isDayImage"
                         tools:text="روز" />
 
-                    <ImageView
-                        android:id="@+id/precipImage"
-                        android:layout_width="@dimen/mainIconSize"
-                        android:layout_height="@dimen/mainIconSize"
-                        android:layout_margin="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_rain"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/isDayImage" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBarNum8"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:indeterminateTint="@color/black_transparent"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/precipText"
-                        app:layout_constraintEnd_toEndOf="@id/precipText"
-                        app:layout_constraintStart_toStartOf="@id/precipText"
-                        app:layout_constraintTop_toTopOf="@id/precipText" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/precipText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin"
-                        android:textColor="@color/mainTextColor"
-                        android:textSize="@dimen/mainTextSize"
-                        app:layout_constraintBottom_toBottomOf="@id/precipImage"
-                        app:layout_constraintEnd_toStartOf="@id/precipImage"
-                        app:layout_constraintTop_toTopOf="@id/precipImage"
-                        tools:text="5mm" />
-
-                    <ImageView
-                        android:id="@+id/windSpeedImage"
-                        android:layout_width="@dimen/mainIconSize"
-                        android:layout_height="@dimen/mainIconSize"
-                        android:layout_margin="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_wind"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/precipImage" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBarNum9"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:indeterminateTint="@color/black_transparent"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/windSpeedText"
-                        app:layout_constraintEnd_toEndOf="@id/windSpeedText"
-                        app:layout_constraintStart_toStartOf="@id/windSpeedText"
-                        app:layout_constraintTop_toTopOf="@id/windSpeedText" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/windSpeedText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin"
-                        android:textColor="@color/mainTextColor"
-                        android:textSize="@dimen/mainTextSize"
-                        app:layout_constraintBottom_toBottomOf="@id/windSpeedImage"
-                        app:layout_constraintEnd_toStartOf="@id/windSpeedImage"
-                        app:layout_constraintTop_toTopOf="@id/windSpeedImage"
-                        tools:text="20kph" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,47 +180,13 @@
                         tools:text="London" />
 
                     <ImageView
-                        android:id="@+id/tempImage"
-                        android:layout_width="@dimen/mainIconSize"
-                        android:layout_height="@dimen/mainIconSize"
-                        android:layout_margin="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_temperature"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cityImage" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBarNum3"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:indeterminateTint="@color/black_transparent"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/weatherTempText"
-                        app:layout_constraintEnd_toEndOf="@id/weatherTempText"
-                        app:layout_constraintStart_toStartOf="@id/weatherTempText"
-                        app:layout_constraintTop_toTopOf="@id/weatherTempText" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/weatherTempText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin"
-                        android:textColor="@color/mainTextColor"
-                        android:textSize="@dimen/mainTextSize"
-                        app:layout_constraintBottom_toBottomOf="@+id/tempImage"
-                        app:layout_constraintEnd_toStartOf="@id/tempImage"
-                        app:layout_constraintTop_toTopOf="@id/tempImage"
-                        tools:text="40°C" />
-
-                    <ImageView
                         android:id="@+id/lastUpdateImage"
                         android:layout_width="@dimen/mainIconSize"
                         android:layout_height="@dimen/mainIconSize"
                         android:layout_margin="@dimen/standardMargin1.5x"
                         android:src="@drawable/ic_last_update"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tempImage" />
+                        app:layout_constraintTop_toBottomOf="@id/cityImage" />
 
                     <ProgressBar
                         android:id="@+id/progressBarNum4"
@@ -314,39 +213,7 @@
                         app:layout_constraintTop_toTopOf="@id/lastUpdateImage"
                         tools:text="آپدیت شده" />
 
-                    <ImageView
-                        android:id="@+id/airPressureImage"
-                        android:layout_width="@dimen/mainIconSize"
-                        android:layout_height="@dimen/mainIconSize"
-                        android:layout_margin="@dimen/standardMargin1.5x"
-                        android:src="@drawable/ic_pressure"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lastUpdateImage" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBarNum5"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:indeterminateTint="@color/black_transparent"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/airPressureText"
-                        app:layout_constraintEnd_toEndOf="@id/airPressureText"
-                        app:layout_constraintStart_toStartOf="@id/airPressureText"
-                        app:layout_constraintTop_toTopOf="@id/airPressureText" />
-
-                    <com.dust.exweather.utils.customviews.CTextView
-                        android:id="@+id/airPressureText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standardMargin"
-                        android:textColor="@color/mainTextColor"
-                        android:textSize="@dimen/mainTextSize"
-                        app:layout_constraintBottom_toBottomOf="@id/airPressureImage"
-                        app:layout_constraintEnd_toStartOf="@id/airPressureImage"
-                        app:layout_constraintTop_toTopOf="@id/airPressureImage"
-                        tools:text="25PA" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

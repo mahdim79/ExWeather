@@ -24,7 +24,7 @@
 
     <style name="Theme.DarkExWeather" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black_normal</item>
+        <item name="colorPrimary">@color/darkModePrimary</item>
         <item name="colorPrimaryVariant">@color/black_normal</item>
         <item name="colorOnPrimary">@color/light_black</item>
         <!-- Secondary brand color. -->

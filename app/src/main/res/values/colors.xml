@@ -50,7 +50,7 @@
     <color name="notificationBackgroundMainColor">#35bdd0</color>
     <color name="mainContainerWhiteTransparentBackground">#33181A1C</color>
     <color name="mainContainerBlackTransparentBackground">#66000000</color>
-    <color name="spinnerNight">#171717</color>
+    <color name="spinnerNight">#63171717</color>
     <color name="lightNavigationViewBackgroundColor">#BFFFFFFF</color>
     <color name="darkNavigationViewBackgroundColor">#80000000</color>
     <color name="light_blue_50">#FFE1F5FE</color>
@@ -58,5 +58,6 @@
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="yellow">#D1B503</color>
+    <color name="darkModePrimary">#1f2023</color>
 
 </resources>

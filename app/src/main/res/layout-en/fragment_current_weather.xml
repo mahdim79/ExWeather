@@ -58,11 +58,11 @@
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/detailsViewPager"
                         android:layout_width="match_parent"
-                        android:layout_height="260dp"
+                        android:layout_height="180dp"
                         android:layout_below="@+id/detailsViewPagerDotsIndicator"
                         android:layout_marginTop="@dimen/standardMargin2x"
                         android:clipToPadding="false"
-                        android:paddingHorizontal="@dimen/standardMargin"
+                        android:paddingHorizontal="@dimen/standardMargin2x"
                         android:paddingBottom="@dimen/standardMargin2x" />
 
                     <androidx.cardview.widget.CardView
