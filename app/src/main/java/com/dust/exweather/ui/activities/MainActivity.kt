@@ -41,6 +41,8 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
         // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
         setUpPrimaryUiStuff()
+        viewModel.startNotificationService(applicationContext)
+
     }
 
     private fun setupViewModel() {

@@ -8,6 +8,7 @@ import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.RoomManager
 import com.dust.exweather.model.room.WeatherDao
+import com.dust.exweather.notification.NotificationManager
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.Constants
@@ -77,18 +78,22 @@ class SingletonComponentMainModule {
     @Singleton
     @Provides
     fun provideWidgetUpdater(
-        weatherDao: WeatherDao,
-        sharedPreferencesManager: SharedPreferencesManager,
         application: Application,
+        sharedPreferencesManager: SharedPreferencesManager,
+        weatherDao: WeatherDao,
+        mainApiRequests: MainApiRequests,
         unitManager: UnitManager,
-        mainApiRequests: MainApiRequests
+        dataOptimizer: DataOptimizer,
+        notificationManager: NotificationManager
     ): WidgetUpdater {
         return WidgetUpdater(
-            weatherDao,
-            mainApiRequests,
             application.applicationContext,
             sharedPreferencesManager,
-            unitManager
+            weatherDao,
+            mainApiRequests,
+            unitManager,
+            dataOptimizer,
+            notificationManager
         )
     }
 }

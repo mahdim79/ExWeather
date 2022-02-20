@@ -2,6 +2,8 @@ package com.dust.exweather.widget
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -12,24 +14,28 @@ import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.model.toEntity
+import com.dust.exweather.notification.NotificationManager
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
+import com.dust.exweather.utils.Settings
 import com.dust.exweather.utils.UtilityFunctions
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.util.*
+import javax.inject.Inject
 
 class WidgetUpdater(
-    private val weatherDao: WeatherDao,
-    private val mainApiRequests: MainApiRequests,
     private val context: Context,
     private val sharedPreferencesManager: SharedPreferencesManager,
-    private val unitManager: UnitManager
+    private val weatherDao: WeatherDao,
+    private val mainApiRequests: MainApiRequests,
+    private val unitManager: UnitManager,
+    private val dataOptimizer: DataOptimizer,
+    private val notificationManager:NotificationManager
 ) {
 
     private var coroutineJob: Job? = null
-
 
     fun updateWidget() {
         coroutineJob?.cancel(CancellationException("NormalCancellation"))
@@ -54,7 +60,7 @@ class WidgetUpdater(
                                     if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
                                         val data = currentWeatherData.body()!!
 
-                                        async {
+                                        launch {
                                             for (i in 1 until 6)
                                                 launch {
                                                     val historyData =
@@ -67,7 +73,7 @@ class WidgetUpdater(
                                                             )
                                                         )
                                                     val optimizedData =
-                                                        setUpHistoryFetchedData(
+                                                        dataOptimizer.setUpHistoryFetchedData(
                                                             historyWeatherData,
                                                             historyData
                                                         )
@@ -81,7 +87,7 @@ class WidgetUpdater(
                                                         weatherData.location
                                                     )
                                             }
-                                        }.await()
+                                        }.join()
                                         data.current!!.day_of_week =
                                             UtilityFunctions.getDayOfWeekByUnixTimeStamp(
                                                 data.location!!.localtime_epoch,
@@ -99,7 +105,7 @@ class WidgetUpdater(
                                         // sort historical data
                                         if (historyWeatherData != null) {
                                             historyWeatherData!!.forecast.forecastday =
-                                                optimizeHistoryData(historyWeatherData!!.forecast.forecastday)
+                                                dataOptimizer.optimizeHistoryData(historyWeatherData!!.forecast.forecastday, context)
                                             mainWeatherData.historyDetailsData = historyWeatherData
                                         }
 
@@ -107,9 +113,10 @@ class WidgetUpdater(
                                             mainWeatherData.forecastDetailsData =
                                                 forecastWeatherData!!.body()
                                             mainWeatherData.forecastDetailsData!!.forecast.forecastday =
-                                                optimizeForecastData(
+                                                dataOptimizer.optimizeForecastData(
                                                     mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                                                    mainWeatherData.current!!.current!!.day_of_week
+                                                    mainWeatherData.current!!.current!!.day_of_week,
+                                                    context
                                                 )
                                         }
 
@@ -141,6 +148,13 @@ class WidgetUpdater(
                                                 )
                                             }"
                                         )
+
+                                        // send notification
+                                        if (shouldSendNotification())
+                                            notificationManager.sendNotification(
+                                                newWeatherData,
+                                                context
+                                            )
 
                                     }
                                 }
@@ -179,7 +193,17 @@ class WidgetUpdater(
         }
     }
 
-    fun updateWidgetWithData(mainWeatherData: MainWeatherData?, lastUpdate: String) {
+    private fun shouldSendNotification(): Boolean {
+        val systemTimeEpoch = System.currentTimeMillis()
+        var lastTimeEpoch = sharedPreferencesManager.getLastNotificationTimeEpoch()
+        if (lastTimeEpoch == 0L)
+            lastTimeEpoch = systemTimeEpoch
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(systemTimeEpoch)
+        return (systemTimeEpoch - lastTimeEpoch) > 86400000L && sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON
+    }
+
+    private fun updateWidgetWithData(mainWeatherData: MainWeatherData?, lastUpdate: String) {
         Intent("android.appwidget.action.APPWIDGET_UPDATE").apply {
             putExtra(
                 "WeatherData",
@@ -203,79 +227,5 @@ class WidgetUpdater(
             context.sendBroadcast(this)
         }
     }
-
-    @Synchronized
-    private fun setUpHistoryFetchedData(
-        staticData: WeatherHistory?,
-        response: Response<WeatherHistory>?
-    ): WeatherHistory? {
-
-        if (response!!.isSuccessful && response.body() != null) {
-            val tempData = response.body()
-            return if (staticData == null) {
-                tempData
-            } else {
-                val tempArray =
-                    arrayListOf<com.dust.exweather.model.dataclasses.historyweather.Forecastday>()
-                tempArray.addAll(staticData.forecast.forecastday)
-                tempArray.addAll(tempData!!.forecast.forecastday)
-                staticData.forecast.forecastday = tempArray
-                staticData
-            }
-        }
-        return null
-    }
-
-    private fun optimizeForecastData(
-        forecastday: List<Forecastday>,
-        currentDayOfWeek: String
-    ): List<Forecastday> {
-        val listDays = arrayListOf<Forecastday>()
-        listDays.addAll(forecastday)
-
-        // calculate day of week
-        for (i in listDays.indices)
-            listDays[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
-                    listDays[i].date_epoch,
-                    context
-                )
-
-        // find duplicate data and delete it from list
-        if (!listDays.isNullOrEmpty())
-            if (listDays[0].day.dayOfWeek == currentDayOfWeek)
-                listDays.removeAt(0)
-        return listDays
-    }
-
-    private fun optimizeHistoryData(
-        forecastday: List<com.dust.exweather.model.dataclasses.historyweather.Forecastday>
-    ): List<com.dust.exweather.model.dataclasses.historyweather.Forecastday> {
-
-        // sort data by time epoch because its fetched by parallel method
-        val historyTempList =
-            arrayListOf<com.dust.exweather.model.dataclasses.historyweather.Forecastday>()
-        historyTempList.addAll(forecastday)
-        historyTempList.sortWith { p0, p1 ->
-            if (p0.date_epoch > p1.date_epoch)
-                -1
-            else
-                1
-        }
-
-        // calculate day of week
-        for (i in historyTempList.indices) {
-            val forecastDay =
-                historyTempList[i]
-            historyTempList[i].day.dayOfWeek =
-                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
-                    forecastDay.date_epoch,
-                    context
-                )
-        }
-
-        return historyTempList
-    }
-
 
 }

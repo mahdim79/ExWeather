@@ -79,29 +79,15 @@ class WeatherForecastFragment : DaggerFragment() {
     private fun observeForApiCallState() {
         viewModel.getWeatherApiCallStateLiveData().observe(viewLifecycleOwner) {
             when (it.status) {
-                DataStatus.DATA_RECEIVE_LOADING -> {
-                    setProgressMode(true)
-                }
+                DataStatus.DATA_RECEIVE_FAILURE -> resetSwipeRefreshLayout()
 
-                DataStatus.DATA_RECEIVE_FAILURE -> {
-                    setProgressMode(false)
-                    resetSwipeRefreshLayout()
-                }
-
-                DataStatus.DATA_RECEIVE_SUCCESS -> {
-                    setProgressMode(false)
-                    resetSwipeRefreshLayout()
-                }
+                DataStatus.DATA_RECEIVE_SUCCESS -> resetSwipeRefreshLayout()
             }
         }
     }
 
     private fun resetSwipeRefreshLayout() {
         requireView().forecastFragmentSwipeRefreshLayout.isRefreshing = false
-    }
-
-    private fun setProgressMode(progressMode: Boolean) {
-        viewModel.setDetailsViewPagerProgressState(progressMode)
     }
 
     private fun showNoDataScreen() {

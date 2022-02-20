@@ -153,8 +153,8 @@ class CurrentWeatherFragment : DaggerFragment() {
 
     private fun setUpUiView() {
         instantiateBackgroundImageView()
-        observeForApiCallState()
         observeCacheLiveData()
+        observeForApiCallState()
     }
 
     private fun instantiateBackgroundImageView() {
@@ -309,7 +309,9 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun setProgressMode(progressMode: Boolean) {
-        mainRecyclerViewAdapter.setProgressMode(progressMode)
+        try{
+            mainRecyclerViewAdapter.setProgressMode(progressMode)
+        }catch (e:Exception){}
         viewModel.setDetailsViewPagerProgressState(progressMode)
     }
 

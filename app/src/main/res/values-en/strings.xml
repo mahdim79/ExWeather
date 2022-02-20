@@ -40,7 +40,7 @@
     <string name="weatherSettings"> Weather settings </string>
     <string name="aboutUs"> About us </string>
     <string name="weatherDetails"> Weather Details </string>
-    <string name="today"> îro </string>
+    <string name="today"> Today </string>
     <string name="wrongFileName"> Please enter the file name correctly </string>
     <string name="windSpeed"> wind speed </string>
     <string name="temperature"> temperature </string>

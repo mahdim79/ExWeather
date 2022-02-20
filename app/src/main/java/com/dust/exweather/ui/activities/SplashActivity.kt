@@ -31,7 +31,6 @@ class SplashActivity : DaggerAppCompatActivity() {
         setUpImageAnimation()
         setUpTextAnimation()
         setUpTranslationHandler()
-        viewModel.startNotificationService(applicationContext)
         setUpSplashTextView()
     }
 

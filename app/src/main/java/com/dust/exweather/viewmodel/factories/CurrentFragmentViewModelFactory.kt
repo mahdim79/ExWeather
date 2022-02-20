@@ -11,10 +11,9 @@ import javax.inject.Inject
 
 class CurrentFragmentViewModelFactory @Inject constructor(
     application: Application,
-    private val currentWeatherRepository: CurrentWeatherRepository,
-    private val dataOptimizer:DataOptimizer
+    private val currentWeatherRepository: CurrentWeatherRepository
 ) : AndroidViewModelFactory(application) {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return CurrentFragmentViewModel(currentWeatherRepository,dataOptimizer) as T
+        return CurrentFragmentViewModel(currentWeatherRepository) as T
     }
 }

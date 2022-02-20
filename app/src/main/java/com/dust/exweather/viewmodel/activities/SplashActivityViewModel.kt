@@ -14,8 +14,4 @@ class SplashActivityViewModel:ViewModel() {
         return (context.applicationContext as MyApplication).getCurrentThemeResId()
     }
 
-    fun startNotificationService(context: Context) {
-        if (!UtilityFunctions.checkNotificationServiceRunning(context))
-            context.startService(Intent(context, NotificationService::class.java))
-    }
 }
