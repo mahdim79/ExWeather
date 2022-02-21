@@ -21,7 +21,7 @@
                 android:id="@+id/detailsContainerCardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                 android:layout_marginVertical="@dimen/standardMargin"
                 android:backgroundTint="?colorSurface"

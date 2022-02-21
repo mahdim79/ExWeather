@@ -18,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:errorEnabled="true"
         app:errorTextColor="@color/standardUiRed"
+        app:hintTextColor="?android:textColor"
         android:textColorHint="?android:textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_chainStyle="packed"

@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin"
                 android:textColor="@color/white"
-                android:textSize="@dimen/TextSize6x"
+                android:textSize="@dimen/TextSize4x"
                 app:layout_constraintBottom_toBottomOf="@id/cloudImage"
                 app:layout_constraintEnd_toStartOf="@id/cloudImage"
                 app:layout_constraintTop_toTopOf="@id/cloudImage"

@@ -85,6 +85,8 @@ class CurrentWeatherFragment : DaggerFragment() {
         // initialize View Model
         setUpViewModel()
 
+        firstData = true
+
         addSomeLocations()
 
     }

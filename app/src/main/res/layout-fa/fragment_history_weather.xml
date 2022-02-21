@@ -11,11 +11,10 @@
         android:visibility="gone"
         layout="@layout/layout_no_data"/>
 
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/historyNestedScrollView"
         android:layout_width="match_parent"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:overScrollMode="never"
         android:layout_height="match_parent">
 
@@ -30,10 +29,10 @@
                 android:id="@+id/calendarViewContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                 android:backgroundTint="?colorSurface"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginHorizontal="@dimen/standardMargin0.5x"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="@dimen/standardMargin">
@@ -47,7 +46,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="@dimen/standardMargin1.5x"
-                        android:background="?attr/selectableItemBackground"
+                        android:foreground="?attr/selectableItemBackground"
                         android:padding="@dimen/standardMargin0.5x"
                         android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
                         app:layout_constraintStart_toStartOf="parent"
@@ -72,10 +71,11 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="@dimen/standardMargin1.5x"
                         android:background="?attr/selectableItemBackground"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:padding="@dimen/standardMargin0.5x"
                         android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
+
                     <CalendarView
                         android:id="@+id/historyCalendarView"
                         android:layout_width="match_parent"
@@ -131,6 +131,7 @@
                             android:layout_marginHorizontal="@dimen/standardMargin"
                             android:src="@drawable/ic_baseline_share_24"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/dateTextView"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <com.dust.exweather.utils.customviews.CTextView
@@ -138,12 +139,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/standardUiWhite"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/TextSize3x"
                             android:gravity="center"
-                            app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/shareImageView"
+                            app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
                             tools:text="2022-01-02" />
 
 
@@ -398,8 +398,8 @@
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:src="@drawable/ic_export_to_cvs"
-                            android:layout_marginEnd="@dimen/standardMargin"
                             app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginEnd="@dimen/standardMargin"
                             app:layout_constraintTop_toBottomOf="@+id/detailsContainer" />
 
                         <com.dust.exweather.utils.customviews.CTextView

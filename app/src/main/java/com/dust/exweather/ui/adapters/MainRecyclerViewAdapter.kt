@@ -61,6 +61,10 @@ class MainRecyclerViewAdapter(
                 holder.weatherStateText.text = data.day.condition.text
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
+
+                /*if (position == listData.size - 1)
+                    holder.item_progressBar_divider.visibility = View.GONE
+*/
             }
             is com.dust.exweather.model.dataclasses.forecastweather.Forecastday -> {
                 val data =
@@ -79,9 +83,6 @@ class MainRecyclerViewAdapter(
 
         // setup Animation
         holder.itemView.startAnimation(alphaAnimation)
-
-        if (position == listData.size - 1)
-            holder.item_progressBar_divider.visibility = View.GONE
 
     }
 

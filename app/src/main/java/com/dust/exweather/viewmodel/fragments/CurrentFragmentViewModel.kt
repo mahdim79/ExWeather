@@ -26,15 +26,18 @@ class CurrentFragmentViewModel(
 
     fun calculateMainRecyclerViewDataList(data: MainWeatherData): List<DataWrapper<Any>> {
         val list = arrayListOf<DataWrapper<Any>>()
-        data.forecastDetailsData!!.forecast.forecastday.forEach {
+
+        data.forecastDetailsData?.forecast?.forecastday?.forEach {
             list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
         }
 
         list.reverse()
 
-        list.add(DataWrapper(data.current!!, DataStatus.DATA_RECEIVE_SUCCESS))
+        data.current?.let {
+            list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
+        }
 
-        data.historyDetailsData!!.forecast.forecastday.forEach {
+        data.historyDetailsData?.forecast?.forecastday?.forEach {
             list.add(DataWrapper(it, DataStatus.DATA_RECEIVE_SUCCESS))
         }
 

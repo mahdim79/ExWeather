@@ -9,17 +9,23 @@
         android:name="com.dust.exweather.ui.fragments.weatherfragments.CurrentWeatherFragment">
         <action
             android:id="@+id/action_currentWeatherFragment_to_weatherDetailsFragment"
-            app:destination="@id/weatherDetailsFragment" />
+            app:destination="@id/weatherDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_currentWeatherFragment_to_addLocationFragment"
-            app:destination="@id/addLocationFragment" />
+            app:destination="@id/addLocationFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/weatherHistoryFragment"
         android:name="com.dust.exweather.ui.fragments.weatherfragments.WeatherHistoryFragment" >
         <action
             android:id="@+id/action_weatherHistoryFragment_to_historyDetailsFragment"
-            app:destination="@id/historyDetailsFragment" />
+            app:destination="@id/historyDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/weatherPredictionFragment"
@@ -27,21 +33,26 @@
         <action
             android:id="@+id/action_weatherPredictionFragment_to_forecastDetailsFragment"
             app:destination="@id/forecastDetailsFragment"
-            />
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/generalSettingsFragment"
         android:name="com.dust.exweather.ui.fragments.settingfragments.GeneralSettingsFragment" >
         <action
             android:id="@+id/action_generalSettingsFragment_to_aboutUsFragment"
-            app:destination="@id/aboutUsFragment" />
+            app:destination="@id/aboutUsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/weatherSettingsFragment"
         android:name="com.dust.exweather.ui.fragments.settingfragments.WeatherSettingsFragment" >
         <action
             android:id="@+id/action_weatherSettingsFragment_to_addLocationFragment"
-            app:destination="@id/addLocationFragment" />
+            app:destination="@id/addLocationFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/aboutUsFragment"

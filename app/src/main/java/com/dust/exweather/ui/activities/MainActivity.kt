@@ -109,6 +109,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.generalSettings)
+                    addLocationImageView.visibility = View.GONE
                 }
                 R.id.weatherSettingsFragment -> {
                     mainNavView.setCheckedItem(destination.id)
@@ -120,14 +121,26 @@ class MainActivity : DaggerAppCompatActivity() {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.aboutUs)
+                    addLocationImageView.visibility = View.GONE
                 }
                 R.id.weatherDetailsFragment -> {
                     setBottomNavigationVisibility(true)
                     titleText.text = getString(R.string.weatherDetails)
+                    addLocationImageView.visibility = View.GONE
                 }
                 R.id.addLocationFragment -> {
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.addNewLocation)
+                    addLocationImageView.visibility = View.GONE
+                }
+                R.id.historyDetailsFragment -> {
+                    setBottomNavigationVisibility(true)
+                    titleText.text = getString(R.string.weatherHistory)
+                    addLocationImageView.visibility = View.GONE
+                }
+                R.id.forecastDetailsFragment -> {
+                    setBottomNavigationVisibility(true)
+                    titleText.text = getString(R.string.weatherPrediction)
                     addLocationImageView.visibility = View.GONE
                 }
             }

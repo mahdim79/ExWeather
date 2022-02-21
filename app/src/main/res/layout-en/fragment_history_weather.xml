@@ -16,7 +16,7 @@
         android:id="@+id/historyNestedScrollView"
         android:layout_width="match_parent"
         android:overScrollMode="never"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -133,19 +133,19 @@
                             android:layout_marginEnd="@dimen/standardMargin"
                             android:src="@drawable/ic_baseline_share_24"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/dateTextView" />
 
                         <com.dust.exweather.utils.customviews.CTextView
                             android:id="@+id/dateTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/standardUiWhite"
-                            android:textSize="15dp"
+                            android:textSize="@dimen/TextSize3x"
                             android:gravity="center"
                             app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/shareImageView"
                             tools:text="2022-01-02" />
 
 
