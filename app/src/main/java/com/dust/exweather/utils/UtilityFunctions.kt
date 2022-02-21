@@ -26,23 +26,6 @@ class UtilityFunctions {
             return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         }
 
-        fun getWeatherStateGifUrl(weatherStatesDetails: WeatherStatesDetails, code: Int): String {
-            for (i in weatherStatesDetails)
-                if (i.code == code)
-                    return i.gifUrl
-            return Constants.DEFAULT_WALLPAPER_URL
-        }
-
-        fun getWeatherStatesDetailsObject(context: Context): WeatherStatesDetails {
-            val inputStream =
-                context.applicationContext.resources.assets.open("json/weather_conditions.json")
-            val bufferedInputStream = BufferedInputStream(inputStream)
-            val stringBuilder = StringBuilder()
-            while (bufferedInputStream.available() != -1)
-                stringBuilder.append(bufferedInputStream.read().toChar())
-            return Gson().fromJson(stringBuilder.toString(), WeatherStatesDetails::class.java)
-        }
-
         fun getDaysLeft(currentTime: Int, timeZone: String, days: Int): String {
             val date = Date((currentTime - (days * 86400)).toLong() * 1000)
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)

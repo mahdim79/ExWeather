@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.location.SearchLocation
@@ -18,7 +17,7 @@ import java.util.*
 
 class ManualLocationPickFragment(
     private val dataLiveData: LiveData<DataWrapper<ArrayList<SearchLocation>>>,
-    private val onManualLocationPickFragmentDestroyed:() -> Unit,
+    private val onManualLocationPickFragmentDestroyed: () -> Unit,
     private val onLocationSelected: (SearchLocation?) -> Unit
 ) :
     Fragment() {
@@ -59,7 +58,7 @@ class ManualLocationPickFragment(
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
                     searchProgressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "خطایی پیش آمده است", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.problemTwo), Toast.LENGTH_SHORT)
                         .show()
                 }
             }

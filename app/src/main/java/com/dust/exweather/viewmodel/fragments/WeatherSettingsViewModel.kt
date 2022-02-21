@@ -5,11 +5,11 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecast
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.location.LocationData
@@ -21,9 +21,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.DataStatus
-import com.dust.exweather.utils.UtilityFunctions
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -69,7 +67,7 @@ class WeatherSettingsViewModel(
     }
 
     suspend fun removeLocation(latLong: String, context: Context) {
-        weatherSettingsRepository.removeLocation(latLong,context)
+        weatherSettingsRepository.removeLocation(latLong, context)
     }
 
     fun setDefaultLocation(latLong: String) {
@@ -91,7 +89,7 @@ class WeatherSettingsViewModel(
                     this
                 )
             } else {
-                return "لطفا مکان یاب دستگاه را روشن کنید و دوباره تلاش کنید"
+                return context.getString(R.string.turnOnGps)
             }
 
             if (currentUserLocation.isEmpty() && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -105,15 +103,15 @@ class WeatherSettingsViewModel(
 
             return null
         }
-        return "مشکلی پیش آمده است"
+        return context.getString(R.string.problem)
     }
 
-    suspend fun insertLocationToCache(latLng: LatLng, locationName:String): String {
+    suspend fun insertLocationToCache(latLng: LatLng, locationName: String, context: Context): String {
         val currentData = weatherSettingsRepository.getDirectCachedData()
         val location = "${latLng.latitude},${latLng.longitude}"
         currentData.forEach { data ->
             if (data.location == location)
-                return "این مکان قبلا اضافه شده است!"
+                return context.getString(R.string.alreadyAdded)
         }
 
         if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty())
@@ -135,8 +133,7 @@ class WeatherSettingsViewModel(
                             "",
                             ""
                         )
-                    )
-                    ,
+                    ),
                     location = location,
                     id = null
                 ).toEntity()

@@ -44,7 +44,7 @@ class HistoryDetailsFragment : DaggerFragment() {
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private lateinit var viewModel: HistoryDetailsFragmentViewModel
 
@@ -66,13 +66,13 @@ class HistoryDetailsFragment : DaggerFragment() {
     private fun setUpChartsTitles() {
         requireView().apply {
             if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) != Constants.MM)
-                precipitationChartText.text = "نمودار میزان بارندگی 24 ساعته(In)"
+                precipitationChartText.text = getString(R.string.hourlyPrecipitationChartIn)
 
             if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) != Constants.C_PERCENTAGE)
-                tempChartText.text = "نمودار دمای 24 ساعته(F°)"
+                tempChartText.text = getString(R.string.hourlyTemperatureChartF)
 
             if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) != Constants.KPH)
-                windSpeedChartText.text = "نمودار سرعت باد 24 ساعته(Mph)"
+                windSpeedChartText.text = getString(R.string.hourlyWindSpeedChartMph)
         }
     }
 
@@ -162,7 +162,13 @@ class HistoryDetailsFragment : DaggerFragment() {
 
             // start animations
             detailsContainerCardView.visibility = View.VISIBLE
-            detailsContainerCardView.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
+            detailsContainerCardView.startAnimation(
+                animationFactory.getAlphaAnimation(
+                    0f,
+                    1f,
+                    1000
+                )
+            )
 
         }
     }

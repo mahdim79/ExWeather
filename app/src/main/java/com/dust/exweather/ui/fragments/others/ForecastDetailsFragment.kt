@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
-import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.sharedpreferences.UnitManager
@@ -59,7 +58,7 @@ class ForecastDetailsFragment : DaggerFragment() {
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private lateinit var hourlyForecastRecyclerViewAdapter: TodaysForecastRecyclerViewAdapter
 
@@ -86,11 +85,11 @@ class ForecastDetailsFragment : DaggerFragment() {
     private fun setUpChartsTitles() {
         requireView().apply {
             if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) != Constants.MM)
-                precipitationChartText.text = "نمودار میزان بارندگی 24 ساعته(In)"
+                precipitationChartText.text = getString(R.string.hourlyPrecipitationChartIn)
             if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) != Constants.KPH)
-                windSpeedChartText.text = "نمودار سرعت باد 24 ساعته(Mph)"
+                windSpeedChartText.text = getString(R.string.hourlyTemperatureChartF)
             if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) != Constants.C_PERCENTAGE)
-                tempChartText.text = "نمودار دمای 24 ساعته(F°)"
+                tempChartText.text = getString(R.string.hourlyWindSpeedChartMph)
         }
     }
 
@@ -102,26 +101,37 @@ class ForecastDetailsFragment : DaggerFragment() {
     private fun observeForCacheData() {
         viewModel.getLiveWeatherDataFromCache().observe(viewLifecycleOwner) { data ->
             if (!data.isNullOrEmpty())
-                viewModel.calculateCurrentData(data.map { it.toDataClass() },requireArguments().getString("location"),requireArguments().getString("date"))?.let { mainWeatherData ->
-                    viewModel.calculateData(mainWeatherData, requireArguments().getString("date"))?.let { forecastDay ->
-                        if (firstData)
-                            setUpPrimaryUi(forecastDay)
+                viewModel.calculateCurrentData(
+                    data.map { it.toDataClass() },
+                    requireArguments().getString("location"),
+                    requireArguments().getString("date")
+                )?.let { mainWeatherData ->
+                    viewModel.calculateData(mainWeatherData, requireArguments().getString("date"))
+                        ?.let { forecastDay ->
+                            if (firstData)
+                                setUpPrimaryUi(forecastDay)
 
-                        updateUi(
-                            forecastDay,
-                            mainWeatherData.forecastDetailsData?.location?.name ?: "null",
-                            UtilityFunctions.calculateLastUpdateText(
-                                mainWeatherData.current?.current?.system_last_update_epoch ?: 0,
-                                requireContext()
+                            updateUi(
+                                forecastDay,
+                                mainWeatherData.forecastDetailsData?.location?.name ?: "null",
+                                UtilityFunctions.calculateLastUpdateText(
+                                    mainWeatherData.current?.current?.system_last_update_epoch ?: 0,
+                                    requireContext()
+                                )
                             )
-                        )
 
-                        firstData = false
+                            firstData = false
 
-                        // start animations
-                        detailsContainerCardView.visibility = View.VISIBLE
-                        detailsContainerCardView.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
-                    }
+                            // start animations
+                            detailsContainerCardView.visibility = View.VISIBLE
+                            detailsContainerCardView.startAnimation(
+                                animationFactory.getAlphaAnimation(
+                                    0f,
+                                    1f,
+                                    1000
+                                )
+                            )
+                        }
                 }
         }
     }
@@ -611,7 +621,6 @@ class ForecastDetailsFragment : DaggerFragment() {
     private fun doApiCall() {
         viewModel.getWeatherDataFromApi(requireContext())
     }
-
 
 
     private fun setUpViewModel() {

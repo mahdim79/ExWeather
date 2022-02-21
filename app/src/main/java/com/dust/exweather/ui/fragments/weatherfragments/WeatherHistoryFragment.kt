@@ -39,7 +39,7 @@ class WeatherHistoryFragment : DaggerFragment() {
     lateinit var unitManager: UnitManager
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private lateinit var viewModel: HistoryFragmentViewModel
 
@@ -74,8 +74,9 @@ class WeatherHistoryFragment : DaggerFragment() {
         }
     }
 
-    private fun showNoDataScreen(){
-        requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
+    private fun showNoDataScreen() {
+        requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView)
+            .setImageDrawable(null)
         noDataLayout.visibility = View.VISIBLE
         noDataLayout.addNewLocationButton.setOnClickListener {
             findNavController().navigate(R.id.weatherSettingsFragment)
@@ -85,8 +86,8 @@ class WeatherHistoryFragment : DaggerFragment() {
     private fun setUpPrimaryUi() {
         viewModel.getHistoryDataList().also {
             if (it.isNullOrEmpty()) {
-               showNoDataScreen()
-            }else{
+                showNoDataScreen()
+            } else {
                 updateLocationData()
                 setUpLocationSwitcherButtons(it.lastIndex)
                 setUpPrimaryCalendarView()
@@ -98,7 +99,7 @@ class WeatherHistoryFragment : DaggerFragment() {
     }
 
     private fun startAnimations() {
-        animationFactory.getAlphaAnimation(0f,1f,1000).also {
+        animationFactory.getAlphaAnimation(0f, 1f, 1000).also {
             historyCalendarView.startAnimation(it)
             historyDetailsContainer.startAnimation(it)
         }
@@ -159,7 +160,7 @@ class WeatherHistoryFragment : DaggerFragment() {
         locationName: String,
         latlong: String
     ) {
-        historyDetailsContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
+        historyDetailsContainer.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 1000))
         requireView().apply {
             historyDetailsMainContainer.visibility = View.VISIBLE
             noDataTextView.visibility = View.GONE
@@ -168,17 +169,35 @@ class WeatherHistoryFragment : DaggerFragment() {
             weatherStateText.text = forecastDay.day.condition.text
             Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
             weatherCityNameText.text = locationName
-            visibilityTextView.text = unitManager.getVisibilityUnit(forecastDay.day.avgvis_km.toString(),forecastDay.day.avgvis_miles.toString())
+            visibilityTextView.text = unitManager.getVisibilityUnit(
+                forecastDay.day.avgvis_km.toString(),
+                forecastDay.day.avgvis_miles.toString()
+            )
             uvIndexTextView.text = forecastDay.day.uv.toString()
             weatherHumidityText.text = requireContext().resources.getString(
                 R.string.humidityText,
                 forecastDay.day.avghumidity.toString()
             )
-            precipText.text =unitManager.getPrecipitationUnit(forecastDay.day.totalprecip_mm.toString(),forecastDay.day.totalprecip_in.toString())
-            windSpeedText.text = unitManager.getWindSpeedUnit(forecastDay.day.maxwind_kph.toString(),forecastDay.day.maxwind_mph.toString())
-            minTemperatureText.text = unitManager.getTemperatureUnit(forecastDay.day.mintemp_c.toString(),forecastDay.day.mintemp_f.toString())
-            avgWeatherTempText.text = unitManager.getTemperatureUnit(forecastDay.day.avgtemp_c.toString(),forecastDay.day.avgtemp_f.toString())
-            maxTemperatureText.text = unitManager.getTemperatureUnit(forecastDay.day.maxtemp_c.toString(),forecastDay.day.maxtemp_f.toString())
+            precipText.text = unitManager.getPrecipitationUnit(
+                forecastDay.day.totalprecip_mm.toString(),
+                forecastDay.day.totalprecip_in.toString()
+            )
+            windSpeedText.text = unitManager.getWindSpeedUnit(
+                forecastDay.day.maxwind_kph.toString(),
+                forecastDay.day.maxwind_mph.toString()
+            )
+            minTemperatureText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.mintemp_c.toString(),
+                forecastDay.day.mintemp_f.toString()
+            )
+            avgWeatherTempText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.avgtemp_c.toString(),
+                forecastDay.day.avgtemp_f.toString()
+            )
+            maxTemperatureText.text = unitManager.getTemperatureUnit(
+                forecastDay.day.maxtemp_c.toString(),
+                forecastDay.day.maxtemp_f.toString()
+            )
 
             hourlyDetailsTextView.setOnClickListener {
                 navigateToDetailsFragment(latlong, forecastDay.date, locationName)
@@ -212,7 +231,12 @@ class WeatherHistoryFragment : DaggerFragment() {
                     )
                     putExtra(
                         Intent.EXTRA_TEXT,
-                        viewModel.createShareSample(requireContext(), forecastDay, locationName, unitManager)
+                        viewModel.createShareSample(
+                            requireContext(),
+                            forecastDay,
+                            locationName,
+                            unitManager
+                        )
                     )
                     requireActivity().startActivity(
                         Intent.createChooser(

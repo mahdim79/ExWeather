@@ -58,7 +58,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
     lateinit var widgetUpdater: WidgetUpdater
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private lateinit var viewModel: AddLocationFragmentViewModel
 
@@ -105,14 +105,15 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
             lifecycleScope.launch(Dispatchers.IO) {
                 val result = viewModel.insertLocationToCache(
                     locationEditText.text.toString(),
-                    widgetUpdater
+                    widgetUpdater,
+                    requireContext()
                 )
                 if (result.isEmpty()) {
                     // that means the operation was successful
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             requireContext(),
-                            "با موفقیت انجام شد",
+                            getString(R.string.done),
                             Toast.LENGTH_SHORT
                         )
                             .show()
@@ -238,7 +239,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
         viewModel.getLocationDetailsLiveData().observe(viewLifecycleOwner) { data ->
             when (data.status) {
                 DataStatus.DATA_RECEIVE_LOADING -> {
-                    locationEditText.setText("Loading Location Data")
+                    locationEditText.setText(getString(R.string.LoadingLocationData))
                     floatingActionButton.visibility = View.GONE
                 }
                 DataStatus.DATA_RECEIVE_SUCCESS -> {
@@ -246,7 +247,11 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                     floatingActionButton.visibility = View.VISIBLE
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
-                    Toast.makeText(requireContext(), "خطایی رخ داده است. لطفا از اتصال دستگاه به اینترنت مطمن شوید", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.problemInternetConnection),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                     locationEditText.setText("")
                     floatingActionButton.visibility = View.GONE
@@ -273,8 +278,8 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
         loadingProgressbar.visibility = View.GONE
         locationFragmentContainer.visibility = View.VISIBLE
         editTextContainer.visibility = View.VISIBLE
-        locationFragmentContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,300))
-        editTextContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,300))
+        locationFragmentContainer.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 300))
+        editTextContainer.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 300))
     }
 
     private fun addMarkerAndZoomToLocation(lat: Double, lon: Double) {

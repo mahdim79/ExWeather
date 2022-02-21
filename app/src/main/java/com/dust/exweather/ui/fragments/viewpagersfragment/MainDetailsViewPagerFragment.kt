@@ -44,7 +44,10 @@ class MainDetailsViewPagerFragment(
                     weatherIsDayText.text =
                         if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
                     weatherCityNameText.text = data.location!!.name
-                    weatherTempText.text = unitManager.getTemperatureUnit(data.current.temp_c.toString(), data.current.temp_f.toString())
+                    weatherTempText.text = unitManager.getTemperatureUnit(
+                        data.current.temp_c.toString(),
+                        data.current.temp_f.toString()
+                    )
                     lastUpdateText.text =
                         UtilityFunctions.calculateLastUpdateText(
                             data.current.system_last_update_epoch,

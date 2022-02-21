@@ -237,7 +237,10 @@ class WeatherDetailsFragment : DaggerFragment() {
                     current.wind_mph.toString()
                 )
 
-                airPressureText.text = unitManager.getPressureUnit(current.pressure_in.toString(), current.pressure_mb.toString())
+                airPressureText.text = unitManager.getPressureUnit(
+                    current.pressure_in.toString(),
+                    current.pressure_mb.toString()
+                )
 
             }
 

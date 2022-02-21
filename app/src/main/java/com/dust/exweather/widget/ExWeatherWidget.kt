@@ -58,7 +58,7 @@ internal fun updateCustomWidget(context: Context, data: WidgetData) {
     val appWidgetIds =
         appWidgetManager.getAppWidgetIds(ComponentName(context, ExWeatherWidget::class.java))
 
-    if (data.location == "null"){
+    if (data.location == "null") {
         val views = RemoteViews(context.packageName, R.layout.ex_weather_widget_no_data)
 
         val intent = Intent(context, SplashActivity::class.java)
@@ -73,7 +73,7 @@ internal fun updateCustomWidget(context: Context, data: WidgetData) {
         for (i in appWidgetIds)
             appWidgetManager.updateAppWidget(i, views)
 
-    }else{
+    } else {
         val views = RemoteViews(context.packageName, R.layout.ex_weather_widget)
         views.setTextViewText(R.id.appwidget_text, widgetText)
         views.setTextViewText(R.id.weatherStateText, data.weatherState)

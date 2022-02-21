@@ -1,7 +1,11 @@
 package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.model.dataclasses.historyweather.Forecast
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
@@ -95,7 +99,7 @@ class AddLocationFragmentViewModel(
         }
     }
 
-    suspend fun insertLocationToCache(locationText: String, widgetUpdater: WidgetUpdater): String {
+    suspend fun insertLocationToCache(locationText: String, widgetUpdater: WidgetUpdater, context: Context): String {
 
         try {
             var calculatedLat =
@@ -115,10 +119,10 @@ class AddLocationFragmentViewModel(
             if (calculatedLat.contains(" "))
                 calculatedLat = calculatedLat.replace(" ", "")
 
-            if(calculatedLat.startsWith(","))
+            if (calculatedLat.startsWith(","))
                 calculatedLat = calculatedLat.replace(",", "")
 
-            if(calculatedLon.startsWith(","))
+            if (calculatedLon.startsWith(","))
                 calculatedLon = calculatedLon.replace(",", "")
 
             var latLangString = "$calculatedLat,$calculatedLon"
@@ -126,7 +130,7 @@ class AddLocationFragmentViewModel(
             val currentData = getDirectCachedData()
             currentData.forEach { data ->
                 if (data.location == latLangString)
-                    return "این مکان قبلا اضافه شده است!"
+                    return context.getString(R.string.alreadyAdded)
             }
 
             addLocationRepository.addNewLocationToCache(
@@ -153,17 +157,17 @@ class AddLocationFragmentViewModel(
                 )
             )
 
-            if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty()){
+            if (sharedPreferencesManager.getDefaultLocation().isNullOrEmpty()) {
                 sharedPreferencesManager.setDefaultLocation(latLangString)
                 // if there is no default location and this is the first location, application widget should be updated
 
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     widgetUpdater.updateWidget()
                 }
             }
 
         } catch (e: Exception) {
-            return "لطفا مکان مورد نظر را از روی نقشه یا به صورت دستی از لیست انتخاب کنید"
+            return context.getString(R.string.addCorrectLocation)
         }
         return ""
     }

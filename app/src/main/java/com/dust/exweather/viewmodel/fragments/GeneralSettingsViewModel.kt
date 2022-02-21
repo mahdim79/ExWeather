@@ -13,35 +13,35 @@ class GeneralSettingsViewModel(private val sharedPreferencesManager: SharedPrefe
         sharedPreferencesManager.setThemeSettings(settings)
     }
 
-    fun calculateLanguageText(context: Context):String{
+    fun calculateLanguageText(context: Context): String {
         return if (sharedPreferencesManager.getLanguageSettings() == Settings.LANGUAGE_PERSIAN) context.getString(
             R.string.persian
         ) else context.getString(R.string.english)
     }
 
-    fun calculateNightModeCheckedButton():Boolean{
+    fun calculateNightModeCheckedButton(): Boolean {
         return sharedPreferencesManager.getThemeSettings() == Settings.THEME_DARK
     }
 
-    fun calculateNotificationText(context: Context):String{
+    fun calculateNotificationText(context: Context): String {
         return if (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON) context.getString(
             R.string.enable
         ) else context.getString(R.string.disable)
     }
 
-    fun getCurrentLanguageSetting():Settings{
+    fun getCurrentLanguageSetting(): Settings {
         return sharedPreferencesManager.getLanguageSettings()
     }
 
-    fun setLanguageSettings(settings: Settings){
+    fun setLanguageSettings(settings: Settings) {
         sharedPreferencesManager.setLanguageSettings(settings)
     }
 
-    fun getNotificationSettings():Settings{
+    fun getNotificationSettings(): Settings {
         return sharedPreferencesManager.getNotificationSettings()
     }
 
-    fun setNotificationSettings(settings: Settings){
+    fun setNotificationSettings(settings: Settings) {
         sharedPreferencesManager.setNotificationSettings(settings)
     }
 

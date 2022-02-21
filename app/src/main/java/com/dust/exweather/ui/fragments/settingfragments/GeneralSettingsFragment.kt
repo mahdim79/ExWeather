@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.dust.exweather.BuildConfig
 import com.dust.exweather.R
-import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.ui.activities.SplashActivity
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.ChooseLanguageThemeBottomSheetDialog
 import com.dust.exweather.utils.Settings
@@ -22,9 +21,9 @@ import javax.inject.Inject
 class GeneralSettingsFragment : DaggerFragment() {
 
     @Inject
-    lateinit var generalSettingsViewModelFactory:GeneralSettingsViewModelFactory
+    lateinit var generalSettingsViewModelFactory: GeneralSettingsViewModelFactory
 
-    private lateinit var viewModel:GeneralSettingsViewModel
+    private lateinit var viewModel: GeneralSettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +40,10 @@ class GeneralSettingsFragment : DaggerFragment() {
     }
 
     private fun setUpViewModel() {
-        viewModel = ViewModelProvider(this, generalSettingsViewModelFactory)[GeneralSettingsViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            generalSettingsViewModelFactory
+        )[GeneralSettingsViewModel::class.java]
     }
 
     private fun setUpUi() {

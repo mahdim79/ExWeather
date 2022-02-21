@@ -65,13 +65,13 @@ class ForecastDetailsViewPagerFragment(
     private fun setupChartsTitles() {
         requireView().apply {
             if (sharedPreferencesManager.getWeatherUnit(Constants.PRECIPITATION_UNIT) != Constants.MM)
-                precipChartText.text = "نمودار پیش بینی میزان بارندگی روزانه(in)"
+                precipChartText.text = getString(R.string.hourlyPrecipitationChartIn)
 
             if (sharedPreferencesManager.getWeatherUnit(Constants.TEMPERATURE_UNIT) != Constants.C_PERCENTAGE)
-                tempChartText.text = "نمودار پیش بینی دمای روزانه(F°)"
+                tempChartText.text = getString(R.string.hourlyTemperatureChartF)
 
             if (sharedPreferencesManager.getWeatherUnit(Constants.WIND_SPEED_UNIT) != Constants.KPH)
-                windSpeedChartText.text = "نمودار پیش بینی سرعت باد(mph)"
+                windSpeedChartText.text = getString(R.string.hourlyWindSpeedChartMph)
 
         }
     }
@@ -276,7 +276,6 @@ class ForecastDetailsViewPagerFragment(
         setUpPrimaryMainRecyclerView(currentLocation)
         setUpPrimaryTodayHourlyForecastRecyclerView()
         setUpCharts(currentData)
-        setUpPrimaryUiStuff()
         updateCurrentUi(currentData)
     }
 
@@ -353,7 +352,7 @@ class ForecastDetailsViewPagerFragment(
             }
 
 
-            val lineDataSet = LineDataSet(dataList, "میزان بارندگی روزانه")
+            val lineDataSet = LineDataSet(dataList, getString(R.string.dailyPrecipitation))
             lineDataSet.apply {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 cubicIntensity = 0.2f
@@ -729,13 +728,6 @@ class ForecastDetailsViewPagerFragment(
                 setValueTextColor(Color.WHITE)
             }
             data = lineData
-        }
-    }
-
-
-    private fun setUpPrimaryUiStuff() {
-        requireView().apply {
-            // TODO: 1/30/2022 complete this part
         }
     }
 

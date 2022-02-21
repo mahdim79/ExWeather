@@ -152,5 +152,20 @@
     <string name="currentWeatherStatus">وضعیت فعلی آب و هوا</string>
     <string name="overallWeatherPrediction">پیش بینی کلی آب و هوا</string>
     <string name="max">حداکثر</string>
+    <string name="problem">مشکلی پیش آمده است لطفا دوباره تلاش کنید</string>
+    <string name="internetMakeSure">لطفا از اتصال دستگاه به اینترنت مطمن شوید</string>
+    <string name="hourlyPrecipitationChartIn">نمودار میزان بارندگی 24 ساعته(In)</string>
+    <string name="hourlyTemperatureChartF">نمودار دمای 24 ساعته(F°)</string>
+    <string name="hourlyWindSpeedChartMph">نمودار سرعت باد 24 ساعته(Mph)</string>
+    <string name="problemTwo">خطایی پیش آمده است</string>
+    <string name="problemInternetConnection">خطایی رخ داده است. لطفا از اتصال دستگاه به اینترنت مطمن شوید</string>
+    <string name="LoadingLocationData">در حال دریافت اطلاعات…</string>
+    <string name="done">با موفقیت انجام شد</string>
+    <string name="alreadyAdded">این مکان قبلا اضافه شده است!</string>
+    <string name="addCorrectLocation">لطفا مکان مورد نظر را از روی نقشه یا به صورت دستی از لیست انتخاب کنید</string>
+    <string name="turnOnGps">لطفا مکان یاب دستگاه را روشن کنید و دوباره تلاش کنید</string>
+    <string name="hourlyPrecipitationChartmm">نمودار میزان بارندگی 24 ساعته(mm)</string>
+    <string name="hourlyTemperatureChartC">نمودار دمای 24 ساعته(C°)</string>
+    <string name="hourlyWindSpeedChartKph">نمودار سرعت باد 24 ساعته(Kph)</string>
 
 </resources>

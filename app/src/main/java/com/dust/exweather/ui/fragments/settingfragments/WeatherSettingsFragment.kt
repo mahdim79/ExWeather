@@ -105,7 +105,8 @@ class WeatherSettingsFragment : DaggerFragment() {
                                     location?.let { latLng ->
                                         name?.let { strName ->
                                             lifecycleScope.launch(Dispatchers.IO) {
-                                                val result = viewModel.insertLocationToCache(latLng, strName)
+                                                val result =
+                                                    viewModel.insertLocationToCache(latLng, strName, requireContext())
                                                 withContext(Dispatchers.Main) {
                                                     if (result.isEmpty()) {
                                                         Toast.makeText(

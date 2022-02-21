@@ -49,7 +49,7 @@ class WeatherForecastFragment : DaggerFragment() {
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     @Inject
-    lateinit var animationFactory:AnimationFactory
+    lateinit var animationFactory: AnimationFactory
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -114,7 +114,7 @@ class WeatherForecastFragment : DaggerFragment() {
                             itemCount = data.size,
                             unitManager = unitManager,
                             sharedPreferencesManager = sharedPreferencesManager,
-                            alphaAnimation = animationFactory.getAlphaAnimation(0f,1f,1000)
+                            alphaAnimation = animationFactory.getAlphaAnimation(0f, 1f, 1000)
                         )
                         offscreenPageLimit = data.size - 1
                     }

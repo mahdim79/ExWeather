@@ -152,4 +152,19 @@
     <string name="currentWeatherStatus">Current Weather Status</string>
     <string name="overallWeatherPrediction">Overall Weather Prediction</string>
     <string name="max">Maximum</string>
+    <string name="problem">Problem Occurred Please Try Again Later</string>
+    <string name="internetMakeSure">Make Sure Your Device Has Internet Connection</string>
+    <string name="hourlyPrecipitationChartIn">Hourly Precipitation Chart(In)</string>
+    <string name="hourlyTemperatureChartF">Hourly Temperature Chart(°F)</string>
+    <string name="hourlyWindSpeedChartMph">Hourly Wind Speed Chart(MPH)</string>
+    <string name="problemTwo">Problem Occurred</string>
+    <string name="problemInternetConnection">Problem Occurred, Make Sure Your Device Has Internet Connection</string>
+    <string name="LoadingLocationData">Fetching Data…</string>
+    <string name="done">Done</string>
+    <string name="alreadyAdded">This Location Is Already Added!</string>
+    <string name="addCorrectLocation">Please Choose Location On Map Or Search For It And Select It From List</string>
+    <string name="turnOnGps">Please Turn On Gps And Try Again</string>
+    <string name="hourlyPrecipitationChartmm">Hourly Precipitation Chart(mm)</string>
+    <string name="hourlyTemperatureChartC">Hourly Temperature Chart(°C)</string>
+    <string name="hourlyWindSpeedChartKph">Hourly Wind Speed Chart(KPH)</string>
 </resources>

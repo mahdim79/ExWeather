@@ -182,11 +182,11 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun updateRecyclerViewContent(data: MainWeatherData) {
-        if (data.current != null){
+        if (data.current != null) {
             mainRecyclerViewAdapter.setNewData(
                 viewModel.calculateMainRecyclerViewDataList(data)
             )
-            recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
+            recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 1000))
         }
     }
 
@@ -204,7 +204,7 @@ class CurrentWeatherFragment : DaggerFragment() {
                 unitManager
             )
         mainWeatherRecyclerView.adapter = mainRecyclerViewAdapter
-        recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
+        recyclerViewContainer.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 1000))
     }
 
     @SuppressLint("CheckResult")
@@ -261,7 +261,7 @@ class CurrentWeatherFragment : DaggerFragment() {
 
             })
 
-        detailsViewPager.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
+        detailsViewPager.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 1000))
     }
 
     @SuppressLint("CheckResult")
@@ -311,9 +311,10 @@ class CurrentWeatherFragment : DaggerFragment() {
     }
 
     private fun setProgressMode(progressMode: Boolean) {
-        try{
+        try {
             mainRecyclerViewAdapter.setProgressMode(progressMode)
-        }catch (e:Exception){}
+        } catch (e: Exception) {
+        }
         viewModel.setDetailsViewPagerProgressState(progressMode)
     }
 

@@ -83,7 +83,7 @@ class AddCurrentLocationBottomSheetDialog(
                 DataStatus.DATA_RECEIVE_FAILURE -> {
                     Toast.makeText(
                         requireContext(),
-                        "لطفا از اتصال دستگاه به اینترنت مطمن شوید",
+                        getString(R.string.internetMakeSure),
                         Toast.LENGTH_SHORT
                     ).show()
                     addLocationButton.visibility = View.GONE
@@ -99,7 +99,7 @@ class AddCurrentLocationBottomSheetDialog(
             addLocationButton.setOnClickListener {
                 if (locationDetailsLiveData.value?.status == DataStatus.DATA_RECEIVE_SUCCESS) {
                     val location = locationDetailsLiveData.value?.data?.location
-                    var latLng:LatLng? = null
+                    var latLng: LatLng? = null
                     location?.lat?.let {
                         latLng = LatLng(location.lat, location.lon)
                     }
@@ -107,7 +107,7 @@ class AddCurrentLocationBottomSheetDialog(
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "مشکلی پیش آمده است لطفا دوباره تلاش کنید",
+                        getString(R.string.problem),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

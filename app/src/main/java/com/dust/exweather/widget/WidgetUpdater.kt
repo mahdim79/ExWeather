@@ -2,10 +2,8 @@ package com.dust.exweather.widget
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
-import com.dust.exweather.model.dataclasses.forecastweather.Forecastday
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
 import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
@@ -23,7 +21,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.util.*
-import javax.inject.Inject
 
 class WidgetUpdater(
     private val context: Context,
@@ -32,7 +29,7 @@ class WidgetUpdater(
     private val mainApiRequests: MainApiRequests,
     private val unitManager: UnitManager,
     private val dataOptimizer: DataOptimizer,
-    private val notificationManager:NotificationManager
+    private val notificationManager: NotificationManager
 ) {
 
     private var coroutineJob: Job? = null
@@ -105,7 +102,10 @@ class WidgetUpdater(
                                         // sort historical data
                                         if (historyWeatherData != null) {
                                             historyWeatherData!!.forecast.forecastday =
-                                                dataOptimizer.optimizeHistoryData(historyWeatherData!!.forecast.forecastday, context)
+                                                dataOptimizer.optimizeHistoryData(
+                                                    historyWeatherData!!.forecast.forecastday,
+                                                    context
+                                                )
                                             mainWeatherData.historyDetailsData = historyWeatherData
                                         }
 
