@@ -11,6 +11,7 @@ import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.weatherwidget.WidgetData
 import com.dust.exweather.service.NotificationService
 import com.dust.exweather.ui.activities.SplashActivity
+import com.dust.exweather.utils.UtilityFunctions
 import com.google.gson.Gson
 import java.util.*
 
@@ -82,7 +83,13 @@ internal fun updateCustomWidget(context: Context, data: WidgetData) {
         views.setTextViewText(R.id.lastUpdateText, data.lastUpdate)
         views.setTextViewText(R.id.weatherTempText, data.temp)
 
-        views.setImageViewResource(R.id.cloudImage, R.drawable.ic_cloud)
+        val iconResId = UtilityFunctions.getWeatherIconResId(
+            data.icon,
+            if (data.isDay) 1 else 0,
+            context
+        )
+
+        views.setImageViewResource(R.id.cloudImage, iconResId ?: R.drawable.ic_launcher)
         views.setImageViewResource(R.id.cityImage, R.drawable.ic_country)
         views.setImageViewResource(R.id.precipImage, R.drawable.ic_rain)
         views.setImageViewResource(R.id.lastUpdateImage, R.drawable.ic_last_update)

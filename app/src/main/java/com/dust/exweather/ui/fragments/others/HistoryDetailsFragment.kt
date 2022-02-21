@@ -102,7 +102,10 @@ class HistoryDetailsFragment : DaggerFragment() {
             forecastDetailsText.text = getString(R.string.historyDetails)
             hourlyForecastTextView.text = getString(R.string.dailyHistory)
 
-            Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
+            UtilityFunctions.getWeatherIconResId(forecastDay.day.condition.icon,1, context)?.let { icon ->
+                cloudImage.setImageResource(icon)
+            }
+
             dateText.text =
                 "${
                     UtilityFunctions.getDayOfWeekByUnixTimeStamp(

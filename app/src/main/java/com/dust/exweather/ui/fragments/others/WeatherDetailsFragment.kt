@@ -31,8 +31,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_forecast_details.view.*
 import kotlinx.android.synthetic.main.fragment_weather_details.*
 import kotlinx.android.synthetic.main.fragment_weather_details.view.*
+import kotlinx.android.synthetic.main.fragment_weather_details.view.precipText
+import kotlinx.android.synthetic.main.fragment_weather_details.view.visibilityTextView
+import kotlinx.android.synthetic.main.fragment_weather_details.view.weatherHumidityText
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -216,8 +220,10 @@ class WeatherDetailsFragment : DaggerFragment() {
             data.current?.current?.let { current ->
                 weatherConditionTextView.text = current.condition.text
 
-                Glide.with(requireContext()).load(current.condition.icon)
-                    .into(weatherStateImageLocation)
+                UtilityFunctions.getWeatherIconResId(current.condition.icon,current.is_day, context)?.let { icon ->
+                    weatherStateImageLocation.setImageResource(icon)
+                }
+
                 precipText.text = unitManager.getPrecipitationUnit(
                     current.precip_mm.toString(),
                     current.precip_in.toString()

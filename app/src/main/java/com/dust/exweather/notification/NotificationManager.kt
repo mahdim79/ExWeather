@@ -67,6 +67,10 @@ class NotificationManager @Inject constructor(private val sharedPreferencesManag
 
                     setTextViewText(R.id.weatherStateText, currentData.condition.text)
 
+                    UtilityFunctions.getWeatherIconResId(current.current.condition.icon,current.current.is_day, context)?.let { icon ->
+                        setImageViewResource(R.id.weatherStateImage, icon)
+                    }
+
                 }
 
                 notification.bigContentView.apply {
@@ -136,6 +140,10 @@ class NotificationManager @Inject constructor(private val sharedPreferencesManag
                             currentData.humidity.toString()
                         )
                     )
+
+                    UtilityFunctions.getWeatherIconResId(current.current.condition.icon,current.current.is_day, context)?.let { icon ->
+                        setImageViewResource(R.id.weatherStateImage, icon)
+                    }
 
                 }
 

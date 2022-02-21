@@ -6,11 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
-import com.dust.exweather.model.dataclasses.currentweather.other.WeatherStatesDetails
 import com.dust.exweather.service.NotificationService
-import com.google.gson.Gson
 import dagger.android.support.DaggerAppCompatActivity
-import java.io.BufferedInputStream
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -118,6 +115,33 @@ class UtilityFunctions {
                     return true
             }
             return false
+        }
+
+        fun getWeatherIconResId(icon: String?, isDay: Int?, context: Context): Int? {
+
+            var resId: Int? = null
+            icon?.let {
+                val weatherCode = icon.substring(icon.lastIndexOf("/") + 1 , icon.lastIndexOf("."))
+                isDay?.let {
+                    resId = if (isDay == 1) {
+                        context.resources.getIdentifier(
+                            "w$weatherCode",
+                            "drawable",
+                            context.packageName
+                        )
+                    } else {
+                        context.resources.getIdentifier(
+                            "n$weatherCode",
+                            "drawable",
+                            context.packageName
+                        )
+                    }
+
+                }
+            }
+            if (resId != 0)
+                return resId
+            return null
         }
 
     }

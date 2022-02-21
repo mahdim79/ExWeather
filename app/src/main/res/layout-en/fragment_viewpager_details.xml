@@ -18,13 +18,13 @@
             android:id="@+id/detailsContainer"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_marginTop="@dimen/standardMargin"
+            android:layout_marginTop="@dimen/standardMargin0.5x"
             android:paddingBottom="@dimen/standardMargin2x">
 
             <ImageView
                 android:id="@+id/cloudImage"
-                android:layout_width="@dimen/mainIconSize"
-                android:layout_height="@dimen/mainIconSize"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="@dimen/standardMargin1.5x"
                 android:src="@drawable/ic_cloud"
                 app:layout_constraintEnd_toEndOf="parent"

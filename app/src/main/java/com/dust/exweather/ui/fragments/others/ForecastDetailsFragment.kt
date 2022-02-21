@@ -201,7 +201,10 @@ class ForecastDetailsFragment : DaggerFragment() {
     ) {
         requireView().apply {
             // update header ui
-            Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
+            UtilityFunctions.getWeatherIconResId(forecastDay.day.condition.icon,1, context)?.let { icon ->
+                cloudImage.setImageResource(icon)
+            }
+
             dateText.text =
                 "${
                     UtilityFunctions.getDayOfWeekByUnixTimeStamp(

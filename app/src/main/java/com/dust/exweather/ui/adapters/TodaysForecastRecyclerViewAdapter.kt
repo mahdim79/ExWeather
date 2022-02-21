@@ -38,8 +38,11 @@ class TodaysForecastRecyclerViewAdapter(
                 context.resources.getString(R.string.humidityText, data.humidity.toString())
             windSpeedText.text = unitManager.getWindSpeedUnit(data.wind_kph.toString(),data.wind_mph.toString())
             airPressureText.text = unitManager.getPressureUnit(data.pressure_in.toString(),data.pressure_mb.toString())
-            Glide.with(context).load(data.condition.icon.replace("//", ""))
-                .into(weatherStateImage)
+
+            UtilityFunctions.getWeatherIconResId(data.condition.icon,data.is_day, context)?.let { icon ->
+                weatherStateImage.setImageResource(icon)
+            }
+
             if (data.chance_of_rain >= 50)
                 chanceOfRainImageView.setImageResource(R.drawable.ic_rain)
 

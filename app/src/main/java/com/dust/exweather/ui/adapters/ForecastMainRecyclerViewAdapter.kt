@@ -44,7 +44,9 @@ class ForecastMainRecyclerViewAdapter(
 
             maxTempText.text = unitManager.getTemperatureUnit(currentData.day.maxtemp_c.toString(),currentData.day.maxtemp_f.toString())
 
-            Glide.with(context).load(currentData.day.condition.icon).into(weatherStateImage)
+            UtilityFunctions.getWeatherIconResId(currentData.day.condition.icon,1, context)?.let { icon ->
+                weatherStateImage.setImageResource(icon)
+            }
 
             weatherStateText.text = currentData.day.condition.text
 

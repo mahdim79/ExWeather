@@ -220,7 +220,8 @@ class WidgetUpdater(
                             mainWeatherData?.current?.current?.temp_f?.toString() ?: "null"
                         ),
                         lastUpdate,
-                        ((mainWeatherData?.current?.current?.is_day ?: 0) == 1)
+                        ((mainWeatherData?.current?.current?.is_day ?: 0) == 1),
+                        mainWeatherData?.current?.current?.condition?.icon
                     )
                 )
             )

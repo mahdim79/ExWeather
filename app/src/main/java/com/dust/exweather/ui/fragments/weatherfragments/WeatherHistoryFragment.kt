@@ -26,6 +26,10 @@ import com.dust.exweather.viewmodel.fragments.HistoryFragmentViewModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_history_weather.*
 import kotlinx.android.synthetic.main.fragment_history_weather.view.*
+import kotlinx.android.synthetic.main.fragment_history_weather.view.cloudImage
+import kotlinx.android.synthetic.main.fragment_history_weather.view.weatherCityNameText
+import kotlinx.android.synthetic.main.fragment_history_weather.view.weatherStateText
+import kotlinx.android.synthetic.main.fragment_viewpager_details.view.*
 import kotlinx.android.synthetic.main.layout_no_data.view.*
 import java.util.*
 import javax.inject.Inject
@@ -167,7 +171,11 @@ class WeatherHistoryFragment : DaggerFragment() {
             dateTextView.text = "${forecastDay.day.dayOfWeek}\n" +
                     "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
             weatherStateText.text = forecastDay.day.condition.text
-            Glide.with(requireContext()).load(forecastDay.day.condition.icon).into(cloudImage)
+
+            UtilityFunctions.getWeatherIconResId(forecastDay.day.condition.icon,1, requireContext())?.let { icon ->
+                cloudImage.setImageResource(icon)
+            }
+
             weatherCityNameText.text = locationName
             visibilityTextView.text = unitManager.getVisibilityUnit(
                 forecastDay.day.avgvis_km.toString(),

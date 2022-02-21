@@ -13,6 +13,7 @@ import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.fragment_viewpager_details.view.*
+import kotlinx.android.synthetic.main.fragment_weather_details.view.*
 
 class MainDetailsViewPagerFragment(
     private val dataList: LiveData<List<WeatherEntity>>,
@@ -40,6 +41,10 @@ class MainDetailsViewPagerFragment(
             try {
                 val data = it[position].toDataClass().current!!
                 requireView().apply {
+                    UtilityFunctions.getWeatherIconResId(data.current?.condition?.icon,data.current?.is_day, requireContext())?.let { icon ->
+                        cloudImage.setImageResource(icon)
+                    }
+
                     weatherStateText.text = data.current!!.condition.text
                     weatherIsDayText.text =
                         if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
