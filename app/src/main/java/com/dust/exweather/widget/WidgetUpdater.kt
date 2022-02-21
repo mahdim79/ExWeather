@@ -126,6 +126,7 @@ class WidgetUpdater(
                                         newData = mainWeatherData
                                     }
                                 }.join()
+
                                 newData?.let { newWeatherData ->
                                     weatherDao.insertWeatherData(arrayListOf(newWeatherData.toEntity()))
 
@@ -161,7 +162,6 @@ class WidgetUpdater(
 
                             } else {
                                 withContext(Dispatchers.Main) {
-                                    sharedPreferencesManager.setLastNotificationTimeEpoch(0L)
                                     val offlineData = entity.toDataClass()
                                     val calendar = Calendar.getInstance()
                                     offlineData.current?.current?.system_last_update_epoch?.let {
@@ -195,12 +195,12 @@ class WidgetUpdater(
 
     private fun shouldSendNotification(): Boolean {
         val systemTimeEpoch = System.currentTimeMillis()
-        var lastTimeEpoch = sharedPreferencesManager.getLastNotificationTimeEpoch()
-        if (lastTimeEpoch == 0L)
-            lastTimeEpoch = systemTimeEpoch
+        val lastTimeEpoch = sharedPreferencesManager.getLastNotificationTimeEpoch()
         val calendar = Calendar.getInstance()
         calendar.time = Date(systemTimeEpoch)
-        return (systemTimeEpoch - lastTimeEpoch) > 86400000L && sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON
+        return ((systemTimeEpoch - lastTimeEpoch) > 86400000L) && (sharedPreferencesManager.getNotificationSettings() == Settings.NOTIFICATION_ON) && (calendar.get(
+            Calendar.HOUR_OF_DAY
+        ) == 12)
     }
 
     private fun updateWidgetWithData(mainWeatherData: MainWeatherData?, lastUpdate: String) {
