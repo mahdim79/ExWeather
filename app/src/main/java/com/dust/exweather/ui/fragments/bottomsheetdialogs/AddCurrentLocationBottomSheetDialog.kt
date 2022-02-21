@@ -14,6 +14,7 @@ import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.utils.DataStatus
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.*
 import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.view.*
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.view.*
 class AddCurrentLocationBottomSheetDialog(
     private val locationDetailsLiveData: LiveData<DataWrapper<LocationServerData>>,
     private val onRequestCurrentLocation: () -> Boolean,
-    private val onLocationAddButtonClicked: (String?) -> Unit
+    private val onLocationAddButtonClicked: (LatLng?, String?) -> Unit
 ) :
     BottomSheetDialogFragment() {
     override fun onCreateView(
@@ -80,6 +81,11 @@ class AddCurrentLocationBottomSheetDialog(
                     myLocationImage.startAnimation(infiniteRotateAnimation)
                 }
                 DataStatus.DATA_RECEIVE_FAILURE -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "لطفا از اتصال دستگاه به اینترنت مطمن شوید",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     addLocationButton.visibility = View.GONE
                     locationSearchState.text = ""
                     myLocationImage.clearAnimation()
@@ -93,7 +99,11 @@ class AddCurrentLocationBottomSheetDialog(
             addLocationButton.setOnClickListener {
                 if (locationDetailsLiveData.value?.status == DataStatus.DATA_RECEIVE_SUCCESS) {
                     val location = locationDetailsLiveData.value?.data?.location
-                    onLocationAddButtonClicked("${location?.lat},${location?.lon}")
+                    var latLng:LatLng? = null
+                    location?.lat?.let {
+                        latLng = LatLng(location.lat, location.lon)
+                    }
+                    onLocationAddButtonClicked(latLng, location?.name)
                 } else {
                     Toast.makeText(
                         requireContext(),

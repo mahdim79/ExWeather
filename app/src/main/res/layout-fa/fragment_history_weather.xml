@@ -15,6 +15,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/historyNestedScrollView"
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:overScrollMode="never"
         android:layout_height="match_parent">
 

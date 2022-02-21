@@ -70,7 +70,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private fun setUpAddLocationButton() {
         addLocationImageView.setOnClickListener {
-            navController.navigate(R.id.addLocationFragment)
+            navController.navigate(R.id.weatherSettingsFragment)
         }
     }
 
@@ -114,6 +114,7 @@ class MainActivity : DaggerAppCompatActivity() {
                     mainNavView.setCheckedItem(destination.id)
                     setBottomNavigationVisibility(false)
                     titleText.text = getString(R.string.weatherSettings)
+                    addLocationImageView.visibility = View.GONE
                 }
                 R.id.aboutUsFragment -> {
                     mainNavView.setCheckedItem(destination.id)

@@ -2,12 +2,16 @@ package com.dust.exweather.viewmodel.fragments
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dust.exweather.model.dataclasses.historyweather.Forecast
+import com.dust.exweather.model.dataclasses.historyweather.WeatherHistory
 import com.dust.exweather.model.dataclasses.location.LocationData
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
@@ -18,6 +22,7 @@ import com.dust.exweather.model.toEntity
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.DataStatus
 import com.dust.exweather.utils.UtilityFunctions
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_weather_settings.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +36,7 @@ class WeatherSettingsViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
     private val locationManager: LocationManager
 ) :
-    ViewModel() {
+    ViewModel(), LocationListener {
 
     private val locationDetailsLiveData = MutableLiveData<DataWrapper<LocationServerData>>()
 
@@ -82,10 +87,9 @@ class WeatherSettingsViewModel(
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     3000L,
-                    0f
-                ) { location ->
-                    getLocationDetailsData("${location.latitude},${location.longitude}", context)
-                }
+                    0f,
+                    this
+                )
             } else {
                 return "لطفا مکان یاب دستگاه را روشن کنید و دوباره تلاش کنید"
             }
@@ -94,10 +98,9 @@ class WeatherSettingsViewModel(
                 locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     3000L,
-                    0f
-                ) { location ->
-                    getLocationDetailsData("${location.latitude},${location.longitude}", context)
-                }
+                    0f,
+                    this
+                )
             }
 
             return null
@@ -105,8 +108,9 @@ class WeatherSettingsViewModel(
         return "مشکلی پیش آمده است"
     }
 
-    suspend fun insertLocationToCache(location: String): String {
+    suspend fun insertLocationToCache(latLng: LatLng, locationName:String): String {
         val currentData = weatherSettingsRepository.getDirectCachedData()
+        val location = "${latLng.latitude},${latLng.longitude}"
         currentData.forEach { data ->
             if (data.location == location)
                 return "این مکان قبلا اضافه شده است!"
@@ -119,7 +123,20 @@ class WeatherSettingsViewModel(
                 MainWeatherData(
                     current = null,
                     forecastDetailsData = null,
-                    historyDetailsData = null,
+                    historyDetailsData = WeatherHistory(
+                        Forecast(arrayListOf()),
+                        location = com.dust.exweather.model.dataclasses.currentweather.main.Location(
+                            "",
+                            latLng.latitude,
+                            "",
+                            0,
+                            latLng.longitude,
+                            locationName,
+                            "",
+                            ""
+                        )
+                    )
+                    ,
                     location = location,
                     id = null
                 ).toEntity()
@@ -128,13 +145,9 @@ class WeatherSettingsViewModel(
         return ""
     }
 
-    private fun getLocationDetailsData(latLng: String, context: Context) {
+    private fun getLocationDetailsData(latLng: String) {
         locationDetailsJob?.cancel(CancellationException("Normal Cancellation!"))
         emitLoadingState()
-        if (!UtilityFunctions.isNetworkConnectionEnabled(context)) {
-            emitFailureState()
-            return
-        }
         locationDetailsJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val locationResponse = weatherSettingsRepository.getLocationDetailsData(latLng)
@@ -173,5 +186,17 @@ class WeatherSettingsViewModel(
 
     fun getLocationDetailsLiveData(): LiveData<DataWrapper<LocationServerData>> =
         locationDetailsLiveData
+
+    override fun onLocationChanged(location: Location) {
+        getLocationDetailsData("${location.latitude},${location.longitude}")
+    }
+
+    override fun onProviderEnabled(provider: String) {
+        super.onProviderEnabled(provider)
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        // super.onProviderDisabled(provider)
+    }
 
 }

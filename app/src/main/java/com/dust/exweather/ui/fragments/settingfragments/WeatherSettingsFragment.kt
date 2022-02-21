@@ -101,25 +101,27 @@ class WeatherSettingsFragment : DaggerFragment() {
                                             .show()
                                         false
                                     }
-                                }, onLocationAddButtonClicked = { location ->
-                                    location?.let {
-                                        lifecycleScope.launch(Dispatchers.IO) {
-                                            val result = viewModel.insertLocationToCache(it)
-                                            withContext(Dispatchers.Main) {
-                                                if (result.isEmpty()) {
-                                                    Toast.makeText(
-                                                        requireContext(),
-                                                        requireContext().getString(R.string.addedSuccessfully),
-                                                        Toast.LENGTH_SHORT
-                                                    )
-                                                        .show()
-                                                } else {
-                                                    Toast.makeText(
-                                                        requireContext(),
-                                                        result,
-                                                        Toast.LENGTH_SHORT
-                                                    )
-                                                        .show()
+                                }, onLocationAddButtonClicked = { location, name ->
+                                    location?.let { latLng ->
+                                        name?.let { strName ->
+                                            lifecycleScope.launch(Dispatchers.IO) {
+                                                val result = viewModel.insertLocationToCache(latLng, strName)
+                                                withContext(Dispatchers.Main) {
+                                                    if (result.isEmpty()) {
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            requireContext().getString(R.string.addedSuccessfully),
+                                                            Toast.LENGTH_SHORT
+                                                        )
+                                                            .show()
+                                                    } else {
+                                                        Toast.makeText(
+                                                            requireContext(),
+                                                            result,
+                                                            Toast.LENGTH_SHORT
+                                                        )
+                                                            .show()
+                                                    }
                                                 }
                                             }
                                         }

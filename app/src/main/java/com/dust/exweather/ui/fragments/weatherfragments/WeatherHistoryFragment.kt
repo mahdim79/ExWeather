@@ -78,7 +78,7 @@ class WeatherHistoryFragment : DaggerFragment() {
         requireActivity().findViewById<ImageView>(R.id.mainBackgroundImageView).setImageDrawable(null)
         noDataLayout.visibility = View.VISIBLE
         noDataLayout.addNewLocationButton.setOnClickListener {
-            findNavController().navigate(R.id.addLocationFragment)
+            findNavController().navigate(R.id.weatherSettingsFragment)
         }
     }
 
