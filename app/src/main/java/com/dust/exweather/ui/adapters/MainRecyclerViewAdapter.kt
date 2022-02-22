@@ -38,14 +38,17 @@ class MainRecyclerViewAdapter(
         when (listData[position].data) {
             is CurrentData -> {
                 val data = listData[position].data as CurrentData
-                Glide.with(context).load(data.current!!.condition.icon.replace("//", ""))
-                    .into(holder.itemStateImage)
+
+                UtilityFunctions.getWeatherIconResId(data.current?.condition?.icon,1, context)?.let { icon ->
+                    holder.itemStateImage.setImageResource(icon)
+                }
+
                 holder.dayOfWeekText.text = context.getString(R.string.today)
-                holder.item_TempText.text = unitManager.getTemperatureUnit(data.current.temp_c.toString(), data.current.temp_f.toString())
+                holder.item_TempText.text = unitManager.getTemperatureUnit(data.current?.temp_c.toString(), data.current?.temp_f.toString())
                 holder.minTempText.visibility = View.INVISIBLE
                 holder.maxTempText.visibility = View.INVISIBLE
                 holder.weatherStateText.text =
-                    data.current.condition.text
+                    data.current?.condition?.text
                 holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
                     data.location!!.localtime_epoch,
                     data.location.tz_id
@@ -53,8 +56,11 @@ class MainRecyclerViewAdapter(
             }
             is Forecastday -> {
                 val data = listData[position].data as Forecastday
-                Glide.with(context).load(data.day.condition.icon.replace("//", ""))
-                    .into(holder.itemStateImage)
+
+                UtilityFunctions.getWeatherIconResId(data.day.condition.icon,1, context)?.let { icon ->
+                    holder.itemStateImage.setImageResource(icon)
+                }
+
                 holder.dayOfWeekText.text = data.day.dayOfWeek
                 holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
                 holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
@@ -62,15 +68,15 @@ class MainRecyclerViewAdapter(
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
 
-                /*if (position == listData.size - 1)
-                    holder.item_progressBar_divider.visibility = View.GONE
-*/
             }
             is com.dust.exweather.model.dataclasses.forecastweather.Forecastday -> {
                 val data =
                     listData[position].data as com.dust.exweather.model.dataclasses.forecastweather.Forecastday
-                Glide.with(context).load(data.day.condition.icon.replace("//", ""))
-                    .into(holder.itemStateImage)
+
+                UtilityFunctions.getWeatherIconResId(data.day.condition.icon,1, context)?.let { icon ->
+                    holder.itemStateImage.setImageResource(icon)
+                }
+
                 holder.dayOfWeekText.text = data.day.dayOfWeek
                 holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
                 holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
