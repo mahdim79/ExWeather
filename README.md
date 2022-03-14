@@ -31,12 +31,10 @@ This application uses:
 - ConstrantLayout for xml ui design
 - KotlinExtensions plugin for getting rid of findViewById!!!
 - Service for notifications and update application widget
-- 
 
 ## Development Sections
 
-This project has 8 branches:
-- main
+This project has 7 branches:
 - master
 - current_weather_component
 - forecast_weather_component
