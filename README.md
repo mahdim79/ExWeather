@@ -2,6 +2,10 @@
 
 professional android application for checking weather status, developed with kotlin.
 
+## ScreenShots
+
+![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105254.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105311.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105321.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105326.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105411.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105433.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105445.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105138.png)  
+
 ## About This Project
 
 This application helps users to track weather status for specific location. they can observe current weather status, weather
@@ -55,8 +59,4 @@ This application has three main fragments, as it appeared in bottom navigaiton c
 - current weaher fragment: in order to track current weather status
 - forecast weather component: lets people know how the weather going to be in next days.
 - history weathe component: in this section users can select specific location and see 5 days weather history.
-
-## ScreenShots
-
-![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105138.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105254.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105311.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105321.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105326.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105411.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105433.png)  ![alt text](https://www.linkpicture.com/q/Screenshot_20220222-105445.png)
 
