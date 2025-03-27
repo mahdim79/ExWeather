@@ -35,11 +35,10 @@ class ForecastMainRecyclerViewAdapter(
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val currentData = listData[position]
         holder.apply {
-            dateTextView.text = context.resources.getString(
-                R.string.dateText,
-                currentData.day.dayOfWeek,
-                UtilityFunctions.calculateCurrentDateByTimeEpoch(currentData.date_epoch)
-            )
+            dayOfWeekTextView.text = currentData.day.dayOfWeek
+
+            dateTextView.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(currentData.date_epoch)
+
             minTempText.text = unitManager.getTemperatureUnit(currentData.day.mintemp_c.toString(),currentData.day.mintemp_f.toString())
 
             maxTempText.text = unitManager.getTemperatureUnit(currentData.day.maxtemp_c.toString(),currentData.day.maxtemp_f.toString())
@@ -94,6 +93,7 @@ class ForecastMainRecyclerViewAdapter(
 
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateTextView = itemView.dateTextView
+        val dayOfWeekTextView = itemView.dayOfWeekTextView
         val maxTempText = itemView.maxTempText
         val minTempText = itemView.minTempText
         val weatherStateImage = itemView.weatherStateImage

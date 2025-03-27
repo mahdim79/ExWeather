@@ -23,19 +23,42 @@
             android:layoutDirection="rtl"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/dateTextView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:textDirection="rtl"
-                android:padding="@dimen/standardMargin0.5x"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/standardMargin0.5x"
-                android:textColor="@color/standardUiWhite"
-                android:textSize="@dimen/TextSize2x"
-                android:textStyle="bold"
-                tools:text="دوشنبه 2022-01-04"/>
+                android:gravity="center"
+                android:textDirection="ltr"
+                android:paddingVertical="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dayOfWeekTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:textDirection="rtl"
+                    android:paddingHorizontal="2dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/standardUiWhite"
+                    android:textSize="@dimen/TextSize2x"
+                    android:textStyle="bold"
+                    tools:text="دوشنبه"/>
+
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="bottom"
+                    android:textDirection="rtl"
+                    android:paddingHorizontal="2dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/standardUiWhite"
+                    android:textSize="@dimen/TextSize2x"
+                    android:textStyle="bold"
+                    tools:text="1401-04-25"/>
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/maxTempText"

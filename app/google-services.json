@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "158139632488",
-    "project_id": "exweather",
-    "storage_bucket": "exweather.appspot.com"
+    "project_number": "858452801955",
+    "project_id": "ex-weather-a0309",
+    "storage_bucket": "ex-weather-a0309.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:158139632488:android:692748047ab8a33ad524dd",
+        "mobilesdk_app_id": "1:858452801955:android:d0851b82dd9d083738c216",
         "android_client_info": {
           "package_name": "com.dust.exweather"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "158139632488-acjunl5n6eb63c0t55f58bhl97o2gi1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDys4BSYIsDgxr9RVa7ALXAsZpw-XM7MwQ"
+          "current_key": "AIzaSyCtWxXO0uyT4U5Xb68vkXom-sD5R7HdAvE"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "158139632488-acjunl5n6eb63c0t55f58bhl97o2gi1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

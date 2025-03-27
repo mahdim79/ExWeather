@@ -142,6 +142,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/standardUiWhite"
                             android:textSize="@dimen/TextSize3x"
+                            android:lineHeight="20dp"
                             android:gravity="center"
                             app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
                             app:layout_constraintEnd_toEndOf="parent"

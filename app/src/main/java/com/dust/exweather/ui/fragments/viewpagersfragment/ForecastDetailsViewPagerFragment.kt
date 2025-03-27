@@ -308,6 +308,7 @@ class ForecastDetailsViewPagerFragment(
                 axisLineColor = Color.WHITE
                 textColor = Color.WHITE
                 legend.isEnabled = true
+                legend.textColor = Color.WHITE
                 layoutDirection = View.LAYOUT_DIRECTION_RTL
                 animateXY(2000, 2000)
                 valueFormatter = object : IndexAxisValueFormatter() {
@@ -402,6 +403,7 @@ class ForecastDetailsViewPagerFragment(
                 axisLineColor = Color.WHITE
                 textColor = Color.WHITE
                 legend.isEnabled = true
+                legend.textColor = Color.WHITE
                 layoutDirection = View.LAYOUT_DIRECTION_RTL
                 animateXY(2000, 2000)
                 valueFormatter = object : IndexAxisValueFormatter() {
@@ -573,6 +575,7 @@ class ForecastDetailsViewPagerFragment(
                 axisLineColor = Color.WHITE
                 textColor = Color.WHITE
                 legend.isEnabled = true
+                legend.textColor = Color.WHITE
                 layoutDirection = View.LAYOUT_DIRECTION_RTL
                 animateXY(2000, 2000)
                 valueFormatter = object : IndexAxisValueFormatter() {
@@ -657,6 +660,7 @@ class ForecastDetailsViewPagerFragment(
                 axisLineColor = Color.WHITE
                 textColor = Color.WHITE
                 legend.isEnabled = true
+                legend.textColor = Color.WHITE
                 layoutDirection = View.LAYOUT_DIRECTION_RTL
                 animateXY(2000, 2000)
                 valueFormatter = object : IndexAxisValueFormatter() {
