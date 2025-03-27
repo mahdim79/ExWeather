@@ -3,12 +3,17 @@ package com.dust.exweather.ui.fragments.weatherfragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -50,6 +55,10 @@ class WeatherHistoryFragment : DaggerFragment() {
     private var locationIndex = 0
 
     private val calendar = Calendar.getInstance()
+
+    private val externalStorageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){}
+
+    private val externalStorageLauncherDeprecated = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -302,20 +311,29 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     private fun checkStoragePermission(): Boolean {
         requireActivity().apply {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                requireActivity().requestPermissions(
-                    arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                if (!Environment.isExternalStorageManager()){
+                    launchStorageManagerScreen()
+                    return false
+                }
+            }else{
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
                         Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), Constants.STORAGE_PERMISSION_REQUEST_CODE
-                )
-                return false
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
+                    externalStorageLauncherDeprecated.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                    return false
+                }
             }
         }
         return true
+    }
+
+    private fun launchStorageManagerScreen() {
+        val permissionIntent =
+            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+        permissionIntent.data = Uri.fromParts("package", requireContext().packageName, null)
+        externalStorageLauncher.launch(permissionIntent)
     }
 
     private fun navigateToDetailsFragment(latlong: String, date: String, location: String) {

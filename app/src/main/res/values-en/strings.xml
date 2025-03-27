@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"> ExWeather </string>
+    <string name="app_name">هوای من</string>
     <string name="no2Amount"> Nitrogen:%s </string>
     <string name="o3Amount"> Ozone:%s </string>
     <string name="defraIndex"> Defra Index:%s </string>

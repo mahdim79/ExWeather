@@ -175,11 +175,11 @@ class CurrentWeatherFragment : DaggerFragment() {
         viewModel.getWeatherDataFromApi(requireContext())
     }
 
-    private fun setBackground(isDark:Boolean) {
-        if (isDark)
-            backgroundImage.setImageResource(R.drawable.dark_background)
-        else
+    private fun setBackground(isDay:Boolean) {
+        if (isDay)
             backgroundImage.setImageResource(R.drawable.light_background)
+        else
+            backgroundImage.setImageResource(R.drawable.dark_background)
 
         backgroundImage.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 800))
     }

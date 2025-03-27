@@ -6,6 +6,8 @@ object Constants {
     const val BASE_URL = "https://api.weatherapi.com/v1/"
     const val API_KEY = "f0ee8b23f3ae4cd6bc1130518212512"
 
+    const val APP_CENTER_DSN = "0c129a3d-7ed9-42bb-92cc-2d98cba8cc36"
+
     const val STORAGE_PERMISSION_REQUEST_CODE = 105
     const val LANGUAGE_KEY = "languageKey"
     const val THEME_KEY = "themeKey"

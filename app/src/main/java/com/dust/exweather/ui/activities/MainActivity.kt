@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI
 import com.dust.exweather.MyApplication
 import com.dust.exweather.R
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
+import com.dust.exweather.utils.UtilityFunctions
 import com.dust.exweather.viewmodel.activities.MainActivityViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*

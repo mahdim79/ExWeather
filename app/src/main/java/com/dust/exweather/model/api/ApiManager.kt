@@ -116,6 +116,8 @@ class ApiManager @Inject constructor() {
                                     System.currentTimeMillis()
 
                                 listNewData.add(mainWeatherData)
+                            }else{
+                                weatherApiCallStateLiveData.postValue(DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE))
                             }
                         }
                     }
@@ -131,7 +133,7 @@ class ApiManager @Inject constructor() {
                 }
                 job = null
             }catch (e:Exception){
-                weatherApiCallStateLiveData.value = DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE)
+                weatherApiCallStateLiveData.postValue(DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE))
             }
         }
     }

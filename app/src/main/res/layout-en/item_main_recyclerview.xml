@@ -114,10 +114,12 @@
 
     <com.dust.exweather.utils.customviews.CTextView
         android:id="@+id/item_weatherStateText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="بارانی"
         android:textSize="@dimen/mainRecyclerViewItemMainTextSize"
+        android:textDirection="ltr"
+        app:layout_constraintEnd_toStartOf="@+id/item_maxTempImage"
         android:textColor="@color/standardUiWhite"
         app:layout_constraintStart_toEndOf="@+id/item_dayOfWeekText"
         app:layout_constraintTop_toTopOf="parent"

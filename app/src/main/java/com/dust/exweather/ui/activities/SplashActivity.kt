@@ -3,6 +3,7 @@ package com.dust.exweather.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import androidx.lifecycle.ViewModelProvider
@@ -55,10 +56,11 @@ class SplashActivity : DaggerAppCompatActivity() {
         Handler().postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 4000)
+        }, 1000)
     }
 
     private fun setUpTextAnimation() {
+        splashText.visibility = View.GONE
         splashText.startAnimation(animationFactory.getAlphaAnimation(0f,1f,1000))
     }
 
