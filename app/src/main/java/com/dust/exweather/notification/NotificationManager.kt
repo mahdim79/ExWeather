@@ -34,7 +34,7 @@ class NotificationManager @Inject constructor(private val sharedPreferencesManag
                     context,
                     201,
                     contentIntent,
-                    0
+                    PendingIntent.FLAG_IMMUTABLE
                 )
             )
             .setVibrate(LongArray(3) { 200L })

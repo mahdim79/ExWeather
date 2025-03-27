@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.RotateAnimation
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LiveData
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
@@ -16,8 +17,11 @@ import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.utils.DataStatus
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.*
-import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.view.*
+import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.addLocationButton
+import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.locationSearchState
+import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.myLocationImage
+import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.view.addLocationButton
+import kotlinx.android.synthetic.main.bottom_sheet_add_current_location.view.myLocationImage
 
 class AddCurrentLocationBottomSheetDialog(
     private val locationDetailsLiveData: LiveData<DataWrapper<LocationServerData>>,
@@ -25,6 +29,19 @@ class AddCurrentLocationBottomSheetDialog(
     private val onLocationAddButtonClicked: (LatLng?, String?) -> Unit
 ) :
     BottomSheetDialogFragment() {
+
+        private val locationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ result ->
+            result.keys.forEach {
+                result[it]?.let { pResult ->
+                    if (!pResult){
+                        dismiss()
+                        return@registerForActivityResult
+                    }
+                }
+            }
+            startLocationFetch()
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,9 +94,11 @@ class AddCurrentLocationBottomSheetDialog(
                             "${location.name} | ${location.lat},${location.lon}"
                     }
                 }
+
                 DataStatus.DATA_RECEIVE_LOADING -> {
                     myLocationImage.startAnimation(infiniteRotateAnimation)
                 }
+
                 DataStatus.DATA_RECEIVE_FAILURE -> {
                     Toast.makeText(
                         requireContext(),
@@ -123,12 +142,7 @@ class AddCurrentLocationBottomSheetDialog(
         if (checkLocationsPermission()) {
             startLocationFetch()
         } else {
-            requireActivity().requestPermissions(
-                arrayOf(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
-                ), 1002
-            )
+            locationPermissionLauncher.launch(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION))
         }
     }
 

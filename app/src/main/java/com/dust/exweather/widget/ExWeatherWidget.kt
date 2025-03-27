@@ -67,7 +67,7 @@ internal fun updateCustomWidget(context: Context, data: WidgetData) {
 
         views.setOnClickPendingIntent(
             R.id.remoteViewContainer,
-            PendingIntent.getActivity(context, 200, intent, 0)
+            PendingIntent.getActivity(context, 200, intent, PendingIntent.FLAG_IMMUTABLE)
         )
 
         // Instruct the widget manager to update the widget
@@ -104,7 +104,7 @@ internal fun updateCustomWidget(context: Context, data: WidgetData) {
 
         views.setOnClickPendingIntent(
             R.id.remoteViewContainer,
-            PendingIntent.getActivity(context, 200, intent, 0)
+            PendingIntent.getActivity(context, 200, intent, PendingIntent.FLAG_IMMUTABLE)
         )
 
         // Instruct the widget manager to update the widget

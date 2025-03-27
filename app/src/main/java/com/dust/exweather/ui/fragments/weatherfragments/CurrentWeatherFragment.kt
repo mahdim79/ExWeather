@@ -150,7 +150,7 @@ class CurrentWeatherFragment : DaggerFragment() {
     private fun updateCurrentUi(dataList: List<MainWeatherData>) {
         val data = dataList[viewPagerPosition]
         updateRecyclerViewContent(data)
-        setBackground(if (data.current!!.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL)
+        setBackground(data.current!!.current!!.is_day == 1)
     }
 
     private fun setUpUiView() {
@@ -167,7 +167,7 @@ class CurrentWeatherFragment : DaggerFragment() {
         setUpSwipeRefreshLayout()
         setUpPrimaryViewPager(listData.size)
         setUpPrimaryMainRecyclerView(listData[0])
-        listData[0].current?.let { setBackground(if (it.current!!.is_day == 1) Constants.LIGHT_BACKGROUND_URL else Constants.NIGHT_BACKGROUND_URL) }
+        listData[0].current?.let { setBackground(it.current!!.is_day == 1) }
         doApiCall()
     }
 
@@ -175,9 +175,12 @@ class CurrentWeatherFragment : DaggerFragment() {
         viewModel.getWeatherDataFromApi(requireContext())
     }
 
-    private fun setBackground(backgroundUrl: String) {
-        Glide.with(requireContext()).load(backgroundUrl)
-            .into(backgroundImage)
+    private fun setBackground(isDark:Boolean) {
+        if (isDark)
+            backgroundImage.setImageResource(R.drawable.dark_background)
+        else
+            backgroundImage.setImageResource(R.drawable.light_background)
+
         backgroundImage.startAnimation(animationFactory.getAlphaAnimation(0f, 1f, 800))
     }
 

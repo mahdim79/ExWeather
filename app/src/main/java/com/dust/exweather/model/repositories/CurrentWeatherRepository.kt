@@ -27,14 +27,24 @@ class CurrentWeatherRepository @Inject constructor() {
     @Inject
     lateinit var apiManager: ApiManager
 
-    suspend fun getCurrentWeatherData(query: String): Response<CurrentData> =
+    suspend fun getCurrentWeatherData(query: String): Response<CurrentData>? = try {
         mainApiRequests.getCurrentWeatherData(query)
+    } catch (e: Exception) {
+        null
+    }
 
-    suspend fun getHistoryWeatherData(query: String, date: String): Response<WeatherHistory> =
-        mainApiRequests.getHistoryWeatherData(query, date)
+    suspend fun getHistoryWeatherData(query: String, date: String): Response<WeatherHistory>? =
+        try {
+            mainApiRequests.getHistoryWeatherData(query, date)
+        } catch (e: Exception) {
+            null
+        }
 
-    suspend fun getForecastWeatherData(query: String): Response<WeatherForecast> =
+    suspend fun getForecastWeatherData(query: String): Response<WeatherForecast>? = try {
         mainApiRequests.getForecastWeatherData(query)
+    } catch (e: Exception) {
+        null
+    }
 
     suspend fun insertWeatherDataToRoom(mainWeatherData: List<MainWeatherData>) {
         weatherDao.insertWeatherData(mainWeatherData.map {
@@ -42,18 +52,18 @@ class CurrentWeatherRepository @Inject constructor() {
         })
     }
 
-    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
-        weatherDao.getDirectWeatherData()
-
-    fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
-        weatherDao.getLiveWeatherData()
-
-    fun doApiCall(context: Context){
+    fun doApiCall(context: Context) {
         apiManager.getWeatherDataFromApi(context, this)
     }
 
     fun getWeatherApiCallStateLiveData(): LiveData<DataWrapper<String>> =
         apiManager.getWeatherApiCallStateLiveData()
+
+    suspend fun getDirectWeatherDataFromCache(): List<WeatherEntity> =
+        weatherDao.getDirectWeatherData()
+
+    fun getLiveWeatherDataFromCache(): LiveData<List<WeatherEntity>> =
+        weatherDao.getLiveWeatherData()
 
 }
 

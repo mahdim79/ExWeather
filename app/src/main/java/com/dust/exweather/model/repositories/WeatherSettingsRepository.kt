@@ -1,14 +1,12 @@
 package com.dust.exweather.model.repositories
 
 import android.content.Context
-import android.content.Intent
 import com.dust.exweather.model.dataclasses.location.locationserverdata.LocationServerData
 import com.dust.exweather.model.dataclasses.maindataclass.MainWeatherData
 import com.dust.exweather.model.retrofit.MainApiRequests
 import com.dust.exweather.model.room.WeatherDao
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
-import com.dust.exweather.service.NotificationService
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -32,8 +30,11 @@ class WeatherSettingsRepository @Inject constructor() {
         }
     }
 
-    suspend fun getLocationDetailsData(latLng: String): Response<LocationServerData> =
+    suspend fun getLocationDetailsData(latLng: String): Response<LocationServerData>? = try {
         mainApiRequests.getLocationDetailsData(latLng)
+    } catch (e: Exception) {
+        null
+    }
 
     suspend fun addNewLocationToCache(listEntities: List<WeatherEntity>) =
         weatherDao.insertWeatherData(listEntities)

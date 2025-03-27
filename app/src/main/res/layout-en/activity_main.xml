@@ -31,12 +31,12 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_launcher_background" />
+            tools:src="@drawable/light_background" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/mainCoordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@+id/mainBottomNavigation"
             android:background="@color/full_transparent">
 
@@ -47,7 +47,8 @@
                 android:background="@color/full_transparent"
                 app:elevation="0dp">
 
-                <include layout="@layout/toolbar" />
+                <include layout="@layout/toolbar"
+                    app:layout_scrollFlags="noScroll"/>
             </com.google.android.material.appbar.AppBarLayout>
 
             <fragment

@@ -148,7 +148,7 @@ class WeatherSettingsViewModel(
         locationDetailsJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val locationResponse = weatherSettingsRepository.getLocationDetailsData(latLng)
-                if (locationResponse.isSuccessful && locationResponse.body() != null) {
+                if (locationResponse?.body() != null && locationResponse.isSuccessful) {
                     locationResponse.body()?.let { locationServerData ->
                         withContext(Dispatchers.Main) {
                             emitSuccessfulState(locationServerData)

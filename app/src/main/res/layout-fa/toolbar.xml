@@ -7,7 +7,7 @@
     app:cardElevation="5dp"
     android:layout_marginHorizontal="@dimen/standardMargin"
     android:layout_marginTop="-15dp"
-    app:layout_scrollFlags="scroll|enterAlways|snap"
+    app:layout_scrollFlags="noScroll"
     android:layout_marginBottom="@dimen/standardMargin0.5x"
     app:cardCornerRadius="15dp">
 

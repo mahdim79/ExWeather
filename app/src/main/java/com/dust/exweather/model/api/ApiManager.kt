@@ -38,97 +38,101 @@ class ApiManager @Inject constructor() {
         }
         job?.cancel(CancellationException("NormalCancellation"))
         job = CoroutineScope(Dispatchers.IO).launch {
-            val cachedData = currentWeatherRepository.getDirectWeatherDataFromCache()
-            val listNewData = arrayListOf<MainWeatherData>()
+            try {
+                val cachedData = currentWeatherRepository.getDirectWeatherDataFromCache()
+                val listNewData = arrayListOf<MainWeatherData>()
 
-            launch {
-                cachedData.forEach {
-                    launch {
-                        val weatherData = it.toDataClass()
-                        val currentWeatherData: Response<CurrentData> =
-                            currentWeatherRepository.getCurrentWeatherData(weatherData.location)
-                        var historyWeatherData: WeatherHistory? = null
-                        var forecastWeatherData: Response<WeatherForecast>? = null
+                launch {
+                    cachedData.forEach {
+                        launch {
+                            val weatherData = it.toDataClass()
+                            val currentWeatherData: Response<CurrentData>? =
+                                currentWeatherRepository.getCurrentWeatherData(weatherData.location)
+                            var historyWeatherData: WeatherHistory? = null
+                            var forecastWeatherData: Response<WeatherForecast>? = null
 
-                        if (currentWeatherData.isSuccessful && currentWeatherData.body() != null) {
-                            val data = currentWeatherData.body()!!
+                            if (currentWeatherData?.body() != null && currentWeatherData.isSuccessful) {
+                                val data = currentWeatherData.body()!!
 
-                            launch {
-                                for (i in 1 until 6)
-                                    launch {
-                                        val historyData =
-                                            currentWeatherRepository.getHistoryWeatherData(
-                                                weatherData.location,
-                                                UtilityFunctions.getDaysLeft(
-                                                    data.location!!.localtime_epoch,
-                                                    data.location.tz_id,
-                                                    i
-                                                )
-                                            )
-                                        val optimizedData =
-                                            dataOptimizer.setUpHistoryFetchedData(historyWeatherData, historyData)
-                                        if (optimizedData != null)
-                                            historyWeatherData = optimizedData
-
-                                    }
                                 launch {
-                                    forecastWeatherData =
-                                        currentWeatherRepository.getForecastWeatherData(weatherData.location)
-                                }
-                            }.join()
+                                    for (i in 1 until 6)
+                                        launch {
+                                            val historyData =
+                                                currentWeatherRepository.getHistoryWeatherData(
+                                                    weatherData.location,
+                                                    UtilityFunctions.getDaysLeft(
+                                                        data.location!!.localtime_epoch,
+                                                        data.location.tz_id,
+                                                        i
+                                                    )
+                                                )
+                                            val optimizedData =
+                                                dataOptimizer.setUpHistoryFetchedData(historyWeatherData, historyData)
+                                            if (optimizedData != null)
+                                                historyWeatherData = optimizedData
 
-                            data.current!!.day_of_week =
-                                UtilityFunctions.getDayOfWeekByUnixTimeStamp(
-                                    data.location!!.localtime_epoch,
-                                    context
+                                        }
+                                    launch {
+                                        forecastWeatherData =
+                                            currentWeatherRepository.getForecastWeatherData(weatherData.location)
+                                    }
+                                }.join()
+
+                                data.current!!.day_of_week =
+                                    UtilityFunctions.getDayOfWeekByUnixTimeStamp(
+                                        data.location!!.localtime_epoch,
+                                        context
+                                    )
+
+                                val mainWeatherData = MainWeatherData(
+                                    data,
+                                    null,
+                                    null,
+                                    weatherData.location,
+                                    weatherData.id
                                 )
 
-                            val mainWeatherData = MainWeatherData(
-                                data,
-                                null,
-                                null,
-                                weatherData.location,
-                                weatherData.id
-                            )
+                                // sort historical data
+                                if (historyWeatherData != null) {
+                                    historyWeatherData!!.forecast.forecastday =
+                                        dataOptimizer.optimizeHistoryData(
+                                            historyWeatherData!!.forecast.forecastday,
+                                            context
+                                        )
+                                    mainWeatherData.historyDetailsData = historyWeatherData
+                                }
 
-                            // sort historical data
-                            if (historyWeatherData != null) {
-                                historyWeatherData!!.forecast.forecastday =
-                                    dataOptimizer.optimizeHistoryData(
-                                        historyWeatherData!!.forecast.forecastday,
-                                        context
-                                    )
-                                mainWeatherData.historyDetailsData = historyWeatherData
+                                if (forecastWeatherData?.body() != null && forecastWeatherData!!.isSuccessful) {
+                                    mainWeatherData.forecastDetailsData = forecastWeatherData!!.body()
+                                    mainWeatherData.forecastDetailsData!!.forecast.forecastday =
+                                        dataOptimizer.optimizeForecastData(
+                                            mainWeatherData.forecastDetailsData!!.forecast.forecastday,
+                                            mainWeatherData.current!!.current!!.day_of_week,
+                                            context
+                                        )
+                                }
+
+                                mainWeatherData.current!!.current!!.system_last_update_epoch =
+                                    System.currentTimeMillis()
+
+                                listNewData.add(mainWeatherData)
                             }
-
-                            if (forecastWeatherData!!.isSuccessful && forecastWeatherData!!.body() != null) {
-                                mainWeatherData.forecastDetailsData = forecastWeatherData!!.body()
-                                mainWeatherData.forecastDetailsData!!.forecast.forecastday =
-                                    dataOptimizer.optimizeForecastData(
-                                        mainWeatherData.forecastDetailsData!!.forecast.forecastday,
-                                        mainWeatherData.current!!.current!!.day_of_week,
-                                        context
-                                    )
-                            }
-
-                            mainWeatherData.current!!.current!!.system_last_update_epoch =
-                                System.currentTimeMillis()
-
-                            listNewData.add(mainWeatherData)
                         }
                     }
+
+                }.join()
+
+                if (!listNewData.isNullOrEmpty()) {
+                    currentWeatherRepository.insertWeatherDataToRoom(listNewData)
+
+                    withContext(Dispatchers.Main) {
+                        emitSuccessfulState()
+                    }
                 }
-
-            }.join()
-
-            if (!listNewData.isNullOrEmpty()) {
-                currentWeatherRepository.insertWeatherDataToRoom(listNewData)
-
-                withContext(Dispatchers.Main) {
-                    emitSuccessfulState()
-                }
+                job = null
+            }catch (e:Exception){
+                weatherApiCallStateLiveData.value = DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE)
             }
-            job = null
         }
     }
 

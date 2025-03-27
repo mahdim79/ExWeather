@@ -51,7 +51,7 @@ class AddLocationFragmentViewModel(
         locationDetailsJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val locationResponse = addLocationRepository.getLocationDetailsData(latLng)
-                if (locationResponse.isSuccessful && locationResponse.body() != null) {
+                if (locationResponse?.body() != null && locationResponse.isSuccessful) {
                     locationResponse.body()?.let { locationServerData ->
                         withContext(Dispatchers.Main) {
                             emitSuccessfulState(locationServerData)
@@ -80,7 +80,7 @@ class AddLocationFragmentViewModel(
         searchLocationJob = viewModelScope.launch(Dispatchers.IO) {
             try {
                 val searchResponse = addLocationRepository.searchForLocation(text)
-                if (searchResponse.isSuccessful && searchResponse.body() != null) {
+                if (searchResponse?.body() != null && searchResponse.isSuccessful) {
                     searchResponse.body()?.let { searchData ->
                         withContext(Dispatchers.Main) {
                             emitSuccessfulSearch(searchData)
