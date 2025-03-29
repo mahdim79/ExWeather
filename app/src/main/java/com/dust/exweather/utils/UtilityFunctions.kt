@@ -108,10 +108,8 @@ class UtilityFunctions {
         }
 
         fun calculateCurrentTimeByTimeEpoch(timeEpoch: Int, tz: String = "Asia/tehran"): String {
-            val date = Date((timeEpoch).toLong() * 1000)
-            val sdf = SimpleDateFormat("HH:mm", Locale.ENGLISH)
-            sdf.timeZone = TimeZone.getTimeZone(tz)
-            return sdf.format(date)
+            val date = PersianDate((timeEpoch).toLong() * 1000)
+            return "${String.format(Locale.ENGLISH,"%02d",date.hour)}:${String.format(Locale.ENGLISH,"%02d",date.minute)}"
         }
 
         fun createLatLongPattern(locationObj: Location): String {

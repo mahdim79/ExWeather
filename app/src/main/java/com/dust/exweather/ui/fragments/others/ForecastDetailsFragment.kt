@@ -213,7 +213,7 @@ class ForecastDetailsFragment : DaggerFragment() {
                     )
                 } \n" +
                         "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
-            weatherStateText.text = forecastDay.day.condition.text
+            weatherStateText.text = UtilityFunctions.getConditionText(forecastDay.day.condition.text,forecastDay.day.condition.code,requireContext())
             UtilityFunctions.getConditionText(forecastDay.day.condition.text,forecastDay.day.condition.code,requireContext())
             weatherCityNameText.text = locationName
             weatherTempText.text = unitManager.getTemperatureUnit(
