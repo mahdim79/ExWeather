@@ -111,7 +111,7 @@
     <string name="exportExcel">خروجی اکسل</string>
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
     <string name="aboutUsDescription">برنامه نویس: مهدی مصطفوی \n آدرس ایمیل: mahdimostafavi79@yahoo.com</string>
-    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="companyEmailAddress">mahdimostafavi79@yahoo.com</string>
     <string name="companyLocation">company location address</string>
     <string name="companyPhoneNumber">+98 905 499 4569</string>
     <string name="openWith">باز کردن با…</string>
@@ -130,7 +130,7 @@
     <string name="amoutsUnits">واحد های مقادیر</string>
     <string name="unitSelectTip">تغییر واحد های دما، رطوبت، میزان بارندگی و …</string>
     <string name="enter_location">نام شهر</string>
-    <string name="locationBottomSheetTip">مکان پیش فرض مکانی است که اعلانات برنامه برای آن تنظیم می شود!</string>
+    <string name="locationBottomSheetTip">مکان پیش فرض مکانی است که اعلانات و ویدجت برنامه برای آن تنظیم می شود.</string>
     <string name="defaultText">پیشفرض</string>
     <string name="addNewLocation">افزودن مکان جدید</string>
     <string name="addCurrentLocation">افزودن مکان فعلی</string>
@@ -147,7 +147,7 @@
     <string name="mile">Mile - مایل</string>
     <string name="appwidget_text">LOADING</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Havaye Man Widget</string>
     <string name="default_notification_channel_id">FirebaseNotificationChannelId</string>
     <string name="currentWeatherStatus">وضعیت فعلی آب و هوا</string>
     <string name="overallWeatherPrediction">پیش بینی کلی آب و هوا</string>

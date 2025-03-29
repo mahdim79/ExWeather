@@ -111,7 +111,7 @@
     <string name="morning">Morning</string>
     <string name="afterNoon">AfterNoon</string>
     <string name="aboutUsDescription">Developer: Mahdi Mostafavi \n Email: mahdimostafavi79@yahoo.com</string>
-    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="companyEmailAddress">mahdimostafavi79@yahoo.com</string>
     <string name="companyLocation">company location address</string>
     <string name="companyPhoneNumber">+98 905 499 4569</string>
     <string name="openWith">Open With…</string>
@@ -130,7 +130,7 @@
     <string name="amoutsUnits">Amounts Units</string>
     <string name="unitSelectTip">Change Units Of Temperature, Humidity, Precipitation etc…</string>
     <string name="enter_location">Enter Location</string>
-    <string name="locationBottomSheetTip">Default Location Is A Location Which Notifications Send For It.</string>
+    <string name="locationBottomSheetTip">Select Default Location For Notifications And App Widget.</string>
     <string name="defaultText">Default</string>
     <string name="addNewLocation">Add New Location</string>
     <string name="addCurrentLocation">Add Current Location</string>
@@ -147,7 +147,7 @@
     <string name="mile">Mile</string>
     <string name="appwidget_text">LOADING</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Havaye Man Widget</string>
     <string name="default_notification_channel_id">FirebaseNotificationChannelId</string>
     <string name="currentWeatherStatus">Current Weather Status</string>
     <string name="overallWeatherPrediction">Overall Weather Prediction</string>

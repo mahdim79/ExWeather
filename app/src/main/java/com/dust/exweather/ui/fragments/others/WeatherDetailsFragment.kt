@@ -218,7 +218,7 @@ class WeatherDetailsFragment : DaggerFragment() {
 
             // update current status
             data.current?.current?.let { current ->
-                weatherConditionTextView.text = current.condition.text
+                weatherConditionTextView.text = UtilityFunctions.getConditionText(current.condition.text,current.condition.code,requireContext())
 
                 UtilityFunctions.getWeatherIconResId(current.condition.icon,current.is_day, context)?.let { icon ->
                     weatherStateImageLocation.setImageResource(icon)

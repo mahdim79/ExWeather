@@ -181,7 +181,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                 }
 
                 override fun onNext(t: String) {
-                    if (manualLocationPickMode)
+                    if (manualLocationPickMode && t.isNotEmpty())
                         viewModel.searchForLocation(t, requireContext())
                 }
 
