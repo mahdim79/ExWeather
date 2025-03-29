@@ -8,6 +8,9 @@ object Constants {
 
     const val APP_CENTER_DSN = "0c129a3d-7ed9-42bb-92cc-2d98cba8cc36"
 
+    const val INSTAGRAM_USER_NAME = "mahdim4569"
+    const val TELEGRAM_USER_NAME = "mahdim4569"
+
     const val STORAGE_PERMISSION_REQUEST_CODE = 105
     const val LANGUAGE_KEY = "languageKey"
     const val THEME_KEY = "themeKey"
@@ -33,10 +36,10 @@ object Constants {
     const val MM = "MM"
     const val C_PERCENTAGE = "C_PERCENTAGE"
     const val F_PERCENTAGE = "F_PERCENTAGE"
-   const val KPH = "KPH"
-   const val MPH = "MPH"
-   const val MB =  "MB"
-   const val KM =  "KM"
+    const val KPH = "KPH"
+    const val MPH = "MPH"
+    const val MB = "MB"
+    const val KM = "KM"
     const val MILE = "MILE"
 
 

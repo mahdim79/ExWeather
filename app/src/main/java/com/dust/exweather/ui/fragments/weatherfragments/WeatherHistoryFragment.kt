@@ -179,7 +179,7 @@ class WeatherHistoryFragment : DaggerFragment() {
             noDataTextView.visibility = View.GONE
             dateTextView.text = "${forecastDay.day.dayOfWeek}\n" +
                     "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
-            weatherStateText.text = forecastDay.day.condition.text
+            weatherStateText.text = UtilityFunctions.getConditionText(forecastDay.day.condition.text,forecastDay.day.condition.code,requireContext())
 
             UtilityFunctions.getWeatherIconResId(forecastDay.day.condition.icon,1, requireContext())?.let { icon ->
                 cloudImage.setImageResource(icon)

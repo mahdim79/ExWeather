@@ -82,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin1.5x"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/standardMargin1.5x"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"

@@ -110,7 +110,7 @@
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
     <string name="morning">صبح</string>
     <string name="afterNoon">عصر</string>
-    <string name="aboutUsDescription">متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی </string>
+    <string name="aboutUsDescription">برنامه نویس: مهدی مصطفوی \n آدرس ایمیل: mahdimostafavi79@yahoo.com</string>
     <string name="companyEmailAddress">exWeather@yahoo.com</string>
     <string name="companyLocation">company location address</string>
     <string name="companyPhoneNumber">+98 905 499 4569</string>
@@ -217,7 +217,8 @@
     <string name="conditionTextCode1276" translatable="false">باران متوسط یا شدید همراه با رعد و برق</string>
     <string name="conditionTextCode1279" translatable="false">برف ملایم تکه تکه همراه با رعد و برق</string>
     <string name="conditionTextCode1282" translatable="false">برف متوسط یا شدید همراه با رعد و برق</string>
-
+    <string name="dark">تاریک</string>
+    <string name="light">روشن</string>
 
 
 </resources>

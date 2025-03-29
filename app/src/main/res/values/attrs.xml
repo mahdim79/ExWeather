@@ -4,4 +4,6 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+    <attr name="ThemeSwitcherBackgroundColor" format="reference"/>
+    <attr name="ThemeSwitcherSelectedItemBackgroundColor" format="reference"/>
 </resources>

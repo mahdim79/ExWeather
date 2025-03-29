@@ -47,7 +47,7 @@ class ForecastMainRecyclerViewAdapter(
                 weatherStateImage.setImageResource(icon)
             }
 
-            weatherStateText.text = currentData.day.condition.text
+            weatherStateText.text = UtilityFunctions.getConditionText(currentData.day.condition.text,currentData.day.condition.code,context)
 
             precipText.text = unitManager.getPrecipitationUnit(currentData.day.totalprecip_mm.toString(),currentData.day.totalprecip_in.toString())
 

@@ -27,7 +27,7 @@ class ApiManager @Inject constructor() {
     @Inject
     lateinit var dataOptimizer:DataOptimizer
 
-    private var job:Job? = null
+    private var mainCoroutineJob:Job? = null
 
     fun getWeatherDataFromApi(context: Context,currentWeatherRepository:CurrentWeatherRepository) {
         emitLoadingState()
@@ -36,11 +36,11 @@ class ApiManager @Inject constructor() {
             emitFailureState(context.getString(R.string.connectionLost))
             return
         }
-        job?.cancel(CancellationException("NormalCancellation"))
-        job = CoroutineScope(Dispatchers.IO).launch {
+        mainCoroutineJob?.cancel(CancellationException("Normal Coroutine Cancellation"))
+        mainCoroutineJob = CoroutineScope(Dispatchers.IO).launch {
             try {
                 val cachedData = currentWeatherRepository.getDirectWeatherDataFromCache()
-                val listNewData = arrayListOf<MainWeatherData>()
+                val updatedDataList = arrayListOf<MainWeatherData>()
 
                 launch {
                     cachedData.forEach {
@@ -54,6 +54,7 @@ class ApiManager @Inject constructor() {
                             if (currentWeatherData?.body() != null && currentWeatherData.isSuccessful) {
                                 val data = currentWeatherData.body()!!
 
+                                // send parallel requests to api
                                 launch {
                                     for (i in 1 until 6)
                                         launch {
@@ -115,7 +116,7 @@ class ApiManager @Inject constructor() {
                                 mainWeatherData.current!!.current!!.system_last_update_epoch =
                                     System.currentTimeMillis()
 
-                                listNewData.add(mainWeatherData)
+                                updatedDataList.add(mainWeatherData)
                             }else{
                                 weatherApiCallStateLiveData.postValue(DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE))
                             }
@@ -124,14 +125,14 @@ class ApiManager @Inject constructor() {
 
                 }.join()
 
-                if (!listNewData.isNullOrEmpty()) {
-                    currentWeatherRepository.insertWeatherDataToRoom(listNewData)
+                if (!updatedDataList.isNullOrEmpty()) {
+                    currentWeatherRepository.insertWeatherDataToRoom(updatedDataList)
 
                     withContext(Dispatchers.Main) {
                         emitSuccessfulState()
                     }
                 }
-                job = null
+                mainCoroutineJob = null
             }catch (e:Exception){
                 weatherApiCallStateLiveData.postValue(DataWrapper(null,DataStatus.DATA_RECEIVE_FAILURE))
             }

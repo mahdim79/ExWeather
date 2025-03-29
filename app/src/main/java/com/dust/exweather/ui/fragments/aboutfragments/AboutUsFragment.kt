@@ -1,5 +1,6 @@
 package com.dust.exweather.ui.fragments.aboutfragments
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.dust.exweather.R
+import com.dust.exweather.utils.Constants
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_aboutus.view.*
 
@@ -31,29 +34,6 @@ class AboutUsFragment : DaggerFragment() {
     private fun setUpViews() {
         requireView().apply {
 
-            val details = StringBuilder()
-            details.append(getString(R.string.companyEmailAddress).plus("\n"))
-            details.append(getString(R.string.companyLocation).plus("\n"))
-            details.append(getString(R.string.companyPhoneNumber).plus("\n"))
-
-            SpannableString(details.toString()).apply {
-                setSpan(
-                    ForegroundColorSpan(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.standardUiBlue
-                        )
-                    ), 0, details.lastIndex, SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-                )
-
-                setSpan(
-                    UnderlineSpan(), 0, details.lastIndex, SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-                )
-
-                contactusText.text = this
-
-            }
-
             shareImageView.setOnClickListener {
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com")).apply {
                     requireActivity().startActivity(
@@ -66,11 +46,11 @@ class AboutUsFragment : DaggerFragment() {
             }
 
             telegramImageView.setOnClickListener {
-
+                openTelegramAccount()
             }
 
             instagramImageView.setOnClickListener {
-
+                openInstagramAccount()
             }
 
             whatsAppImageView.setOnClickListener {
@@ -81,6 +61,35 @@ class AboutUsFragment : DaggerFragment() {
 
             }
 
+        }
+    }
+
+    private fun openInstagramAccount(){
+        val instagramUserName = Constants.INSTAGRAM_USER_NAME
+        val uri = "http://instagram.com/_u/$instagramUserName".toUri()
+        val likeIng = Intent(Intent.ACTION_VIEW, uri)
+
+        likeIng.setPackage("com.instagram.android")
+
+        try {
+            startActivity(likeIng)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "http://instagram.com/$instagramUserName".toUri()
+                )
+            )
+        }
+    }
+
+    private fun openTelegramAccount(){
+        try{
+            val intent = Intent(Intent.ACTION_VIEW, "tg://resolve?domain=${Constants.TELEGRAM_USER_NAME}".toUri())
+            startActivity(intent)
+        }catch (e:Exception){
+            val intent = Intent(Intent.ACTION_VIEW,"https://telegram.me/${Constants.TELEGRAM_USER_NAME}".toUri())
+            startActivity(intent)
         }
     }
 }

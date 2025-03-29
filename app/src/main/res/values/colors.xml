@@ -60,4 +60,7 @@
     <color name="yellow">#D1B503</color>
     <color name="darkModePrimary">#1f2023</color>
     <color name="ic_launcher_background">#786deb</color>
+    <color name="blue2">#6658fc</color>
+    <color name="gray">#525662</color>
+    <color name="gray2">#292A2F</color>
 </resources>
