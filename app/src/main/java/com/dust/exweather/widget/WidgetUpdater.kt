@@ -2,6 +2,7 @@ package com.dust.exweather.widget
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.dust.exweather.model.DataOptimizer
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.forecastweather.WeatherForecast
@@ -35,6 +36,7 @@ class WidgetUpdater(
     private var coroutineJob: Job? = null
 
     fun updateWidget() {
+        Log.i("WidgetUpdater","updating widget...")
         coroutineJob?.cancel(CancellationException("NormalCancellation"))
         coroutineJob = CoroutineScope(Dispatchers.IO).launch {
             try {

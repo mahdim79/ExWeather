@@ -1,14 +1,18 @@
 package com.dust.exweather.ui.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -66,6 +70,8 @@ class MainActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
+    private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){}
+
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +83,14 @@ class MainActivity : DaggerAppCompatActivity() {
         // primary ui stuff such as: navigationComponent, toolbar, statusBar etc...
         setUpPrimaryUiStuff()
         viewModel.startNotificationService(applicationContext)
+        checkNotificationPermission()
+
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
 
     }
 

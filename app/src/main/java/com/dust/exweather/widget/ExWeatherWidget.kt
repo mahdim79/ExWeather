@@ -1,6 +1,8 @@
 package com.dust.exweather.widget
 
 import android.app.PendingIntent
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -31,11 +33,20 @@ class ExWeatherWidget : AppWidgetProvider() {
     }
 
     override fun onEnabled(context: Context) {
-        try {
-            context.stopService(Intent(context, NotificationService::class.java))
-        } catch (e: Exception) {
-        }
-        context.startService(Intent(context, NotificationService::class.java))
+        startNotificationService(context)
+    }
+
+    private fun startNotificationService(context: Context) {
+        val scheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        scheduler.cancel(5005)
+        val cName = ComponentName(context.applicationContext, NotificationService::class.java)
+        val info = JobInfo.Builder(5005, cName)
+            .setPersisted(true)
+            .setPeriodic(16 * 60 * 1000L)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .build()
+        scheduler.schedule(info)
+
     }
 
     override fun onDisabled(context: Context) {

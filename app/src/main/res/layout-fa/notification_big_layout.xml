@@ -119,6 +119,18 @@
                         tools:text="21:51" />
 
                     <TextView
+                        android:id="@+id/dayOfWeekTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/standardMargin0.5x"
+                        android:textColor="@color/standardUiWhite"
+                        android:textSize="@dimen/TextSize3x"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/weatherStateImage"
+                        app:layout_constraintTop_toBottomOf="@+id/localTimeTextView"
+                        tools:text="saturday" />
+
+                    <TextView
                         android:id="@+id/localDateTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
