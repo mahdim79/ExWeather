@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "858452801955",
-    "project_id": "ex-weather-a0309",
-    "storage_bucket": "ex-weather-a0309.firebasestorage.app"
+    "project_number": "959944904333",
+    "project_id": "havayeman-d71e1",
+    "storage_bucket": "havayeman-d71e1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:858452801955:android:d0851b82dd9d083738c216",
+        "mobilesdk_app_id": "1:959944904333:android:413cafd2a0e3574dc71cc4",
         "android_client_info": {
           "package_name": "com.dust.exweather"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCtWxXO0uyT4U5Xb68vkXom-sD5R7HdAvE"
+          "current_key": "AIzaSyCMwrIRwfuNADrso_M3sgNf31cgJyT7vSY"
         }
       ],
       "services": {

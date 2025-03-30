@@ -5,6 +5,7 @@ import com.dust.exweather.di.singletoncomponent.DaggerSingletonComponent
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.Settings
+import com.google.firebase.FirebaseApp
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
@@ -19,6 +20,7 @@ class MyApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        FirebaseApp.initializeApp(this)
         initAppCenter()
         getTypeFace()
     }
