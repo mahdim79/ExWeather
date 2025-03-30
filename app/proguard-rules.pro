@@ -166,6 +166,11 @@
 
 -keepattributes Signature
 
+# Glide
+-keep class com.bumptech.glide.** { *; }
+-keep class com.bumptech.glide.load.model.** { *; }
+-keep class com.bumptech.glide.load.resource.bitmap.** { *; }
+
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {

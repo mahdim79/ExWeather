@@ -158,6 +158,7 @@ class UtilityFunctions {
 
                 }
             }
+            Log.d("getWeatherIconResId",resId.toString())
             if (resId != 0)
                 return resId
             return null
