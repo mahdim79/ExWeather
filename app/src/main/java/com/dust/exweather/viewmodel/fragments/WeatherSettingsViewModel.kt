@@ -79,8 +79,6 @@ class WeatherSettingsViewModel(
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            var currentUserLocation = ""
-
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
@@ -92,7 +90,7 @@ class WeatherSettingsViewModel(
                 return context.getString(R.string.turnOnGps)
             }
 
-            if (currentUserLocation.isEmpty() && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 locationManager.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER,
                     3000L,
