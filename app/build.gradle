@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.dust.exweather"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
 
@@ -94,9 +94,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:19.0.0'
 
     // fcm region
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
-    implementation 'com.google.firebase:firebase-messaging-ktx'
-    implementation 'com.google.firebase:firebase-installations-ktx'
+   // implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
+  //  implementation 'com.google.firebase:firebase-installations-ktx'
 
     // appCenter region
     implementation 'com.microsoft.appcenter:appcenter-analytics:5.0.4'
