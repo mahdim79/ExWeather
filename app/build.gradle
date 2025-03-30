@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.dust.exweather"
         minSdk 24
-        targetSdk 31
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
 
@@ -24,8 +24,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -89,13 +91,21 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation platform('com.google.firebase:firebase-bom:29.1.0')
-    implementation 'com.google.firebase:firebase-messaging-ktx'
-  //  implementation 'com.google.firebase:firebase-core:29.1.0'
-    implementation 'com.google.firebase:firebase-installations-ktx'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+
+    // fcm region
+   // implementation platform('com.google.firebase:firebase-bom:29.1.0')
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'
+  //  implementation 'com.google.firebase:firebase-installations-ktx'
+
+    // appCenter region
+    implementation 'com.microsoft.appcenter:appcenter-analytics:5.0.4'
+    implementation 'com.microsoft.appcenter:appcenter-crashes:5.0.4'
+
+    // persian date region
+    implementation 'com.github.samanzamani:PersianDate:1.7.1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

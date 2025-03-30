@@ -5,6 +5,10 @@ import com.dust.exweather.di.singletoncomponent.DaggerSingletonComponent
 import com.dust.exweather.sharedpreferences.SharedPreferencesManager
 import com.dust.exweather.utils.Constants
 import com.dust.exweather.utils.Settings
+import com.google.firebase.FirebaseApp
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import java.util.*
@@ -16,7 +20,13 @@ class MyApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        FirebaseApp.initializeApp(this)
+        initAppCenter()
         getTypeFace()
+    }
+
+    private fun initAppCenter() {
+        AppCenter.start(this,Constants.APP_CENTER_DSN,Analytics::class.java,Crashes::class.java)
     }
 
     fun getCurrentThemeResId(): Int {

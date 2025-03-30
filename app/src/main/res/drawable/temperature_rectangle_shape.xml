@@ -5,5 +5,5 @@
         android:angle="0"
         android:endColor="@color/standardUiRed"
         android:startColor="@color/standardUiBlue" />
-    <corners android:radius="@dimen/standardMargin0.5x"/>
+    <corners android:radius="25dp"/>
 </shape>

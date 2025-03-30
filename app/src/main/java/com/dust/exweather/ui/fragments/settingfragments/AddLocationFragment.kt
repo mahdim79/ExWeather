@@ -181,7 +181,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
                 }
 
                 override fun onNext(t: String) {
-                    if (manualLocationPickMode)
+                    if (manualLocationPickMode && t.isNotEmpty())
                         viewModel.searchForLocation(t, requireContext())
                 }
 
@@ -260,7 +260,7 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(p0: GoogleMap?) {
+    override fun onMapReady(p0: GoogleMap) {
 
         googleMap = p0
         googleMap?.let { map ->
@@ -316,4 +316,5 @@ class AddLocationFragment() : DaggerFragment(), OnMapReadyCallback {
         floatingActionButton.visibility = View.GONE
         super.onDestroyView()
     }
+
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ExWeather</string>
+    <string name="app_name">هوای من</string>
     <string name="no2Amount">نیتروژن: %s</string>
     <string name="o3Amount">اوزون: %s</string>
     <string name="defraIndex">شاخص Defra :%s </string>
@@ -110,8 +110,8 @@
     <string name="tabToSeeMore">برای مشاهده جزییات بیشتر ضربه بزنید</string>
     <string name="morning">صبح</string>
     <string name="afterNoon">عصر</string>
-    <string name="aboutUsDescription">متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی متن ساختگی </string>
-    <string name="companyEmailAddress">exWeather@yahoo.com</string>
+    <string name="aboutUsDescription">برنامه نویس: مهدی مصطفوی \n آدرس ایمیل: mahdimostafavi79@yahoo.com</string>
+    <string name="companyEmailAddress">mahdimostafavi79@yahoo.com</string>
     <string name="companyLocation">company location address</string>
     <string name="companyPhoneNumber">+98 905 499 4569</string>
     <string name="openWith">باز کردن با…</string>
@@ -130,7 +130,7 @@
     <string name="unitSelectTip">تغییر واحد های دما، رطوبت، میزان بارندگی و …</string>
     <string name="addedSuccessfully">با موفقیت اضافه شد</string>
     <string name="enter_location">نام شهر</string>
-    <string name="locationBottomSheetTip">مکان پیش فرض مکانی است که اعلانات برنامه برای آن تنظیم می شود!</string>
+    <string name="locationBottomSheetTip">مکان پیش فرض مکانی است که اعلانات و ویدجت برنامه برای آن تنظیم می شود.</string>
     <string name="defaultText">پیشفرض</string>
     <string name="addNewLocation">افزودن مکان جدید</string>
     <string name="addCurrentLocation">افزودن مکان فعلی</string>
@@ -147,7 +147,7 @@
     <string name="mile">Mile - مایل</string>
     <string name="appwidget_text">LOADING</string>
     <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+    <string name="app_widget_description">Havaye Man Widget</string>
     <string name="default_notification_channel_id">FirebaseNotificationChannelId</string>
     <string name="currentWeatherStatus">وضعیت فعلی آب و هوا</string>
     <string name="overallWeatherPrediction">پیش بینی کلی آب و هوا</string>
@@ -167,5 +167,58 @@
     <string name="hourlyPrecipitationChartmm">نمودار میزان بارندگی 24 ساعته(mm)</string>
     <string name="hourlyTemperatureChartC">نمودار دمای 24 ساعته(C°)</string>
     <string name="hourlyWindSpeedChartKph">نمودار سرعت باد 24 ساعته(Kph)</string>
+
+    <string name="Sunny" translatable="false">آفتابی</string>
+    <string name="Clear" translatable="false">هوای صاف</string>
+    <string name="conditionTextCode1003" translatable="false">نیمه ابری</string>
+    <string name="conditionTextCode1006" translatable="false">ابری</string>
+    <string name="conditionTextCode1009" translatable="false">ابری</string>
+    <string name="conditionTextCode1030" translatable="false">مه</string>
+    <string name="conditionTextCode1063" translatable="false">احتمال بارش تکه تکه</string>
+    <string name="conditionTextCode1066" translatable="false">امکان برف تکه ای</string>
+    <string name="conditionTextCode1069" translatable="false">امکان برف تکه ای</string>
+    <string name="conditionTextCode1072" translatable="false">نم یخبندان</string>
+    <string name="conditionTextCode1087" translatable="false">احتمال وقوع رعد و برق</string>
+    <string name="conditionTextCode1114" translatable="false">دمیدن برف</string>
+    <string name="conditionTextCode1117" translatable="false">کولاک</string>
+    <string name="conditionTextCode1135" translatable="false">مه</string>
+    <string name="conditionTextCode1147" translatable="false">مه یخ زده</string>
+    <string name="conditionTextCode1150" translatable="false">نم نازک</string>
+    <string name="conditionTextCode1153" translatable="false">نم نم باران خفیف</string>
+    <string name="conditionTextCode1168" translatable="false">نم نم باران یخ زده</string>
+    <string name="conditionTextCode1171" translatable="false">نم نم باران یخبندان شدید</string>
+    <string name="conditionTextCode1180" translatable="false">باران ملایم تکه تکه</string>
+    <string name="conditionTextCode1183" translatable="false">باران خفیف</string>
+    <string name="conditionTextCode1186" translatable="false">گاهی باران متوسط</string>
+    <string name="conditionTextCode1189" translatable="false">باران متوسط</string>
+    <string name="conditionTextCode1192" translatable="false">گاهی باران شدید</string>
+    <string name="conditionTextCode1195" translatable="false">باران شدید</string>
+    <string name="conditionTextCode1198" translatable="false">باران یخبندان خفیف</string>
+    <string name="conditionTextCode1201" translatable="false">باران یخبندان متوسط یا شدید</string>
+    <string name="conditionTextCode1204" translatable="false">برف سبک</string>
+    <string name="conditionTextCode1207" translatable="false">برفک متوسط یا سنگین</string>
+    <string name="conditionTextCode1210" translatable="false">برف سبک تکه تکه</string>
+    <string name="conditionTextCode1213" translatable="false">برف سبک</string>
+    <string name="conditionTextCode1216" translatable="false">برف متوسط تکه تکه</string>
+    <string name="conditionTextCode1219" translatable="false">برف متوسط</string>
+    <string name="conditionTextCode1222" translatable="false">برف سنگین تکه تکه</string>
+    <string name="conditionTextCode1225" translatable="false">برف سنگین</string>
+    <string name="conditionTextCode1237" translatable="false">گلوله های یخ</string>
+    <string name="conditionTextCode1240" translatable="false">باران سبک</string>
+    <string name="conditionTextCode1243" translatable="false">رگبار باران متوسط یا شدید</string>
+    <string name="conditionTextCode1246" translatable="false">رگبار باران سیل آسا</string>
+    <string name="conditionTextCode1249" translatable="false">باران سبک</string>
+    <string name="conditionTextCode1252" translatable="false">رگبارهای شدید یا متوسط</string>
+    <string name="conditionTextCode1255" translatable="false">بارش برف خفیف</string>
+    <string name="conditionTextCode1258" translatable="false">بارش برف متوسط یا شدید</string>
+    <string name="conditionTextCode1261" translatable="false">باران سبک از گلوله های یخ</string>
+    <string name="conditionTextCode1264" translatable="false">باران متوسط یا سنگین گلوله های یخ</string>
+    <string name="conditionTextCode1273" translatable="false">باران ملایم تکه تکه همراه با رعد و برق</string>
+    <string name="conditionTextCode1276" translatable="false">باران متوسط یا شدید همراه با رعد و برق</string>
+    <string name="conditionTextCode1279" translatable="false">برف ملایم تکه تکه همراه با رعد و برق</string>
+    <string name="conditionTextCode1282" translatable="false">برف متوسط یا شدید همراه با رعد و برق</string>
+    <string name="dark">تاریک</string>
+    <string name="light">روشن</string>
+
 
 </resources>

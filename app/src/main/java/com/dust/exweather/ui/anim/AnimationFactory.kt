@@ -13,7 +13,7 @@ class AnimationFactory @Inject constructor() {
         return alphaAnimation
     }
 
-    fun getSplashScreenImageAnimation(): AnimationSet {
+    fun getSplashScreenImageAnimation(): ScaleAnimation {
         val scaleAnimation = ScaleAnimation(
             1.5f,
             1f,
@@ -29,25 +29,7 @@ class AnimationFactory @Inject constructor() {
             duration = 1000
             interpolator = OvershootInterpolator(2f)
         }
-        val rotateAnimation = RotateAnimation(
-            0f,
-            360f,
-            RotateAnimation.RELATIVE_TO_SELF,
-            0.5f,
-            RotateAnimation.RELATIVE_TO_SELF,
-            0.5f
-        )
-        rotateAnimation.apply {
-            duration = 1000
-            fillAfter = true
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-        val animationSet = AnimationSet(false)
-        animationSet.apply {
-            addAnimation(scaleAnimation)
-            addAnimation(rotateAnimation)
-        }
-        return animationSet
+        return scaleAnimation
     }
 
     fun getMainScaleAnimation(): ScaleAnimation {

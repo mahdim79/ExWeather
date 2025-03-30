@@ -4,10 +4,13 @@ import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import com.dust.exweather.R
+import com.dust.exweather.model.dataclasses.currentweather.main.Condition
 import com.dust.exweather.model.dataclasses.currentweather.main.Location
 import com.dust.exweather.service.NotificationService
 import dagger.android.support.DaggerAppCompatActivity
+import saman.zamani.persiandate.PersianDate
 import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,6 +18,26 @@ import kotlin.math.floor
 
 class UtilityFunctions {
     companion object {
+
+        fun getConditionText(conditionText:String,conditionCode:Int,context: Context,isDay:Boolean = true):String{
+            if (Locale.getDefault().language != "fa")
+                return conditionText
+            if (conditionCode == 1000){
+                return if (isDay)
+                    context.getString(R.string.Sunny)
+                else
+                    context.getString(R.string.Clear)
+            }else{
+                try {
+                    val stringName = "conditionTextCode${conditionCode}"
+                    val stringId = context.resources.getIdentifier(stringName,"string",context.packageName)
+                    return context.getString(stringId)
+                }catch (e:Exception){
+                    return conditionText
+                }
+            }
+        }
+
         fun isNetworkConnectionEnabled(context: Context): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -80,17 +103,13 @@ class UtilityFunctions {
         }
 
         fun calculateCurrentDateByTimeEpoch(timeEpoch: Int, tz: String = "Asia/tehran"): String {
-            val date = Date((timeEpoch).toLong() * 1000)
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-            sdf.timeZone = TimeZone.getTimeZone(tz)
-            return sdf.format(date)
+            val persianDate = PersianDate((timeEpoch).toLong() * 1000)
+            return "${persianDate.shYear}-${persianDate.shMonth}-${persianDate.shDay}"
         }
 
         fun calculateCurrentTimeByTimeEpoch(timeEpoch: Int, tz: String = "Asia/tehran"): String {
-            val date = Date((timeEpoch).toLong() * 1000)
-            val sdf = SimpleDateFormat("HH:mm", Locale.ENGLISH)
-            sdf.timeZone = TimeZone.getTimeZone(tz)
-            return sdf.format(date)
+            val date = PersianDate((timeEpoch).toLong() * 1000)
+            return "${String.format(Locale.ENGLISH,"%02d",date.hour)}:${String.format(Locale.ENGLISH,"%02d",date.minute)}"
         }
 
         fun createLatLongPattern(locationObj: Location): String {
@@ -139,6 +158,7 @@ class UtilityFunctions {
 
                 }
             }
+            Log.d("getWeatherIconResId",resId.toString())
             if (resId != 0)
                 return resId
             return null

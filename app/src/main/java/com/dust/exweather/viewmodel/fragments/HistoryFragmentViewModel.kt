@@ -11,6 +11,7 @@ import com.dust.exweather.model.repositories.WeatherHistoryRepository
 import com.dust.exweather.model.room.WeatherEntity
 import com.dust.exweather.model.toDataClass
 import com.dust.exweather.sharedpreferences.UnitManager
+import com.dust.exweather.utils.UtilityFunctions
 import java.util.*
 
 class HistoryFragmentViewModel(private val repository: WeatherHistoryRepository) : ViewModel() {
@@ -44,8 +45,8 @@ class HistoryFragmentViewModel(private val repository: WeatherHistoryRepository)
                     getString(
                         R.string.shareTitle,
                         locationName,
-                        forecastDay.day.dayOfWeek,
-                        forecastDay.date
+                        UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch,context),
+                        UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)
                     ).plus("\n")
                 )
                 append(getString(R.string.weatherState, forecastDay.day.condition.text).plus("\n"))

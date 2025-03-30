@@ -114,7 +114,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     )
                 } \n" +
                         "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
-            weatherStateText.text = forecastDay.day.condition.text
+            weatherStateText.text = UtilityFunctions.getConditionText(forecastDay.day.condition.text,forecastDay.day.condition.code,requireContext())
             weatherCityNameText.text = requireArguments().getString("location")
             weatherTempText.text = unitManager.getTemperatureUnit(
                 forecastDay.day.avgtemp_c.toString(),
@@ -199,6 +199,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     layoutDirection = View.LAYOUT_DIRECTION_RTL
                     animateXY(2000, 2000)
                     valueFormatter = object : IndexAxisValueFormatter() {
@@ -219,6 +220,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     animateXY(2000, 2000)
                     invalidate()
                 }
@@ -297,6 +299,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     layoutDirection = View.LAYOUT_DIRECTION_RTL
                     animateXY(2000, 2000)
                     valueFormatter = object : IndexAxisValueFormatter() {
@@ -317,6 +320,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     animateXY(2000, 2000)
                     invalidate()
                 }
@@ -385,6 +389,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     layoutDirection = View.LAYOUT_DIRECTION_RTL
                     animateXY(2000, 2000)
                     valueFormatter = object : IndexAxisValueFormatter() {
@@ -405,6 +410,7 @@ class HistoryDetailsFragment : DaggerFragment() {
                     axisLineColor = Color.WHITE
                     textColor = Color.WHITE
                     legend.isEnabled = true
+                    legend.textColor = Color.WHITE
                     animateXY(2000, 2000)
                     invalidate()
                 }

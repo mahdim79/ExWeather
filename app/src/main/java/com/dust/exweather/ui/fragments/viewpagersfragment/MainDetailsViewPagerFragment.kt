@@ -45,7 +45,7 @@ class MainDetailsViewPagerFragment(
                         cloudImage.setImageResource(icon)
                     }
 
-                    weatherStateText.text = data.current!!.condition.text
+                    weatherStateText.text = UtilityFunctions.getConditionText(data.current!!.condition.text,data.current.condition.code,requireContext(),data.current.is_day == 1)
                     weatherIsDayText.text =
                         if (data.current.is_day == 1) getString(R.string.day) else getString(R.string.night)
                     weatherCityNameText.text = data.location!!.name

@@ -1,5 +1,8 @@
 package com.dust.exweather.viewmodel.activities
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
@@ -14,8 +17,16 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun startNotificationService(context: Context) {
-        if (!UtilityFunctions.checkNotificationServiceRunning(context))
-            context.startService(Intent(context, NotificationService::class.java))
+        val scheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        scheduler.cancel(5005)
+        val cName = ComponentName(context.applicationContext, NotificationService::class.java)
+        val info = JobInfo.Builder(5005, cName)
+            .setPersisted(true)
+            .setPeriodic(16 * 60 * 1000L)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .build()
+        scheduler.schedule(info)
+
     }
 
 }

@@ -3,19 +3,26 @@ package com.dust.exweather.ui.fragments.weatherfragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.sharedpreferences.UnitManager
+import com.dust.exweather.ui.adapters.HistoryDateRecyclerViewAdapter
 import com.dust.exweather.ui.anim.AnimationFactory
 import com.dust.exweather.ui.fragments.bottomsheetdialogs.CsvSaveBottomSheetDialogFragment
 import com.dust.exweather.utils.Constants
@@ -50,6 +57,12 @@ class WeatherHistoryFragment : DaggerFragment() {
     private var locationIndex = 0
 
     private val calendar = Calendar.getInstance()
+
+    private val externalStorageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){}
+
+    private val externalStorageLauncherDeprecated = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){}
+
+    private lateinit var dateAdapter:HistoryDateRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,7 +107,7 @@ class WeatherHistoryFragment : DaggerFragment() {
             } else {
                 updateLocationData()
                 setUpLocationSwitcherButtons(it.lastIndex)
-                setUpPrimaryCalendarView()
+                setUpDateRecyclerView()
                 setUpFirstData()
                 historyNestedScrollView.visibility = View.VISIBLE
                 startAnimations()
@@ -104,7 +117,7 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     private fun startAnimations() {
         animationFactory.getAlphaAnimation(0f, 1f, 1000).also {
-            historyCalendarView.startAnimation(it)
+            historyDateRecyclerView.startAnimation(it)
             historyDetailsContainer.startAnimation(it)
         }
     }
@@ -117,11 +130,28 @@ class WeatherHistoryFragment : DaggerFragment() {
         changeDate(dataList[0], dataList[1], dataList[2])
     }
 
-    private fun setUpPrimaryCalendarView() {
-        updateCalendarViewTime()
-        requireView().historyCalendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            changeDate(year, month, dayOfMonth)
+    private fun setUpDateRecyclerView() {
+        dateAdapter = HistoryDateRecyclerViewAdapter(requireContext())
+
+        historyDateRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        dateAdapter.setOnItemSelectedListener { time,isSelected ->
+            if (isSelected)
+                return@setOnItemSelectedListener
+            val dateList = UtilityFunctions.calculateDayOfMonth(time)
+            changeDate(dateList[0],dateList[1],dateList[2])
+            dateAdapter.currentList.find { it.first == time }?.let { item ->
+                val updatedList = arrayListOf<Pair<Int,Boolean>>().apply { addAll(dateAdapter.currentList) }
+                updatedList.forEachIndexed { index,date ->
+                    if (date.first == item.first)
+                        updatedList[index] = Pair(updatedList[index].first,true)
+                    else
+                        updatedList[index] = Pair(updatedList[index].first,false)
+                }
+                dateAdapter.submitList(updatedList)
+            }
         }
+        historyDateRecyclerView.adapter = dateAdapter
+        updateCalendarViewTime()
     }
 
     private fun changeDate(year: Int, month: Int, dayOfMonth: Int) {
@@ -145,11 +175,18 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     private fun updateCalendarViewTime() {
         viewModel.getHistoryDataList()[locationIndex].also { weatherHistory ->
-            requireView().historyCalendarView.apply {
-                date = weatherHistory.forecast.forecastday.first().date_epoch.toLong() * 1000
-            }
+            updateDateRecyclerView(weatherHistory.forecast.forecastday.first().date_epoch)
         }
         updateNoDataAvailable()
+    }
+
+    private fun updateDateRecyclerView(lastDay:Int){
+        val newDateList = arrayListOf<Pair<Int,Boolean>>()
+        newDateList.add(Pair(lastDay,true))
+        for (i in 0 until 4){
+            newDateList.add(Pair(newDateList.last().first - 86_400,false))
+        }
+        dateAdapter.submitList(newDateList)
     }
 
     private fun updateNoDataAvailable() {
@@ -170,7 +207,7 @@ class WeatherHistoryFragment : DaggerFragment() {
             noDataTextView.visibility = View.GONE
             dateTextView.text = "${forecastDay.day.dayOfWeek}\n" +
                     "${UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)}"
-            weatherStateText.text = forecastDay.day.condition.text
+            weatherStateText.text = UtilityFunctions.getConditionText(forecastDay.day.condition.text,forecastDay.day.condition.code,requireContext())
 
             UtilityFunctions.getWeatherIconResId(forecastDay.day.condition.icon,1, requireContext())?.let { icon ->
                 cloudImage.setImageResource(icon)
@@ -233,10 +270,11 @@ class WeatherHistoryFragment : DaggerFragment() {
                         getString(
                             R.string.shareTitle,
                             locationName,
-                            forecastDay.day.dayOfWeek,
-                            forecastDay.date
+                            UtilityFunctions.getDayOfWeekByUnixTimeStamp(forecastDay.date_epoch,context),
+                            UtilityFunctions.calculateCurrentDateByTimeEpoch(forecastDay.date_epoch)
                         )
                     )
+
                     putExtra(
                         Intent.EXTRA_TEXT,
                         viewModel.createShareSample(
@@ -302,20 +340,29 @@ class WeatherHistoryFragment : DaggerFragment() {
 
     private fun checkStoragePermission(): Boolean {
         requireActivity().apply {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                requireActivity().requestPermissions(
-                    arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                if (!Environment.isExternalStorageManager()){
+                    launchStorageManagerScreen()
+                    return false
+                }
+            }else{
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED || checkSelfPermission(
                         Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), Constants.STORAGE_PERMISSION_REQUEST_CODE
-                )
-                return false
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
+                    externalStorageLauncherDeprecated.launch(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                    return false
+                }
             }
         }
         return true
+    }
+
+    private fun launchStorageManagerScreen() {
+        val permissionIntent =
+            Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+        permissionIntent.data = Uri.fromParts("package", requireContext().packageName, null)
+        externalStorageLauncher.launch(permissionIntent)
     }
 
     private fun navigateToDetailsFragment(latlong: String, date: String, location: String) {
@@ -338,6 +385,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                 updateCalendarViewTime()
                 updateLocationData()
                 setUpFirstData()
+                historyDateRecyclerView.smoothScrollToPosition(0)
             }
         }
 
@@ -347,6 +395,7 @@ class WeatherHistoryFragment : DaggerFragment() {
                 updateCalendarViewTime()
                 updateLocationData()
                 setUpFirstData()
+                historyDateRecyclerView.smoothScrollToPosition(0)
             }
         }
     }

@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standardMargin1.5x"
                 android:layout_marginTop="@dimen/standardMargin1.5x"
+                android:visibility="gone"
                 android:backgroundTint="?colorOnSurface"
                 app:cardCornerRadius="@dimen/standardMargin"
                 app:cardElevation="7dp">

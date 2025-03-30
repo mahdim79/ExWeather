@@ -5,13 +5,11 @@
     android:background="?colorPrimary"
     android:layout_height="match_parent">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/splashImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher"
-        android:adjustViewBounds="true"
         android:layout_centerInParent="true"/>
 
     <com.dust.exweather.utils.customviews.CTextView
@@ -23,6 +21,6 @@
         android:layout_marginBottom="@dimen/standardMargin3x"
         tools:text="1.0.0"
         android:textColor="@color/light_black2"
-        android:textSize="@dimen/TextSize4x" />
+        android:textSize="12sp" />
 
 </RelativeLayout>

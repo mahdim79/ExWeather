@@ -9,12 +9,14 @@ import android.view.animation.AlphaAnimation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dust.exweather.R
+import com.dust.exweather.model.dataclasses.currentweather.main.Condition
 import com.dust.exweather.model.dataclasses.currentweather.main.CurrentData
 import com.dust.exweather.model.dataclasses.historyweather.Forecastday
 import com.dust.exweather.model.dataclasswrapper.DataWrapper
 import com.dust.exweather.sharedpreferences.UnitManager
 import com.dust.exweather.utils.UtilityFunctions
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
+import okhttp3.internal.Util
 import java.util.*
 
 class MainRecyclerViewAdapter(
@@ -48,7 +50,7 @@ class MainRecyclerViewAdapter(
                 holder.minTempText.visibility = View.INVISIBLE
                 holder.maxTempText.visibility = View.INVISIBLE
                 holder.weatherStateText.text =
-                    data.current?.condition?.text
+                    UtilityFunctions.getConditionText(data.current?.condition?.text!!,data.current.condition.code ,context)
                 holder.dateText.text = UtilityFunctions.calculateCurrentDateByTimeEpoch(
                     data.location!!.localtime_epoch,
                     data.location.tz_id
@@ -61,10 +63,11 @@ class MainRecyclerViewAdapter(
                     holder.itemStateImage.setImageResource(icon)
                 }
 
-                holder.dayOfWeekText.text = data.day.dayOfWeek
+                holder.dayOfWeekText.text = UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.date_epoch, context)
+
                 holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
                 holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
-                holder.weatherStateText.text = data.day.condition.text
+                holder.weatherStateText.text = UtilityFunctions.getConditionText(data.day.condition.text,data.day.condition.code ,context)
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
 
@@ -77,10 +80,10 @@ class MainRecyclerViewAdapter(
                     holder.itemStateImage.setImageResource(icon)
                 }
 
-                holder.dayOfWeekText.text = data.day.dayOfWeek
+                holder.dayOfWeekText.text = UtilityFunctions.getDayOfWeekByUnixTimeStamp(data.date_epoch, context)
                 holder.minTempText.text = unitManager.getTemperatureUnit(data.day.mintemp_c.toString(), data.day.mintemp_f.toString())
                 holder.maxTempText.text = unitManager.getTemperatureUnit(data.day.maxtemp_c.toString(), data.day.maxtemp_f.toString())
-                holder.weatherStateText.text = data.day.condition.text
+                holder.weatherStateText.text = UtilityFunctions.getConditionText(data.day.condition.text,data.day.condition.code,context)
                 holder.dateText.text =
                     UtilityFunctions.calculateCurrentDateByTimeEpoch(data.date_epoch)
             }

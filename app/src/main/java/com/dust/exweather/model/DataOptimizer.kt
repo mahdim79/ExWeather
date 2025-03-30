@@ -15,7 +15,7 @@ class DataOptimizer @Inject constructor(){
         response: Response<WeatherHistory>?
     ): WeatherHistory? {
 
-        if (response!!.isSuccessful && response.body() != null) {
+        if (response?.body() != null && response.isSuccessful) {
             val tempData = response.body()
             return if (staticData == null) {
                 tempData

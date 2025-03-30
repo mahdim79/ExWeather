@@ -76,15 +76,12 @@
                         android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                         app:layout_constraintTop_toTopOf="parent"/>
 
-                    <CalendarView
-                        android:id="@+id/historyCalendarView"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/historyDateRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/standardMargin"
-                        android:theme="@style/CalendarView.MainTheme"
+                        android:layout_marginTop="25dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:dateTextAppearance="@style/CalendarView.DayColor"
-                        android:weekDayTextAppearance="@style/CalendarView.DayColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/arrowRightIcon" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -141,10 +138,11 @@
                             android:textColor="@color/standardUiWhite"
                             android:textSize="@dimen/TextSize3x"
                             android:gravity="center"
+                            android:lineHeight="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="@+id/shareImageView"
-                            tools:text="2022-01-02" />
+                            tools:text="2022-01-02 \n 14534" />
 
 
                         <View

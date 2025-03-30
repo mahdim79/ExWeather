@@ -18,11 +18,17 @@ class AddLocationRepository @Inject constructor() {
     @Inject
     lateinit var weatherDao: WeatherDao
 
-    suspend fun getLocationDetailsData(latLng: String): Response<LocationServerData> =
+    suspend fun getLocationDetailsData(latLng: String): Response<LocationServerData>? = try {
         mainApiRequests.getLocationDetailsData(latLng)
+    } catch (e: Exception) {
+        null
+    }
 
-    suspend fun searchForLocation(text: String): Response<ArrayList<SearchLocation>> =
+    suspend fun searchForLocation(text: String): Response<ArrayList<SearchLocation>>? = try {
         mainApiRequests.searchForLocation(text)
+    } catch (e: Exception) {
+        null
+    }
 
     suspend fun addNewLocationToCache(listEntities: List<WeatherEntity>) =
         weatherDao.insertWeatherData(listEntities)
